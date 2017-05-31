@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
+var oracledb = require('oracledb');
+
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -49,6 +51,22 @@ process.on('uncaughtException', function(err) {
     console.log( " UNCAUGHT EXCEPTION " );
     console.log( "[Inside 'uncaughtException' event] " + err.stack || err.message );
 });
+
+var db_config = {
+	user: 'jangwon',
+	password: 'kh5329kh',
+	connectString: 'dbdinstance.cn885wgifd0n.ap-northeast-2.rds.amazonaws.com:1521/UOS25'
+};
+
+oracledb.getConnection(db_config, function(err, connection) {
+	if (err) {
+		console.log('DB connection error:', err.message);
+		return;
+	}
+
+	console.log(connection);
+});
+
 
 var server = app.listen(port, function(){
  console.log("Express server has started on port", port);
