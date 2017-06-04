@@ -1,1 +1,3 @@
 node_modules/oracledb
+.DS_Store
+.idea/*
