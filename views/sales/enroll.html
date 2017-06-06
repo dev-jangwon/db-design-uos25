@@ -69,7 +69,21 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-
+                            <table id="selling_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="selling_table_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">상품코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">상품명</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">딘가</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">수량</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">금액</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">할인</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">기타</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -181,7 +195,15 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#selling_table').DataTable();
+    });
+</script>
 </body>
 </html>
