@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var features = require('./features.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index.html', { title: 'Express' });
 });
-
 
 // login
 router.get('/login', function(req, res, next) {
@@ -145,6 +145,14 @@ router.get('/stock/lookup', function(req, res, next) {
 
 router.get('/stock/modify', function(req, res, next) {
     res.render('sales/modify.html');
+});
+
+
+// Features
+router.post('/sales/lookup', function(req, res) {
+  features.sales.lookup(function(result) {
+    res.json(result);
+  });
 });
 
 module.exports = router;

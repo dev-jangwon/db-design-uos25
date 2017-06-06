@@ -19,6 +19,7 @@
           apply the skin class to the body tag so the changes take effect.
     -->
     <link rel="stylesheet" href="/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="/css/skins/_all-skins.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -54,8 +55,8 @@
             <!-- Your Page Content Here -->
 
             <div class="row">
-                <div class="col-md-12">
-                    판매일
+                <div class="col-md-3">
+                  <h4>판매일 : <button type="button" class="btn btn-default disabled">2016-06-06</button></h4>
                 </div>
             </div>
 
@@ -96,11 +97,34 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
 
-                            <h3 class="box-title">1</h3>
+                            <h3 class="box-title">상품코드 등록</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-6">
 
+                              </div>
+
+                              <label for="input_item" class="col-md-1 control-label">상품코드 : </label>
+
+                              <div class="col-md-2">
+                                <input class="form-control" id="input_item" placeholder="상품코드" type="input">
+                              </div>
+
+
+                              <label for="input_item_count" class="col-md-1 control-label">상품수량 : </label>
+                              <div class="col-md-1">
+                                <input class="form-control" id="input_item_count" placeholder="상품수량" type="input">
+                              </div>
+
+
+                              <div class="col-md-1">
+                                <button type="button" class="btn btn-block btn-success btn-flat">등록</button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -144,7 +168,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
 
-                            <h3 class="box-title">1</h3>
+                            <h3 class="box-title">2</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -161,11 +185,17 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
 
-                            <h3 class="box-title">1</h3>
+                            <h3 class="box-title">고객조회</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+                          <label for="input_item_count" class="col-md-1 control-label">고객코드 : </label>
+                          <div class="col-md-1">
+                            <input class="form-control" id="input_item_count" placeholder="상품수량" type="input">
+                          </div>
+                          <div class="col-md-10">
 
+                          </div>
                         </div>
                         <!-- /.box-body -->
                     </div>
