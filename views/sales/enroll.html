@@ -90,39 +90,36 @@
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
-
                             <h3 class="box-title">판매 등록</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
+                          <div class="row">
+
+                              <div class="col-xs-6">
+                              </div>
+
+                              <div class="col-xs-2">
+                                  <div class="row">
+                                    <div class="form-group has-success" style="margin-right : 10px;">
+                                      <label class="control-label" for="item_code"><i class="fa fa-check"></i>상품코드</label>
+                                      <input type="text" class="form-control" id="item_code" placeholder="상품코드">
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label for="item_code" class="control-label" style="padding-top:7px;">상품코드</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <input class="form-control" id="item_code" placeholder="상품코드" type="input">
-                                            </div>
-                                        </div>
+                                  </div>
+                              </div>
+
+                              <div class="col-xs-2">
+                                  <div class="row">
+                                    <div class="form-group has-success">
+                                      <label class="control-label" for="item_count"><i class="fa fa-check"></i>상품수량</label>
+                                      <input type="text" class="form-control" id="item_count" placeholder="상품수량">
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label for="item_count" class="control-label" style="padding-top:7px;">상품수량</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <input class="form-control" id="item_count" placeholder="상품수량" type="input">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-block btn-success btn-flat">등록</button>
-                                    </div>
-                                </div>
+                                  </div>
+                              </div>
+
+                              <div class="col-xs-2">
+                                  <button type="button" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">판매등록</button>
+                              </div>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -162,15 +159,33 @@
                         <!-- /.box-body -->
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-4">
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
-
-                            <h3 class="box-title">2</h3>
+                            <h3 class="box-title">판매정보</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+                            <div class="form-group">
+                              <label for="exampleInputName2">합계</label>
+                              <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="합계" disabled>
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputName2">할인금액</label>
+                              <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="할인금액" disabled>
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputName2">받은금액</label>
+                              <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="받은금액">
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputName2">거스름돈</label>
+                              <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="거스름돈" disabled>
+                            </div>
 
                         </div>
                         <!-- /.box-body -->
@@ -183,18 +198,53 @@
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
-
                             <h3 class="box-title">고객조회</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                          <label for="input_item_count" class="col-md-1 control-label">고객코드 : </label>
-                          <div class="col-md-1">
-                            <input class="form-control" id="input_item_count" placeholder="상품수량" type="input">
+                          <div class="col-md-2">
+                            <div class="form-group has-success">
+                              <label class="control-label" for="customer_id"><i class="fa fa-check"></i>고객코드</label>
+                              <input type="text" class="form-control" id="customer_id" placeholder="고객코드">
+                            </div>
                           </div>
-                          <div class="col-md-10">
+                          <div class="col-md-1">
+                            <button type="button" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">조회</button>
+                          </div>
+
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <label class="control-label" for="customer_name">고객이름</label>
+                              <input type="text" class="form-control" id="customer_name" placeholder="고객이름">
+                            </div>
+                          </div>
+
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <label class="control-label" for="customer_name">마일리지금액</label>
+                              <input type="text" class="form-control" id="customer_name" placeholder="마일리지금액" disabled>
+                            </div>
+                          </div>
+                          <div class="col-md-2">
 
                           </div>
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <label class="control-label" for="customer_mileage">금액</label>
+                              <input type="text" class="form-control" id="customer_mileage" placeholder="금액">
+                            </div>
+                          </div>
+                          <div class="col-md-1">
+                            <div class="form-group">
+                              <label class="control-label" for="customer_check">사용여부</label>
+                              <div class="checkbox margin">
+                              <label>
+                                <input type="checkbox" id="customer_check">
+                              </label>
+                            </div>
+                            </div>
+                          </div>
+
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -205,7 +255,7 @@
                 <div class="col-md-10">
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-block btn-primary">Primary</button>
+                    <button type="button" class="btn btn-block btn-primary">판매</button>
                 </div>
             </div>
         </section>
