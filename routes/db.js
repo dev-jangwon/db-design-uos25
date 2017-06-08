@@ -19,6 +19,7 @@ var connect_db = function(callback) {
 };
 
 module.exports = {
+	// 판매 조회
   sales_lookup: function(callback) {
     async.waterfall([
       connect_db,
@@ -36,5 +37,50 @@ module.exports = {
     ], function(err, result) {
       callback(err, result);
     });
-  }
+  },
+
+	// 고객 조회
+	customer_lookup: function(options, callback) {
+		var code = options.customer_code;
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'SELECT * ' +
+          'FROM CUSTOMER ' +
+					'WHERE CUSTOMER_CODE=:code',
+          [code],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+          db.close();
+          next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+      callback(err, result);
+    });
+	},
+
+	// 물품 조회
+	item_lookup: function(options, callback){
+		// var code = options.item_code;
+		var code = options.item_code;
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'SELECT * ' +
+          'FROM ITEM ' +
+					'WHERE ITEM_CODE=:code',
+          [code],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+          db.close();
+          next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+      callback(err, result);
+    });
+	}
 };

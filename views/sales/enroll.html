@@ -69,7 +69,7 @@
                                 <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">상품코드</th>
                                     <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">상품명</th>
-                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">딘가</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">단가</th>
                                     <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">수량</th>
                                     <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">금액</th>
                                     <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">할인</th>
@@ -118,7 +118,7 @@
                               </div>
 
                               <div class="col-xs-2">
-                                  <button type="button" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">판매등록</button>
+                                  <button type="button" id="create_sale_btn" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">판매등록</button>
                               </div>
                             </div>
                         </div>
@@ -205,11 +205,11 @@
                           <div class="col-md-2">
                             <div class="form-group has-success">
                               <label class="control-label" for="customer_id"><i class="fa fa-check"></i>고객코드</label>
-                              <input type="text" class="form-control" id="customer_id" placeholder="고객코드">
+                              <input type="text" class="form-control" id="customer_code" placeholder="고객코드">
                             </div>
                           </div>
                           <div class="col-md-1">
-                            <button type="button" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">조회</button>
+                            <button type="button" id="lookup_customer_btn" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">고객조회</button>
                           </div>
 
                           <div class="col-md-2">
@@ -222,7 +222,7 @@
                           <div class="col-md-2">
                             <div class="form-group">
                               <label class="control-label" for="customer_name">마일리지금액</label>
-                              <input type="text" class="form-control" id="customer_name" placeholder="마일리지금액" disabled>
+                              <input type="text" class="form-control" id="customer_milage" placeholder="마일리지금액" disabled>
                             </div>
                           </div>
                           <div class="col-md-2">
@@ -230,32 +230,44 @@
                           </div>
                           <div class="col-md-2">
                             <div class="form-group">
-                              <label class="control-label" for="customer_mileage">금액</label>
-                              <input type="text" class="form-control" id="customer_mileage" placeholder="금액">
+                              <label class="control-label" >금액</label>
+                              <input type="text" class="form-control" placeholder="금액">
                             </div>
                           </div>
+
                           <div class="col-md-1">
                             <div class="form-group">
                               <label class="control-label" for="customer_check">사용여부</label>
                               <div class="checkbox margin">
-                              <label>
-                                <input type="checkbox" id="customer_check">
-                              </label>
-                            </div>
+                                <label>
+                                  <input type="checkbox" id="customer_check">
+                                </label>
+                              </div>
                             </div>
                           </div>
 
                         </div>
+
                         <!-- /.box-body -->
                     </div>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-md-10">
+
+                <div class="col-md-5">
+                  <div id="customer_alert" style="display : none; margin-bottom : 10px;">
+                    <div class="alert alert-warning" role="alert" >
+                    <strong>고객정보가 존재하지 않습니다.</strong> 입력하신 정보에 해당하는 고객정보가 없습니다.
+                    </div>
+                  </div>
                 </div>
+
+                <div class="col-md-5">
+
+                </div>
+
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-block btn-primary">판매</button>
+                    <button type="button" class="btn btn-block btn-primary btn-lg">판매</button>
                 </div>
             </div>
         </section>
@@ -279,10 +291,7 @@
 <script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('#selling_table').DataTable();
-    });
-</script>
+<script src="/js/customer.js"></script>
+
 </body>
 </html>

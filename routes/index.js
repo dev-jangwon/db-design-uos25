@@ -147,12 +147,38 @@ router.get('/stock/modify', function(req, res, next) {
     res.render('sales/modify.html');
 });
 
-
-// Features
+/*
+  sales 판매 관련
+*/
 router.post('/sales/lookup', function(req, res) {
   features.sales.lookup(function(result) {
     res.json(result);
   });
 });
+
+/*
+  customer 고객 관련
+*/
+router.post('/customer/lookup', function(req, res){
+  console.log('post');
+  features.customer.lookup(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+/*
+  item 물품 관련
+*/
+router.post('/item/lookup',function(req,res){
+  console.log('req.body item lookup : ' + req.body + ' @@@@@@@@@22');
+  features.item.lookup(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/item/enroll',function(req,res){
+  // console.log('-------------------req.body item : ' + req.body);
+
+})
 
 module.exports = router;
