@@ -79,6 +79,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <button type="btn" name="button" id="row_delete">물품삭제</button>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -126,42 +127,102 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
+                  <div class="box box-default">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bullhorn"></i>
+
+                        <h3 class="box-title">전용상품정보</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="form-group">
+                        <div class="col-xs-12">
+                          <label class="control-label" for="branch_item_code">물품코드</label>
+                          <input type="text" class="form-control" id="branch_item_code" placeholder="물품코드">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-xs-12">
+                          <label class="control-label" for="branch_item_name">물품이름</label>
+                          <input type="text" class="form-control" id="branch_item_name" placeholder="물품이름">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-xs-12">
+                          <label class="control-label" for="mileage_rate">적립율</label>
+                          <input type="text" class="form-control text-right" id="mileage_rate" placeholder="적립율">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-xs-12">
+                          <label class="control-label" for="mileage_price">적립금액</label>
+                          <input type="text" class="form-control text-right" id="mileage_price" placeholder="적립금액">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
 
-                            <h3 class="box-title">1</h3>
+                            <h3 class="box-title">고객정보</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+                          <div class="form-group">
+                            <div class="col-xs-8">
+                              <label class="control-label" for="customer_id"><i class="fa fa-check"></i>고객코드</label>
+                              <input type="text" class="form-control" id="customer_code" placeholder="고객코드">
+                            </div>
+                            <div class="col-xs-4">
+                              <button type="button" id="lookup_customer_btn" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">고객조회</button>
+                            </div>
+                          </div>
 
+                          <div class="form-group">
+                            <div class="col-xs-8">
+                              <div class="form-group">
+                                <label class="control-label" for="customer_name">고객이름</label>
+                                <input type="text" class="form-control" id="customer_name" placeholder="고객이름">
+                              </div>
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-xs-8">
+                              <label class="control-label" for="customer_name">마일리지금액</label>
+                              <input type="text" class="form-control text-right" id="customer_milage" placeholder="마일리지금액" disabled>
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-xs-8">
+                              <label class="control-label" >금액</label>
+                              <input type="text" class="form-control text-right" placeholder="금액">
+                            </div>
+                            <div class="col-xs-4">
+                              <div class="form-group">
+                                <label class="control-label" for="customer_check">마일리지 사용여부</label>
+                                <div class="checkbox margin">
+                                  <label>
+                                    <input type="checkbox" id="customer_check">
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                         <!-- /.box-body -->
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bullhorn"></i>
-
-                            <h3 class="box-title">1</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                </div>
-                <div class="col-md-2">
-
-                </div>
                 <div class="col-md-4">
                     <div class="box box-default">
                         <div class="box-header with-border">
@@ -170,21 +231,21 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <div class="form-group">
-                              <label for="exampleInputName2">합계</label>
-                              <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="합계" disabled>
+                            <div class="form-group col-xs-12">
+                              <label for="selling_price">합계</label>
+                              <input type="text" class="form-control text-right" id="selling_price" placeholder="합계" >
                             </div>
-                            <div class="form-group">
-                              <label for="exampleInputName2">할인금액</label>
+                            <div class="form-group col-xs-12">
+                              <label for="discount_price">할인금액</label>
                               <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="할인금액" disabled>
                             </div>
-                            <div class="form-group">
-                              <label for="exampleInputName2">받은금액</label>
-                              <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="받은금액">
+                            <div class="form-group col-xs-12">
+                              <label for="get_price">받은금액</label>
+                              <input type="text" class="form-control text-right" id="get_price" placeholder="받은금액">
                             </div>
-                            <div class="form-group">
-                              <label for="exampleInputName2">거스름돈</label>
-                              <input type="text" class="form-control text-right" id="exampleInputName2" placeholder="거스름돈" disabled>
+                            <div class="form-group col-xs-12">
+                              <label for="rest_price">거스름돈</label>
+                              <input type="text" class="form-control text-right" id="rest_price" placeholder="거스름돈" disabled>
                             </div>
 
                         </div>
@@ -193,65 +254,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bullhorn"></i>
-                            <h3 class="box-title">고객조회</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                          <div class="col-md-2">
-                            <div class="form-group has-success">
-                              <label class="control-label" for="customer_id"><i class="fa fa-check"></i>고객코드</label>
-                              <input type="text" class="form-control" id="customer_code" placeholder="고객코드">
-                            </div>
-                          </div>
-                          <div class="col-md-1">
-                            <button type="button" id="lookup_customer_btn" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">고객조회</button>
-                          </div>
-
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label class="control-label" for="customer_name">고객이름</label>
-                              <input type="text" class="form-control" id="customer_name" placeholder="고객이름">
-                            </div>
-                          </div>
-
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label class="control-label" for="customer_name">마일리지금액</label>
-                              <input type="text" class="form-control" id="customer_milage" placeholder="마일리지금액" disabled>
-                            </div>
-                          </div>
-                          <div class="col-md-2">
-
-                          </div>
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label class="control-label" >금액</label>
-                              <input type="text" class="form-control" placeholder="금액">
-                            </div>
-                          </div>
-
-                          <div class="col-md-1">
-                            <div class="form-group">
-                              <label class="control-label" for="customer_check">사용여부</label>
-                              <div class="checkbox margin">
-                                <label>
-                                  <input type="checkbox" id="customer_check">
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-
-                        <!-- /.box-body -->
-                    </div>
-                </div>
-            </div>
             <div class="row">
 
                 <div class="col-md-5">
@@ -267,7 +269,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-block btn-primary btn-lg">판매</button>
+                    <button type="button" class="btn btn-block btn-primary btn-lg" id="selling_complete">판매</button>
                 </div>
             </div>
         </section>

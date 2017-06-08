@@ -61,4 +61,23 @@ features.item.lookup = function(options, callback) {
   });
 };
 
+
+/*편의점 전용 상품 관련*/
+features.branch_item = {};
+
+features.branch_item.lookup = function(options, callback) {
+  db.branch_item_lookup(options, function(err,result) {
+    console.log('$$$$$$$$$$$$$$$$$$');
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        data: result
+      });
+    }
+  });
+};
 module.exports = features;

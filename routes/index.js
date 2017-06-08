@@ -165,11 +165,15 @@ router.post('/sales/lookup', function(req, res) {
   });
 });
 
+router.post('/selling/enroll', function(req,res) {
+  console.log(req.body);
+
+});
+
 /*
   customer 고객 관련
 */
-router.post('/customer/lookup', function(req, res){
-  console.log('post');
+router.post('/customer/lookup', function(req, res) {
   features.customer.lookup(req.body, function(result) {
     res.json(result);
   });
@@ -178,16 +182,25 @@ router.post('/customer/lookup', function(req, res){
 /*
   item 물품 관련
 */
-router.post('/item/lookup',function(req,res){
-  console.log('req.body item lookup : ' + req.body + ' @@@@@@@@@22');
+router.post('/item/lookup', function(req,res) {
   features.item.lookup(req.body, function(result) {
     res.json(result);
   });
 });
 
-router.post('/item/enroll',function(req,res){
+router.post('/item/enroll',function(req,res) {
   // console.log('-------------------req.body item : ' + req.body);
 
-})
+});
+
+/*
+  branch_item 전용 상품 관련
+*/
+router.post('/branch_item/lookup', function(req,res) {
+  // console.log('@@@@@@@@@@@@@@@@@@@@@@2');
+  features.branch_item.lookup(req.body, function(result) {
+    res.json(result);
+  });
+});
 
 module.exports = router;

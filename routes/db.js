@@ -62,7 +62,7 @@ module.exports = {
 	},
 
 	// 물품 조회
-	item_lookup: function(options, callback){
+	item_lookup: function(options, callback) {
 		// var code = options.item_code;
 		var code = options.item_code;
 		async.waterfall([
@@ -71,6 +71,30 @@ module.exports = {
         db.execute(
           'SELECT * ' +
           'FROM ITEM ' +
+					'WHERE ITEM_CODE=:code',
+          [code],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+          db.close();
+          next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+      callback(err, result);
+    });
+	},
+
+	// 편의점 전용 상품 조회
+	branch_item_lookup: function(options, callback) {
+		console.log('$!@#!@#!$!@$!@12123123123$');
+		console.log(options);
+		var code = options.branch_item_code;
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'SELECT * ' +
+          'FROM BRANCH_ITEM ' +
 					'WHERE ITEM_CODE=:code',
           [code],
           { outFormat: oracledb.OBJECT },
