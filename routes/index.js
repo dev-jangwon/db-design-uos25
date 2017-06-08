@@ -124,6 +124,15 @@ router.get('/living-services/lookup', function(req, res, next) {
     res.render('living_services/lookup.html');
 });
 
+//order
+router.get('/order/enroll', function(req, res, next) {
+    res.render('order/enroll.html');
+});
+
+router.get('/order/lookup', function(req, res, next) {
+    res.render('order/lookup.html');
+});
+
 // payment
 router.get('/payment/payment', function(req, res, next) {
     res.render('payment/payment.html');
