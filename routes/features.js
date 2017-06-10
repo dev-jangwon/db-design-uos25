@@ -103,18 +103,22 @@ features.branch_item.lookup = function(options, callback) {
 features.selling = {};
 
 features.selling.enroll = function(options, callback) {
-  db.selling_enroll(options, function(err,result) {
-    if (err) {
-      callback({
-        result: false
-      });
-    } else {
-      callback({
-        result: true,
-        data: result
-      });
-    }
+  db.selling_count(function(err, selling_code) {
+    options.selling_code = selling_code;
+    db.selling_enroll(options, function(err,result) {
+      if (err) {
+        callback({
+          result: false
+        });
+      } else {
+        callback({
+          result: true,
+          data: result
+        });
+      }
+    });
   });
+
 };
 
 module.exports = features;
