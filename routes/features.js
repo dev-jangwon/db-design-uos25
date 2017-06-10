@@ -67,7 +67,6 @@ features.branch_item = {};
 
 features.branch_item.lookup = function(options, callback) {
   db.branch_item_lookup(options, function(err,result) {
-    console.log('$$$$$$$$$$$$$$$$$$');
     if (err) {
       callback({
         result: false
@@ -80,4 +79,23 @@ features.branch_item.lookup = function(options, callback) {
     }
   });
 };
+
+/* 판매 관련. */
+features.selling = {};
+
+features.selling.enroll = function(options, callback) {
+  db.selling_enroll(options, function(err,result) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        data: result
+      });
+    }
+  });
+};
+
 module.exports = features;
