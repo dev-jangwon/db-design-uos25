@@ -105,20 +105,23 @@ features.selling = {};
 features.selling.enroll = function(options, callback) {
   db.selling_count(function(err, selling_code) {
     options.selling_code = selling_code;
+    console.log('db options############3');
+    console.log(options);
     db.selling_enroll(options, function(err,result) {
-      if (err) {
-        callback({
-          result: false
-        });
-      } else {
-        callback({
-          result: true,
-          data: result
-        });
-      }
+      db.selling_item_enroll(options, function(err,result) {
+        if (err) {
+          callback({
+            result: false
+          });
+        } else {
+          callback({
+            result: true,
+            data: result
+          });
+        }
+      });
     });
   });
-
 };
 
 module.exports = features;

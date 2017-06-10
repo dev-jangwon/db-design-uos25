@@ -154,7 +154,8 @@ module.exports = {
       callback(err, result);
     });
 	},
-
+	/* 판매관련 */
+	//selling count를 통해 selling_code 생성
 	selling_count: function(callback) {
 		async.waterfall([
 			connect_db,
@@ -176,6 +177,7 @@ module.exports = {
 		});
 	},
 
+	//selling_code를 받아서 selling 등록.
 	selling_enroll: function(options, callback) {
 		async.waterfall([
 			connect_db,
@@ -183,7 +185,7 @@ module.exports = {
         db.execute(
           "INSERT INTO SELLING (SELLING_CODE, SELLING_PRICE, SELLING_DATE, CUSTOMER_CODE) " +
           "VALUES(:selling_code, :selling_price, :selling_date, :customer_code)",
-          options,
+          [options.selling_code, options.selling_price, options.selling_date, options.customer_code],
           { outFormat: oracledb.OBJECT,
 						autoCommit: true },
         function(err, result) {
@@ -201,5 +203,29 @@ module.exports = {
     });
 	},
 
+	//selling_code를 받아서 selling_item 등록
+	selling_item_enroll: function(options, callback) {
+		var selling_item_object = {};
+		
+		console.log("selling item enroll ^^^^^^^^^^^^6");
+		console.log(options);
+		async.waterfall([
+			connect_db,
+      function(db, next) {
+        db.execute(
+					"INSERT INTO SELLING_ITEM(SELLING_CODE, ITEM_CODE, SELLING_ITEM_COUNT)" +
+					" VALUES(:array)",
+					[options.selling_code,options.selling_item],
+					{ outFormat: oracledb.OBJECT,
+						autoCommit: true },
+        function(err, result) {
+					if (err) {
+						console.log(err);
+					}
+        });
+      }
+    ], function(err, result) {
 
+    });
+	}
 };
