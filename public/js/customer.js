@@ -199,18 +199,27 @@ $('#selling_complete').on("click", function() {
   };
 
   var selling_code = table.column(0).data();
+  console.log(table.data()[0][0]);
+  console.log(table.data()[0][1]);
+  console.log(table.data());
+  var post_data_item_selling = [];
+  // table.data().length -> table row 개수.
+  // for(var i = 0; i < table.data().length; i++){
+  //     post_data_item_selling[i] = {
+  //       selling_code :
+  //     }
+  // }
+
   var selling_count = table.column(3).data();
 
-  
 
-  console.log(selling_count);
 
-  //판매랑 물품 판매 모두 넣기. 판매 먼저 넣은 후 물품_판매 넣기.
-  // $.post('/selling/enroll',post_data,function(data){
-  //   $.post('/selling_item/enroll'){
-  //
-  //   }
-  // });
+  // console.log(selling_count);
+
+  // 판매랑 물품 판매 모두 넣기. 판매 먼저 넣은 후 물품_판매 넣기.
+  $.post('/selling/enroll',post_data,function(data){
+    console.log(data);
+  });
 });
 
 
