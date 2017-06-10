@@ -111,20 +111,45 @@ module.exports = {
 	selling_enroll: function(options, callback) {
 		// console.log(options);
 		options.selling_price = Number(options.selling_price);
-		var data = JSON.stringify(options);
+		console.log(options);
+		// var data = JSON.stringify(options);
 		// data.selling_price = Number(options.selling_price);
-		console.log(data);
 		async.waterfall([
       connect_db,
-      function(db, next) {
+			function(db, next) {
+				db.execute(
+          "SELECT count(*) FROM SELLING",
+					[],
+          {
+						outFormat: oracledb.OBJECT,
+					}, function(err, result) {
+						if(err) {
+							console.log(err);
+						} else {
+							console.log('success!!!');
+						}
+						var count = result.rows[0]['COUNT(*)'] + 1;
+						var code = 'SL' + count;
+						console.log(code);
+          	next(null, db, code);
+        	});
+			},
+      function(db, code, next) {
+				options.SELLING_CODE = code;
+				console.log('asdklfj');
+				console.log(options);
         db.execute(
-          'INSERT INTO SELLING ' +
-          'VALUES(:selling_code, :selling_price, :selling_date, :customer_code)',
-          data,
-          { outFormat: oracledb.OBJECT },
+          "INSERT INTO SELLING (SELLING_CODE, SELLING_PRICE, SELLING_DATE, CUSTOMER_CODE) " +
+          "VALUES(:selling_code, :selling_price, :selling_date, :customer_code)",
+          options,
+          { outFormat: oracledb.OBJECT,
+						autoCommit: true
+					 },
         function(err, result) {
 					if(err) {
 						console.log(err);
+					}else{
+						console.log('success!!!');
 					}
           db.close();
           next(null);

@@ -6,16 +6,13 @@ function getTimeStamp() {
   var d = new Date();
 
   var s =
-    leadingZeros(d.getFullYear(), 4) + '-' +
-    leadingZeros(d.getMonth() + 1, 2) + '-' +
-    leadingZeros(d.getDate(), 2) + ' ' +
-
-    leadingZeros(d.getHours(), 2) + ':' +
-    leadingZeros(d.getMinutes(), 2) + ':' +
-    leadingZeros(d.getSeconds(), 2);
+    leadingZeros(d.getFullYear(), 2) + '/' +
+    leadingZeros(d.getMonth() + 1, 2) + '/' +
+    leadingZeros(d.getDate(), 2);
 
   return s;
 }
+
 function leadingZeros(n, digits) {
   var zero = '';
   n = n.toString();
@@ -120,7 +117,7 @@ $(document).ready(function() {
       //branch_item_data에 null;
       if(data.mileage_data.length == 0){
         branch_item_data = null;
-        $('#branch_item_code').val(item_data[0].ITEM_CODE);
+        $('#branch_item_code').val($('#item_code').val());
         $('#branch_item_name').val('편의점 전용상품이 아닙니다.');
         $('#mileage_rate').val('');
         $('#mileage_price').val('');
@@ -187,6 +184,8 @@ $('#selling_complete').on("click", function() {
   var hello = table.column(4).data();
   var selling_price = $('#selling_price').val();
   var date = getTimeStamp();
+  // console.log(date);
+  // console.log(typeof(date));
   var array_data = [];
   var customer_code = $('#customer_code').val();
   if (customer_code == undefined) {
@@ -194,19 +193,24 @@ $('#selling_complete').on("click", function() {
   }
 
   var post_data = {
-    selling_code: 'SL02',
     selling_price: selling_price,
-    selling_date: '17/06/06',
+    selling_date: date,
     customer_code: customer_code
   };
-  console.log(typeof(selling_price));
 
-  console.log(post_data);
+  var selling_code = table.column(0).data();
+  var selling_count = table.column(3).data();
+
+  
+
+  console.log(selling_count);
+
   //판매랑 물품 판매 모두 넣기. 판매 먼저 넣은 후 물품_판매 넣기.
-  $.post('/selling/enroll',post_data,function(data){
-    var data = data;
-    console.log(data);
-  });
+  // $.post('/selling/enroll',post_data,function(data){
+  //   $.post('/selling_item/enroll'){
+  //
+  //   }
+  // });
 });
 
 
