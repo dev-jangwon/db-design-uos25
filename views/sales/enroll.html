@@ -53,6 +53,46 @@
         <!-- Main content -->
         <section class="content">
             <!-- Your Page Content Here -->
+            <div class="row">
+              <div class="col-md-4">
+
+              </div>
+              <div class="col-md-8">
+                  <div class="box box-default">
+                      <div class="box-header with-border">
+                          <i class="fa fa-bullhorn"></i>
+                          <h3 class="box-title">판매 등록</h3>
+                      </div>
+                      <!-- /.box-header -->
+                      <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-xs-5">
+                                <div class="row">
+                                  <div class="form-group" style="margin-right : 10px;">
+                                    <label class="control-label" for="item_code"><i class="fa fa-check"></i>상품코드</label>
+                                    <input type="text" class="form-control" id="item_code" placeholder="상품코드">
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-5">
+                                <div class="row">
+                                  <div class="form-group">
+                                    <label class="control-label" for="item_count"><i class="fa fa-check"></i>상품수량</label>
+                                    <input type="text" class="form-control" id="item_count" placeholder="상품수량">
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <button type="button" id="create_sale_btn" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">판매등록</button>
+                            </div>
+                          </div>
+                      </div>
+                      <!-- /.box-body -->
+                  </div>
+              </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -86,47 +126,7 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bullhorn"></i>
-                            <h3 class="box-title">판매 등록</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                          <div class="row">
 
-                              <div class="col-xs-6">
-                              </div>
-
-                              <div class="col-xs-2">
-                                  <div class="row">
-                                    <div class="form-group has-success" style="margin-right : 10px;">
-                                      <label class="control-label" for="item_code"><i class="fa fa-check"></i>상품코드</label>
-                                      <input type="text" class="form-control" id="item_code" placeholder="상품코드">
-                                    </div>
-                                  </div>
-                              </div>
-
-                              <div class="col-xs-2">
-                                  <div class="row">
-                                    <div class="form-group has-success">
-                                      <label class="control-label" for="item_count"><i class="fa fa-check"></i>상품수량</label>
-                                      <input type="text" class="form-control" id="item_count" placeholder="상품수량">
-                                    </div>
-                                  </div>
-                              </div>
-
-                              <div class="col-xs-2">
-                                  <button type="button" id="create_sale_btn" class="btn btn-block btn-success btn-flat" style="margin-top : 23px;">판매등록</button>
-                              </div>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-md-4">
                   <div class="box box-default">
@@ -167,7 +167,6 @@
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
-
                             <h3 class="box-title">고객정보</h3>
                         </div>
                         <!-- /.box-header -->
@@ -184,10 +183,8 @@
 
                           <div class="form-group">
                             <div class="col-xs-8">
-                              <div class="form-group">
-                                <label class="control-label" for="customer_name">고객이름</label>
-                                <input type="text" class="form-control" id="customer_name" placeholder="고객이름">
-                              </div>
+                              <label class="control-label" for="customer_name">고객이름</label>
+                              <input type="text" class="form-control" id="customer_name" placeholder="고객이름">
                             </div>
                             <div class="col-xs-4">
                             </div>
@@ -204,18 +201,8 @@
 
                           <div class="form-group">
                             <div class="col-xs-8">
-                              <label class="control-label" >금액</label>
+                              <label class="control-label">사용금액</label>
                               <input type="text" class="form-control text-right" placeholder="금액">
-                            </div>
-                            <div class="col-xs-4">
-                              <div class="form-group">
-                                <label class="control-label" for="customer_check">마일리지 사용여부</label>
-                                <div class="checkbox margin">
-                                  <label>
-                                    <input type="checkbox" id="customer_check">
-                                  </label>
-                                </div>
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -247,7 +234,6 @@
                               <label for="rest_price">거스름돈</label>
                               <input type="text" class="form-control text-right" id="rest_price" placeholder="거스름돈" disabled>
                             </div>
-
                         </div>
                         <!-- /.box-body -->
                     </div>

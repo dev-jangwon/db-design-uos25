@@ -133,9 +133,9 @@ module.exports = {
 
 	// 편의점 전용 상품 조회
 	branch_item_lookup: function(options, callback) {
-		console.log('$!@#!@#!$!@$!@12123123123$');
-		console.log(options);
-		var code = options.branch_item_code;
+		// console.log('$!@#!@#!$!@$!@12123123123$');
+		// console.log(options);
+		var code = options.item_code;
 		async.waterfall([
       connect_db,
       function(db, next) {
@@ -148,6 +148,33 @@ module.exports = {
         function(err, result) {
           db.close();
           next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+      callback(err, result);
+    });
+	},
+
+	selling_enroll: function(options, callback) {
+		// console.log(options);
+		options.selling_price = Number(options.selling_price);
+		var data = JSON.stringify(options);
+		// data.selling_price = Number(options.selling_price);
+		console.log(data);
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'INSERT INTO SELLING ' +
+          'VALUES(:selling_code, :selling_price, :selling_date, :customer_code)',
+          data,
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+					if(err) {
+						console.log(err);
+					}
+          db.close();
+          next(null);
         });
       }
     ], function(err, result) {

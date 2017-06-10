@@ -169,8 +169,9 @@ router.post('/sales/lookup', function(req, res) {
 });
 
 router.post('/selling/enroll', function(req,res) {
-  console.log(req.body);
-
+  features.selling.enroll(req.body, function(result) {
+    res.json(result);
+  });
 });
 
 /*
@@ -178,7 +179,7 @@ router.post('/selling/enroll', function(req,res) {
 */
 router.post('/customer/lookup', function(req, res) {
   features.customer.lookup(req.body, function(result) {
-    res.json(result);
+      res.json(result);
   });
 });
 
@@ -187,7 +188,10 @@ router.post('/customer/lookup', function(req, res) {
 */
 router.post('/item/lookup', function(req,res) {
   features.item.lookup(req.body, function(result) {
-    res.json(result);
+    features.branch_item.lookup(req.body, function(mileage_result) {
+      result.mileage_data = mileage_result.data;
+      res.json(result);
+    });
   });
 });
 

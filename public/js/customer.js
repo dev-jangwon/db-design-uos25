@@ -93,6 +93,7 @@ $(document).ready(function() {
   $('#create_sale_btn').on( 'click', function () {
     var item_code = $('#item_code').val();
     var item_count = $('#item_count').val();
+    var item_mileage_rate = 0;
     // 아이템 하나당 판매가격
     var selling_price = 0;
 
@@ -107,14 +108,27 @@ $(document).ready(function() {
       item_code: item_code
     };
 
-    var post_data_branch_item = {
-      branch_item_code : item_code
-    }
+    // var post_data_branch_item = {
+    //   branch_item_code : item_code
+    // }
 
 
     /* 물품정보 조회*/
     $.post('/item/lookup', post_data_item, function (data) {
       item_data = data.data;
+      //data.mileage_data 가 없다면
+      //branch_item_data에 null;
+      if(data.mileage_data.length == 0){
+        branch_item_data = null;
+        $('#branch_item_code').val(item_data[0].ITEM_CODE);
+        $('#branch_item_name').val('편의점 전용상품이 아닙니다.');
+        $('#mileage_rate').val('');
+        $('#mileage_price').val('');
+      }else{
+        // bracn_item_data = data.mileage_data[0];
+        item_mileage_rate = data.mileage_data[0].MILEAGE_RATE;
+      }
+
       if (item_data.length == 0) {
         alert('상품정보가 없습니다.');
         return;
@@ -137,28 +151,14 @@ $(document).ready(function() {
       });
       $('#selling_price').val(selling_price);
 
-      /* 전용 상품인지 조회 */
+      var mileage_price = 0;
 
-      $.post('/branch_item/lookup', post_data_branch_item, function (data) {
-        branch_item_data = data.data;
-        var mileage_price = 0;
-
-        if(branch_item_data.length == 0){
-          $('#branch_item_code').val(item_data[0].ITEM_CODE);
-          $('#branch_item_name').val('편의점 전용상품이 아닙니다.');
-          $('#mileage_rate').val('');
-          $('#mileage_price').val('');
-
-          return;
-        }
-
-        mileage_price = item_data[0].ITEM_PRICE * branch_item_data[0].MILEAGE_RATE;
-        $('#branch_item_code').val(item_data[0].ITEM_CODE);
-        $('#branch_item_name').val(item_data[0].ITEM_NAME);
-        $('#mileage_rate').val(branch_item_data[0].MILEAGE_RATE);
-        $('#mileage_price').val(mileage_price);
-        mileage_sum+=mileage_price;
-      });
+      mileage_price = item_data[0].ITEM_PRICE * item_mileage_rate;
+      $('#branch_item_code').val(item_data[0].ITEM_CODE);
+      $('#branch_item_name').val(item_data[0].ITEM_NAME);
+      $('#mileage_rate').val(item_mileage_rate);
+      $('#mileage_price').val(mileage_price);
+      mileage_sum+=mileage_price;
     });
 
   } );
@@ -169,13 +169,10 @@ $(document).ready(function() {
 */
 $('#get_price').change(function() {
     var selling_price = $('#selling_price').val();
-    console.log('selling_price : ' + selling_price);
     var discount_price = $('discount_price').val();
     if($('discount_price').val() == undefined){
-      alert('undefined');
       discount_price = 0;
     }
-    console.log('discount_price : ' + discount_price);
     var get_price = $('#get_price').val();
     var rest_price = 0;
     rest_price = get_price - selling_price - discount_price;
@@ -186,31 +183,30 @@ $('#get_price').change(function() {
 /*
     판매 버튼 누를시
 */
-$('#selling_complete').on("click",function(){
+$('#selling_complete').on("click", function() {
   var hello = table.column(4).data();
   var selling_price = $('#selling_price').val();
   var date = getTimeStamp();
-  var array_data = new Array();
+  var array_data = [];
   var customer_code = $('#customer_code').val();
-  if(customer_code == undefined){
+  if (customer_code == undefined) {
     customer_code = "";
   }
 
   var post_data = {
     selling_code: 'SL02',
     selling_price: selling_price,
-    selling_date: date,
+    selling_date: '17/06/06',
     customer_code: customer_code
   };
+  console.log(typeof(selling_price));
 
   console.log(post_data);
   //판매랑 물품 판매 모두 넣기. 판매 먼저 넣은 후 물품_판매 넣기.
-  $.post('/selling/enroll',post_data,function(){
-
+  $.post('/selling/enroll',post_data,function(data){
+    var data = data;
+    console.log(data);
   });
-
-  console.log(date);
-  console.log(hello);
 });
 
 
