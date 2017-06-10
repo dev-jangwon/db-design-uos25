@@ -61,6 +61,25 @@ features.item.lookup = function(options, callback) {
   });
 };
 
+features.item.enroll = function(options, callback) {
+  db.item_count(function(err, item_code) {
+      options.item_code = item_code;
+      options.item_barcode = options.item_code + options.item_price;
+      db.item_enroll(options, function(err, result) {
+          console.log('feature.js item_enroll: ', result);
+          if (err) {
+              callback({
+                  result: false
+              });
+          } else {
+              callback({
+                  result: true,
+                  data: result
+              });
+          }
+      });
+  });
+}
 
 /*편의점 전용 상품 관련*/
 features.branch_item = {};
