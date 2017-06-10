@@ -156,6 +156,9 @@ router.get('/stock/modify', function(req, res, next) {
     res.render('sales/modify.html');
 });
 
+
+// REST API
+
 /*
   sales 판매 관련
 */
@@ -189,15 +192,15 @@ router.post('/item/lookup', function(req,res) {
 });
 
 router.post('/item/enroll',function(req,res) {
-  // console.log('-------------------req.body item : ' + req.body);
-
+  features.item.enroll(req.body, function(result) {
+      res.json(result);
+  });
 });
 
 /*
   branch_item 전용 상품 관련
 */
 router.post('/branch_item/lookup', function(req,res) {
-  // console.log('@@@@@@@@@@@@@@@@@@@@@@2');
   features.branch_item.lookup(req.body, function(result) {
     res.json(result);
   });

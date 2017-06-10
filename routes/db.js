@@ -84,6 +84,53 @@ module.exports = {
     });
 	},
 
+    // 물품 등록
+    item_enroll: function(options, callback) {
+        console.log(options);
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "INSERT INTO ITEM (ITEM_CODE, ITEM_BARCODE, ITEM_NAME, ITEM_PRICE, ITEM_EXPIRATION_DATE, ITEM_CLASSIFICATION) " +
+                    "VALUES (:item_code, :item_barcode, :item_name, :item_price, :item_expiration_date, :item_classification)",
+                    options,
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        console.log(err);
+                        console.log(result);
+                        db.close();
+                        next(null, result);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    item_count: function(callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "SELECT COUNT(*) FROM ITEM",
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        var count = result.rows[0]['COUNT(*)'] + 1;
+                        var item_code = 'IT' + count;
+                        db.close();
+                        next(null, item_code);
+                    }
+                );
+            }
+        ], function(err, item_code) {
+            callback(err, item_code);
+        });
+    },
+
 	// 편의점 전용 상품 조회
 	branch_item_lookup: function(options, callback) {
 		console.log('$!@#!@#!$!@$!@12123123123$');
