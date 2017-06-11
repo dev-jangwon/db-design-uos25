@@ -163,69 +163,66 @@ module.exports = {
 				db.execute(
 					"SELECT count(*) FROM SELLING",
 					[],
-          { outFormat: oracledb.OBJECT },
+                    { outFormat: oracledb.OBJECT },
 					function(err, result) {
 						var count = result.rows[0]['COUNT(*)'] + 1;
 						var selling_code = 'SL' + count;
 						db.close();
-          	next(null, selling_code);
+          	            next(null, selling_code);
 					}
 				);
 			}
 		], function(err, selling_code) {
-				callback(err, selling_code);
+            callback(err, selling_code);
 		});
 	},
 
 	//selling_code를 받아서 selling 등록.
 	selling_enroll: function(options, callback) {
 		async.waterfall([
-			connect_db,
-      function(db, next) {
-        db.execute(
-          "INSERT INTO SELLING (SELLING_CODE, SELLING_PRICE, SELLING_DATE, CUSTOMER_CODE) " +
-          "VALUES(:selling_code, :selling_price, :selling_date, :customer_code)",
-          [options.selling_code, options.selling_price, options.selling_date, options.customer_code],
-          { outFormat: oracledb.OBJECT,
-						autoCommit: true },
-        function(err, result) {
-					if(err) {
-						console.log(err);
-					}else{
-						console.log('success!!!');
-					}
-          db.close();
-          next(null, result);
-        });
-      }
-    ], function(err, result) {
-      callback(err, result);
-    });
-	},
+		    connect_db,
+            function(db, next) {
+                db.execute(
+                    "INSERT INTO SELLING (SELLING_CODE, SELLING_PRICE, SELLING_DATE, CUSTOMER_CODE) " +
+                    "VALUES(:selling_code, :selling_price, :selling_date, :customer_code)",
+                    [options.selling_code, options.selling_price, options.selling_date, options.customer_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result);
+                    });
+            }], function(err, result) {
+                callback(err, result);
+            });
+    },
 
 	//selling_code를 받아서 selling_item 등록
 	selling_item_enroll: function(options, callback) {
-		var selling_item_object = {};
-		
-		console.log("selling item enroll ^^^^^^^^^^^^6");
-		console.log(options);
 		async.waterfall([
 			connect_db,
-      function(db, next) {
-        db.execute(
-					"INSERT INTO SELLING_ITEM(SELLING_CODE, ITEM_CODE, SELLING_ITEM_COUNT)" +
-					" VALUES(:array)",
-					[options.selling_code,options.selling_item],
-					{ outFormat: oracledb.OBJECT,
-						autoCommit: true },
-        function(err, result) {
-					if (err) {
-						console.log(err);
-					}
+            function(db, next) {
+                db.execute(
+					options.query,
+					[],
+					{
+					    outFormat: oracledb.OBJECT,
+						autoCommit: true
+                    }, function(err, result) {
+                        if (err) {
+						    console.log(err);
+                        }
+                        db.close();
+                        next(null, result);
+                    });
+            }
+        ], function(err, result) {
+		    callback(err, result);
         });
-      }
-    ], function(err, result) {
-
-    });
 	}
 };

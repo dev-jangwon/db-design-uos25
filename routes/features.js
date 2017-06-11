@@ -105,20 +105,36 @@ features.selling = {};
 features.selling.enroll = function(options, callback) {
   db.selling_count(function(err, selling_code) {
     options.selling_code = selling_code;
-    console.log('db options############3');
-    console.log(options);
-    db.selling_enroll(options, function(err,result) {
-      db.selling_item_enroll(options, function(err,result) {
-        if (err) {
-          callback({
-            result: false
-          });
-        } else {
-          callback({
-            result: true,
-            data: result
-          });
+
+    db.selling_enroll(options, function(err, result) {
+      var selling_item_object = options.selling_item_object;
+
+      var make_query = function(callback) {
+          var query =  "INSERT INTO SELLING_ITEM(SELLING_CODE, ITEM_CODE, SELLING_ITEM_COUNT) VALUES(':1', ':2', ':3')"
+          var complete_query = "";
+        for (var key in selling_item_object) {
+          complete_query += query.replace(':1', options.selling_code).replace(':2', key).replace(':3', selling_item_object[key]);
+          console.log(complete_query);
+          if (key == Object.keys(selling_item_object)[Object.keys(selling_item_object).length - 1]) {
+              callback(complete_query);
+          }
         }
+      };
+
+      make_query(function(query) {
+          options.query = query;
+          db.selling_item_enroll(options, function(err, result) {
+              if (err) {
+                  callback({
+                      result: false
+                  });
+              } else {
+                  callback({
+                      result: true,
+                      data: result
+                  });
+              }
+          });
       });
     });
   });

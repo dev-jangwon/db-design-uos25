@@ -169,8 +169,6 @@ router.post('/sales/lookup', function(req, res) {
 });
 
 router.post('/selling/enroll', function(req,res) {
-  console.log('post selling enroll !@#!@@@@@@@@@@@@@@@2');
-  console.log(req.body)
   features.selling.enroll(req.body, function(result) {
     res.json(result);
   });
