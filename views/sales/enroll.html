@@ -45,18 +45,55 @@
                 <!--<small>Optional description</small>-->
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 판매</a></li>
+                <li class="active">판매 등록</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
             <!-- Your Page Content Here -->
-
             <div class="row">
-                <div class="col-md-3">
-                  <h4>판매일 : <button type="button" class="btn btn-default disabled">2016-06-06</button></h4>
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-7">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bullhorn"></i>
+                            <h3 class="box-title">판매 등록</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="col-xs-5">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="item_code" style="padding-top:5px;"></i>물품코드</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="item_code" placeholder="물품코드">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-5">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="item_count" style="padding-top:5px;"></i>물품수량</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="item_count" placeholder="물품수량">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-2">
+                                    <button type="button" id="create_sale_btn" class="btn btn-block btn-primary btn-flat">판매등록</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
                 </div>
             </div>
 
@@ -66,16 +103,16 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
 
-                            <h3 class="box-title">1</h3>
+                            <h3 class="box-title">판매 내역</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table id="selling_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="selling_table_info">
                                 <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">상품코드</th>
-                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">상품명</th>
-                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">딘가</th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">물품코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">물품명</th>
+                                    <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">단가</th>
                                     <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">수량</th>
                                     <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">금액</th>
                                     <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">할인</th>
@@ -85,6 +122,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <!-- <button type="btn" name="button" id="row_delete">물품삭제</button> -->
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -92,39 +130,101 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <i class="fa fa-bullhorn"></i>
-
-                            <h3 class="box-title">상품코드 등록</h3>
+                            <h3 class="box-title">고객정보</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                           <div class="form-group">
-                            <div class="row">
-                              <div class="col-md-6">
-
+                              <div class="row">
+                                  <div class="col-md-8">
+                                      <div class="row">
+                                          <label class="control-label col-sm-3" for="customer_code" style="padding-top:5px;"></i>고객코드</label>
+                                          <div class="col-sm-9">
+                                              <input type="text" class="form-control" id="customer_code" placeholder="고객코드">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <button type="button" id="lookup_customer_btn" class="btn btn-block btn-primary btn-flat">고객조회</button>
+                                  </div>
                               </div>
+                          </div>
 
-                              <label for="input_item" class="col-md-1 control-label">상품코드 : </label>
-
-                              <div class="col-md-2">
-                                <input class="form-control" id="input_item" placeholder="상품코드" type="input">
+                          <div class="form-group">
+                              <div class="row">
+                                  <label class="control-label col-sm-2" for="customer_name">고객이름</label>
+                                  <div class="col-sm-10">
+                                      <input type="text" class="form-control" id="customer_name" placeholder="고객이름">
+                                  </div>
                               </div>
+                          </div>
 
-
-                              <label for="input_item_count" class="col-md-1 control-label">상품수량 : </label>
-                              <div class="col-md-1">
-                                <input class="form-control" id="input_item_count" placeholder="상품수량" type="input">
+                          <div class="form-group">
+                              <div class="row">
+                                  <label class="control-label col-sm-2" for="customer_name">마일리지금액</label>
+                                  <div class="col-sm-10">
+                                      <input type="text" class="form-control" id="customer_milage" placeholder="마일리지금액" disabled>
+                                  </div>
                               </div>
+                          </div>
 
-
-                              <div class="col-md-1">
-                                <button type="button" class="btn btn-block btn-success btn-flat">등록</button>
+                          <div class="form-group">
+                              <div class="row">
+                                  <label class="control-label col-sm-2">사용금액</label>
+                                  <div class="col-sm-10">
+                                      <input type="text" class="form-control" placeholder="금액" disabled>
+                                  </div>
                               </div>
+                          </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bullhorn"></i>
+                            <h3 class="box-title">판매정보</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="selling_price" class="col-sm-2">합계</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="selling_price" placeholder="합계" >
+                                    </div>
+                                </div>
                             </div>
-                          </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="discount_price" class="col-sm-2">할인금액</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="discount_price" placeholder="할인금액" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="get_price" class="col-sm-2">받은금액</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="get_price" placeholder="받은금액">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="rest_price" class="col-sm-2">거스름돈</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="rest_price" placeholder="거스름돈" disabled>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -132,81 +232,20 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bullhorn"></i>
+                <!--<div class="col-md-5">-->
+                  <!--<div id="customer_alert" style="display : none; margin-bottom : 10px;">-->
+                    <!--<div class="alert alert-warning" role="alert" >-->
+                    <!--<strong>고객정보가 존재하지 않습니다.</strong> 입력하신 정보에 해당하는 고객정보가 없습니다.-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
 
-                            <h3 class="box-title">1</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
+                <!--<div class="col-md-5">-->
 
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bullhorn"></i>
-
-                            <h3 class="box-title">1</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bullhorn"></i>
-
-                            <h3 class="box-title">2</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bullhorn"></i>
-
-                            <h3 class="box-title">고객조회</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                          <label for="input_item_count" class="col-md-1 control-label">고객코드 : </label>
-                          <div class="col-md-1">
-                            <input class="form-control" id="input_item_count" placeholder="상품수량" type="input">
-                          </div>
-                          <div class="col-md-10">
-
-                          </div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-10">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-block btn-primary">Primary</button>
+                <!--</div>-->
+                <div class="col-sm-10"></div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-block btn-primary btn-lg center-block" id="selling_complete">판매</button>
                 </div>
             </div>
         </section>
@@ -230,10 +269,6 @@
 <script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('#selling_table').DataTable();
-    });
-</script>
+<script src="/js/sales.js"></script>
 </body>
 </html>

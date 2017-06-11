@@ -159,6 +159,15 @@ router.get('/living-services/lookup', function(req, res, next) {
     res.render('living_services/lookup.html');
 });
 
+//order
+router.get('/order/enroll', function(req, res, next) {
+    res.render('order/enroll.html');
+});
+
+router.get('/order/lookup', function(req, res, next) {
+    res.render('order/lookup.html');
+});
+
 // payment
 router.get('/payment/payment', function(req, res, next) {
     res.render('payment/payment.html');
@@ -183,7 +192,11 @@ router.get('/stock/modify', function(req, res, next) {
 });
 
 
-// Features
+// REST API
+
+/*
+  sales 판매 관련
+*/
 router.post('/sales/lookup', function(req, res) {
   features.sales.lookup(function(result) {
     res.json(result);
@@ -192,6 +205,50 @@ router.post('/sales/lookup', function(req, res) {
 
 router.post('/signin', function(req, res) {
   features.signin(req, function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/selling/enroll', function(req,res) {
+  console.log('post selling enroll !@#!@@@@@@@@@@@@@@@2');
+  console.log(req.body)
+  features.selling.enroll(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+/*
+  customer 고객 관련
+*/
+router.post('/customer/lookup', function(req, res) {
+  features.customer.lookup(req.body, function(result) {
+      res.json(result);
+  });
+});
+
+/*
+  item 물품 관련
+*/
+router.post('/item/lookup', function(req,res) {
+  features.item.lookup(req.body, function(result) {
+    features.branch_item.lookup(req.body, function(mileage_result) {
+      result.mileage_data = mileage_result.data;
+      res.json(result);
+    });
+  });
+});
+
+router.post('/item/enroll',function(req,res) {
+  features.item.enroll(req.body, function(result) {
+      res.json(result);
+  });
+});
+
+/*
+  branch_item 전용 상품 관련
+*/
+router.post('/branch_item/lookup', function(req,res) {
+  features.branch_item.lookup(req.body, function(result) {
     res.json(result);
   });
 });
