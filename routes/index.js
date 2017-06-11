@@ -2,18 +2,53 @@ var express = require('express');
 var router = express.Router();
 var features = require('./features.js');
 
+var check_session = function(req, res, next) {
+  var session = req.session;
+  var url = new Buffer(req.protocol + req.get('host') + req.originalUrl).toString('base64');
+  var no_session = new Buffer('no_session').toString('base64');
+
+  if (session.user_data) {
+    next();
+  } else {
+    res.redirect('/login?q=' + url + '&o=' + no_session);
+  }
+};
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index.html', { title: 'Express' });
+  var session = req.session;
+  var user_data = null;
+
+  if (session.user_data) {
+    user_data = session.user_data;
+  }
+
+  res.render('index.html', {
+    session: user_data ? true : false,
+    user_data: JSON.stringify(user_data || {})
+  });
 });
 
 // login
 router.get('/login', function(req, res, next) {
-    res.render('login.html');
+  var query = req.query || {};
+  var no_session = query.o || '';
+  var back_url = query.q || '';
+
+  if (no_session) {
+    no_session = new Buffer(no_session, 'base64').toString('ascii');
+  }
+  if (back_url) {
+    back_url = new Buffer(back_url, 'base64').toString('ascii');
+  }
+
+  res.render('login.html', {
+    no_session: no_session,
+    back_url: back_url
+  });
 });
 
 // customer
-router.get('/customer/delete', function(req, res, next) {
+router.get('/customer/delete', check_session, function(req, res, next) {
     res.render('customer/delete.html');
 });
 
@@ -164,6 +199,12 @@ router.get('/stock/modify', function(req, res, next) {
 */
 router.post('/sales/lookup', function(req, res) {
   features.sales.lookup(function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/signin', function(req, res) {
+  features.signin(req, function(result) {
     res.json(result);
   });
 });
