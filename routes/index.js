@@ -4,7 +4,7 @@ var features = require('./features.js');
 
 var check_session = function(req, res, next) {
   var session = req.session;
-  var url = new Buffer(req.protocol + req.get('host') + req.originalUrl).toString('base64');
+  var url = new Buffer(req.protocol + '://' + req.get('host') + req.originalUrl).toString('base64');
   var no_session = new Buffer('no_session').toString('base64');
 
   if (session.user_data) {
@@ -207,6 +207,12 @@ router.post('/signin', function(req, res) {
   features.signin(req, function(result) {
     res.json(result);
   });
+});
+
+router.post('/signout', check_session, function(req, res) {
+  req.session.destroy(function() {
+    res.json({});
+  })
 });
 
 router.post('/selling/enroll', function(req,res) {
