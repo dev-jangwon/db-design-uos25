@@ -17,24 +17,15 @@ $(document).ready(function() {
         };
 
         $.post('/customer/lookup', post_data_customer, function (data) {
-            var customer_data = data.data;
+            var customer_data = data.data[0];
 
-            if (typeof data.length == "undefined") {
+            if (!customer_data || customer_data == null) {
                 alert('고객 코드가 존재하지 않습니다.');
                 return;
             }
 
-            if (customer_data.length == 0) {
-                // $('#customer_alert').css("display","block");
-                $('#customer_code').val("");
-                $('#customer_name').val("");
-                $('#customer_milage').val("");
-                return;
-            }
-
-            $('#customer_milage').val(customer_data[0].CUSTOMER_MILEAGE);
-            $('#customer_name').val(customer_data[0].CUSTOMER_NAME);
-            // $('#customer_alert').css("display","none");
+            $('#customer_milage').val(customer_data.CUSTOMER_MILEAGE);
+            $('#customer_name').val(customer_data.CUSTOMER_NAME);
         });
     });
 
@@ -82,6 +73,10 @@ $(document).ready(function() {
                 selling_item_object[item_data.ITEM_CODE] = item_count;
             }
 
+            var sum_price = table.column(2).data().reduce(function(a,b) {
+               return a + b;
+            });
+
             var selling_price = table.column(4).data().reduce(function (a, b) {
                 return a + b;
             });
@@ -89,11 +84,25 @@ $(document).ready(function() {
             var discount_price = table.column(5).data().reduce(function (a, b) {
               return a + b;
             });
-
+            $('#sum_price').val(sum_price);
             $('#selling_price').val(selling_price);
             $('#discount_price').val(discount_price);
         });
 
+    });
+
+    $('#use_mileage').click(function() {
+        if ($('#customer_name').val() == "") {
+            alert("고객 조회해주세요");
+        }
+    })
+
+    $('#use_mileage').change(function() {
+        if ($('#customer_name').val() !== "") {
+            $('#cut_mileage').val($(this).val());
+            var selling_price = $('#selling_price').val();
+            $('#selling_price').val(selling_price - $(this).val());ƒf
+        }
     });
 
     /*
@@ -115,9 +124,18 @@ $(document).ready(function() {
      판매 버튼 누를시
      */
     $('#selling_complete').on("click", function () {
-        var date = getTimeStamp();
+        // var date = getTimeStamp();
+        var date = new Date();
+        var year = date.getFullYear().toString();
+        var month = (date.getMonth() + 1).toString();
+        if (month.length == 1) {
+            month = "0" + month;
+        }
+        var day = date.getDate().toString();
+        var selling_date = year + month + day;
 
         var selling_price = $('#selling_price').val();
+        var mileage_price = $('#cut_mileage').val();
 
         if (selling_price == undefined || selling_price == "" || !selling_price) {
             alert("판매등록을 해주세요")
@@ -129,9 +147,13 @@ $(document).ready(function() {
             customer_code = "";
         }
 
+        if (mileage_price !== "") {
+            selling_price -= mileage_price;
+        }
+
         var post_data = {
             selling_price: selling_price,
-            selling_date: date,
+            selling_date: selling_date,
             customer_code: customer_code,
             selling_item_object: selling_item_object
         };
@@ -139,31 +161,36 @@ $(document).ready(function() {
         // 판매랑 물품 판매 모두 넣기. 판매 먼저 넣은 후 물품_판매 넣기.
         $.post('/selling/enroll', post_data, function (data) {
             console.log(data);
+            if (data) {
+                location.reload();
+            } else {
+                alert("실패");
+            }
         });
     });
 
-    /* 날자 구하는 함수 */
-    function getTimeStamp() {
-        var d = new Date();
-
-        var s =
-            leadingZeros(d.getFullYear(), 2) + '/' +
-            leadingZeros(d.getMonth() + 1, 2) + '/' +
-            leadingZeros(d.getDate(), 2);
-
-        return s;
-    }
-
-    function leadingZeros(n, digits) {
-        var zero = '';
-        n = n.toString();
-
-        if (n.length < digits) {
-            for (i = 0; i < digits - n.length; i++)
-                zero += '0';
-        }
-        return zero + n;
-    }
+    // /* 날자 구하는 함수 */
+    // function getTimeStamp() {
+    //     var d = new Date();
+    //
+    //     var s =
+    //         leadingZeros(d.getFullYear(), 2) + '/' +
+    //         leadingZeros(d.getMonth() + 1, 2) + '/' +
+    //         leadingZeros(d.getDate(), 2);
+    //
+    //     return s;
+    // }
+    //
+    // function leadingZeros(n, digits) {
+    //     var zero = '';
+    //     n = n.toString();
+    //
+    //     if (n.length < digits) {
+    //         for (i = 0; i < digits - n.length; i++)
+    //             zero += '0';
+    //     }
+    //     return zero + n;
+    // }
 
     /*
      판매 내역 조회 페이지
