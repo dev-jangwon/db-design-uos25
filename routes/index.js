@@ -170,7 +170,7 @@ router.get('/entry-goods/lookup', check_session, function(req, res, next) {
 });
 
 // event
-router.get('/event/delete' check_session,, function(req, res, next) {
+router.get('/event/delete', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
 
