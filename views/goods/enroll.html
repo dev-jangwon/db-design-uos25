@@ -131,6 +131,10 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
+<script>
+  var user_data = <%- user_data %>;
+  var session = '<%= session %>';
+</script>
 
 <!-- jQuery 2.2.3 -->
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
@@ -140,5 +144,6 @@
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/goods.js"></script>
+<script src="/js/auth.js"></script>
 </body>
 </html>
