@@ -196,9 +196,5 @@ $(document).ready(function() {
      판매 내역 조회 페이지
      */
 
-    $('#lookup_sales_btn').on('click', function () {
-        $.post('/sales/lookup', function (data) {
-            console.log('Data : ', data);
-        });
-    });
+
 });

@@ -31,19 +31,42 @@
           <section class="content-header">
               <h1>
                   판매 조회
-                  <small>판매 조회를 합니다</small>
               </h1>
-              <!-- <ol class="breadcrumb">
-                  <li><a href="#"><i class="fa fa-dashboard"></i> Sales</a></li>
-                  <li class="active">lookup</li>
-              </ol> -->
+              <ol class="breadcrumb">
+                  <li><a href="#"><i class="fa fa-dashboard"></i> 판매</a></li>
+                  <li class="active">판매 조회</li>
+              </ol>
           </section>
 
           <!-- Main content -->
           <section class="content">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="box box-default">
+                          <div class="box-header with-border">
+                              <i class="fa fa-table"></i>
 
-            <button id="lookup_sales_btn" class="btn btn-primary">판매 조회</button>
-d
+                              <h3 class="box-title">판매 내역</h3>
+                          </div>
+                          <!-- /.box-header -->
+                          <div class="box-body">
+                              <table id="selling_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="selling_table_info">
+                                  <thead>
+                                  <tr role="row">
+                                      <th class="sorting_asc" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">판매코드</th>
+                                      <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">판매금액</th>
+                                      <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">판매날짜</th>
+                                      <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">고객코드</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                              </table>
+                          </div>
+                          <!-- /.box-body -->
+                      </div>
+                  </div>
+              </div>
           </section>
           <!-- /.content -->
       </div>
@@ -58,16 +81,36 @@ d
 <script>
   var user_data = <%- user_data %>;
   var session = '<%= session %>';
+  var sale_data = <%- user_data %>;
 </script>
+<!-- jQuery 2.2.3 -->
+<script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    var sale_data;
+    $.post('/sales/lookup', function (data) {
+        sale_data = data.data;
+        var view_table = $('#selling_view_table').DataTable({
+            dom: 't'
+        });
 
-  <!-- jQuery 2.2.3 -->
-  <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
-  <!-- Bootstrap 3.3.6 -->
-  <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="/js/app.min.js"></script>
-  <script src="/js/sales.js"></script>
-
+        for (var i = 0; i < sale_data.length; i++) {
+            view_table.row.add([
+                sale_data[i].SELLING_CODE,
+                sale_data[i].SELLING_CODE,
+                sale_data[i].SELLING_DATE,
+                sale_data[i].CUSTOMER_CODE ? sale_data[i].CUSTOMER_CODE : "GUEST"
+            ]).draw('false');
+        }
+    });
+  </script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/js/app.min.js"></script>
+<script src="/js/sales.js"></script>
 <script src="/js/auth.js"></script>
 </body>
 </html>
