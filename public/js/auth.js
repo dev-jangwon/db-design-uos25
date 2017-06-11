@@ -22,7 +22,7 @@ if (session == 'true') {
   $('.user-panel').show();
   var start_date = user_data.WORK_START_DATE;
   start_date = start_date.slice(0, 4) + '.' + start_date.slice(4, 6) + '.' + start_date.slice(6, 8);
-  var start_info = '<small class="start_date">Member since Nov. 2012</small>';
+  var start_info = '<small class="start_date">Member since ' + start_date + '</small>';
   $('#user_info').html(user_data.EMPLOYEE_NAME + ' - ' + rank[user_data.EMPLOYEE_RANK] + start_info);
 } else {
   $('#sign_in_btn').show();

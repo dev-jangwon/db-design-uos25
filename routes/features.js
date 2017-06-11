@@ -1,12 +1,12 @@
 var features = {};
 var db = require('./db.js');
+var async = require('async');
 
 features.signin = function(req, callback) {
   var id = req.body.id;
   var password = req.body.password;
 
   db.signin(req.body, function(err, result) {
-    console.log('result : ',result);
     if (err) {
       callback({
         result: false
@@ -23,6 +23,37 @@ features.signin = function(req, callback) {
           result: false
         });
       }
+    }
+  });
+};
+
+features.employee = {};
+
+features.employee.get_info = function(options, callback) {
+  var branch_code = options.branch_code;
+  var applicant_data;
+
+  async.waterfall([
+    function(next) { // get applicants
+      db.employee_get_applicant(branch_code, next);
+    },
+    function(applicants, next) { // get employees
+      applicant_data = applicants;
+      db.employee_get_employee(branch_code, next);
+    }
+  ], function(err, result) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      var employee_data = result;
+
+      callback({
+        result: true,
+        applicant: applicant_data,
+        employee: employee_data
+      });
     }
   });
 };

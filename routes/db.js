@@ -1,4 +1,5 @@
 var oracledb = require('oracledb');
+oracledb.autoCommit = true;
 var async = require('async');
 
 var db_config = {
@@ -48,6 +49,50 @@ module.exports = {
 			}
 		});
 	},
+
+	// 지원자 조회
+	employee_get_applicant: function(branch_code, callback) {
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'SELECT * ' +
+          'FROM APPLICANT ' +
+					'WHERE BRANCH_CODE=:code',
+          [branch_code],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+          db.close();
+          next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+      callback(err, result);
+    });
+	},
+
+	// 직원 조회
+	employee_get_employee: function(branch_code, callback) {
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'SELECT * ' +
+					'FROM EMPLOYEE ' +
+					'WHERE BRANCH_CODE=:code ' +
+					'ORDER BY EMPLOYEE_CODE',
+					[branch_code],
+					{ outFormat: oracledb.OBJECT },
+				function(err, result) {
+					db.close();
+					next(null, result.rows);
+				});
+			}
+		], function(err, result) {
+			callback(err, result);
+		});
+	},
+
 
 	// 판매 조회
   sales_lookup: function(callback) {

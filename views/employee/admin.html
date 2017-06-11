@@ -19,6 +19,9 @@
           apply the skin class to the body tag so the changes take effect.
     -->
     <link rel="stylesheet" href="/css/skins/skin-blue.min.css">
+    <link href="/libs/easycal/easycal.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/employee.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,23 +39,127 @@
     <% include ../layout/sidebar.ejs %>
 
     <!-- Content Wrapper. Contains page content -->
+
+    <div class="loading_bg">
+      <div class="sk-fading-circle">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+      </div>
+    </div>
+
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                직원 관리
+                <small>직원들을 통합 관리할 수 있습니다.</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 직원</a></li>
+                <li class="active">직원 관리</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+          <div class="first_box row">
+            <div class="col-md-6">
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-user-plus"></i>
 
-            <!-- Your Page Content Here -->
+                  <h3 class="box-title">지원자 목록</h3>
+                  <div class="pull-right">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="text" id="applicant_table_search" class="form-control pull-right" placeholder="Search">
+
+                      <div class="input-group-btn">
+                        <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="box-body">
+                  <table id="applicant_table" class="table table-hover table-responsive table-striped">
+                    <thead>
+                      <tr class="table_head applicant_head">
+                        <th>이름</th>
+                        <th>주민등록등본</th>
+                        <th>이력서</th>
+                        <th>지원 일자</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 pull-right">
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-user"></i>
+
+                  <h3 class="box-title">직원 목록</h3>
+                  <div class="pull-right">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="text" id="employee_table_search" class="form-control pull-right" placeholder="Search">
+
+                      <div class="input-group-btn">
+                        <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="box-body">
+                  <table id="employee_table" class="table table-hover table-responsive table-striped">
+                    <thead>
+                      <tr class="table_head employee_head">
+                        <th>이름</th>
+                        <th>직급</th>
+                        <th>월급</th>
+                        <th>근무 시작일</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="second_box row">
+            <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-calendar"></i>
+
+                  <h3 class="box-title">근무 시간표</h3>
+                </div>
+
+                <div class="box-body">
+                  <div id="time_table"></div>
+                </div>
+                <div class="box-footer">
+                </div>
+              </div>
+            </div>
+          </div>
 
         </section>
         <!-- /.content -->
@@ -64,6 +171,23 @@
 </div>
 <!-- ./wrapper -->
 
+<div id="alert_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>알림</h4>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: center;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
@@ -74,9 +198,16 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+<script src="/libs/easycal/easycal.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>
-<script src="/js/auth.js"></script>
+<script src="/js/alert.js"></script>
+<script src="/js/employee.js"></script>
+<script>
+  init();
+</script>
 </body>
 </html>
