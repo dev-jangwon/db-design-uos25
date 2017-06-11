@@ -2,12 +2,11 @@ var alert = {
   modal: null,
   init: function(id) {
     this.modal = $('#' + id);
-    this.modal.modal();
-    var margin_top = null;
-    this.modal.on('show.bs.modal', function() {
-      margin_top = margin_top || parseFloat($(window).height()/2) - parseFloat($(this).find('.modal-dialog').height());
-      $(this).find('.modal-dialog').css('margin-top', margin_top + 'px');
-    });
+    // var margin_top = null;
+    // this.modal.on('show.bs.modal', function() {
+    //   margin_top = margin_top || parseFloat($(window).height()/2) - parseFloat($(this).find('.modal-dialog').height());
+    //   $(this).find('.modal-dialog').css('margin-top', margin_top + 'px');
+    // });
   },
 
   show: function(msg, callback) {

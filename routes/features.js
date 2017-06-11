@@ -6,6 +6,7 @@ features.signin = function(req, callback) {
   var password = req.body.password;
 
   db.signin(req.body, function(err, result) {
+    console.log('result : ',result);
     if (err) {
       callback({
         result: false

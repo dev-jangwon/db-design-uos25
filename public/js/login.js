@@ -31,7 +31,7 @@ var signin = function() {
     return;
   }
   if (!password) {
-    window.alert('비밀번호를 입력해주세요.', function() {
+    alert.show('비밀번호를 입력해주세요.', function() {
       $('input[type="password"]').focus();
     });
     return;
@@ -42,6 +42,7 @@ var signin = function() {
       if (remember > 0) {
         localStorage.setItem('id', id);
       }
+      console.log(back_url);
       window.location.href = back_url;
     } else {
       alert.show('로그인에 실패하였습니다. ID 또는 비밀번호를 확인해주세요.', function() {

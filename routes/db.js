@@ -26,9 +26,9 @@ module.exports = {
 			connect_db,
 			function(db, next) {
 				db.execute(
-					'SELECT EMPLOYEE_PASSWORD ' +
+					'SELECT * ' +
 					'FROM EMPLOYEE ' +
-					'WHICH EMPLOYEE_CODE=:id',
+					'WHERE EMPLOYEE_CODE=:id',
 					[id],
 					{ outFormat: oracledb.OBJECT },
 				function(err, result) {
@@ -44,7 +44,7 @@ module.exports = {
 			if (err || result.length == 0) {
 				callback(err);
 			} else {
-				callback(null, result);
+				callback(null, result[0]);
 			}
 		});
 	},
