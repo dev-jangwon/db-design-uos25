@@ -283,7 +283,7 @@ router.get('/exclusive-product/delete', check_session, function(req, res, next) 
   if (session.user_data) {
     user_data = session.user_data;
   }
-  res.render('exclusive-product/delete.html', {
+  res.render('exclusive_product/delete.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -296,7 +296,7 @@ router.get('/exclusive-product/enroll', check_session, function(req, res, next) 
   if (session.user_data) {
     user_data = session.user_data;
   }
-  res.render('exclusive-product/enroll.html', {
+  res.render('exclusive_product/enroll.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -309,7 +309,7 @@ router.get('/exclusive-product/lookup', check_session, function(req, res, next) 
   if (session.user_data) {
     user_data = session.user_data;
   }
-  res.render('exclusive-product/lookup.html', {
+  res.render('exclusive_product/lookup.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
