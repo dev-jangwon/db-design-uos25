@@ -116,21 +116,22 @@ module.exports = {
 
     // 물품 등록
     item_enroll: function(options, callback) {
-        console.log(options);
+	    console.log(options);
         async.waterfall([
             connect_db,
             function(db, next) {
                 db.execute(
                     "INSERT INTO ITEM (ITEM_CODE, ITEM_BARCODE, ITEM_NAME, ITEM_PRICE, ITEM_EXPIRATION_DATE, ITEM_CLASSIFICATION) " +
                     "VALUES (:item_code, :item_barcode, :item_name, :item_price, :item_expiration_date, :item_classification)",
-                    options,
+                    [options.item_code, options.item_barcode, options.item_name, options.item_price, options.item_expiration_date, options.item_classification],
                     {
                         outFormat: oracledb.OBJECT,
                         autoCommit: true
                     },
                     function(err, result) {
-                        console.log(err);
-                        console.log(result);
+                        if (err) {
+                            console.log(err);
+                        }
                         db.close();
                         next(null, result);
                     });

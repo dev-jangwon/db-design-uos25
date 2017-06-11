@@ -3,6 +3,8 @@
  */
 
 $(function() {
+    // $('#item_ex_date').datepicker();
+
     $("#item_image_input").on('change', function() {
         readURL(this);
     });
@@ -21,14 +23,24 @@ $(function() {
         }
     }
 
-    $("#item_form").submit(function() {
+    $("#item_enroll_button").click(function() {
         var item_name = $("#item_name").val();
         var item_class = $("#item_class").val();
         var item_price = $("#item_price").val();
         var item_ex_date = $("#item_ex_date").val();
         var item_image = $("#item_image_input")[0];
 
-        // //TODO: validate
+        var item_expiration_date = item_ex_date;
+
+        if (item_ex_date == "") {
+            item_expiration_date = "99999999";
+        }
+
+        if (item_name == "" || item_price == "" || item_class == "") {
+            alert("물품정보를 입력해주세요");
+            return;
+        }
+
         // var form_data = new FormData();
         //
         // form_data.append("item_name", item_name);
@@ -39,7 +51,7 @@ $(function() {
         //     form_data.append('item_image', item_image.files[0]);
         // }
 
-        var item_expiration_date = getTimeStamp();
+        // var item_expiration_date = getTimeStamp();
 
         var post_data = {
             "item_name": item_name,
@@ -63,28 +75,5 @@ $(function() {
             console.log(data);
         })
     });
-
-    $('#item_ex_date').datepicker();
-
-    function getTimeStamp(date) {
-        var d = new Date();
-
-        var s =
-            leadingZeros(d.getFullYear(), 2) + '/' +
-            leadingZeros(d.getMonth() + 1, 2) + '/' +
-            leadingZeros(d.getDate(), 2);
-
-        return s;
-    }
-    function leadingZeros(n, digits) {
-        var zero = '';
-        n = n.toString();
-
-        if (n.length < digits) {
-            for (i = 0; i < digits - n.length; i++)
-                zero += '0';
-        }
-        return zero + n;
-    }
 });
 
