@@ -103,28 +103,15 @@ router.get('/employee/admin', check_session, function(req, res, next) {
   }
 });
 
-// entry_goods
-router.get('/entry-goods/inspection', check_session, function(req, res, next) {
+// entry and order
+router.get('/entry-order/management', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
 
   if (session.user_data) {
     user_data = session.user_data;
   }
-  res.render('entry_goods/inspection.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/entry-goods/lookup', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('entry_goods/lookup.html', {
+  res.render('entry_goods/management.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -286,33 +273,6 @@ router.get('/living-services/lookup', check_session, function(req, res, next) {
     user_data = session.user_data;
   }
   res.render('living_services/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-//order
-router.get('/order/enroll', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('order/enroll.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/order/lookup', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('order/lookup.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });

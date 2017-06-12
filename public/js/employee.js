@@ -204,6 +204,9 @@ $('#applicant_table').on('click', '.accept', function() {
   if (splited[1].length == 1) {
     splited[1] = '0' + splited[1];
   }
+  if (splited[2].length == 1) {
+    splited[2] = '0' + splited[2];
+  }
   date = splited.join('');
   var $tr = $(this).parents('tr');
   var code = $tr.attr('data-code');
