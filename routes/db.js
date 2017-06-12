@@ -107,11 +107,11 @@ module.exports = {
 				db.execute(
           'SELECT APPLICANT_CODE ' +
           'FROM APPLICANT ' +
-					'ORDER BY APPLICANT_DATE',
+					'ORDER BY APPLICANT_CODE',
           [],
           { outFormat: oracledb.OBJECT },
         function(err, result) {
-          next(null, {
+          next(err, {
 						rows: result.rows,
 						db: db
 					});
@@ -129,12 +129,12 @@ module.exports = {
 								outFormat: oracledb.OBJECT,
 								autoCommit: true
 						},
-						function(err, result) {
+						function(err) {
 								data.db.close();
-								next(null, result);
+								next(err);
 						});
 			}
-		], function(err, result) {
+		], function(err) {
 			callback(err);
 		});
 	},
