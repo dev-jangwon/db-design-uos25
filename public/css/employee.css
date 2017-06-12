@@ -153,6 +153,15 @@
   overflow: auto;
 }
 
+.box-body.applicant_box {
+  height: 345px;
+}
+.second_box .box-body {
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 30px;
+}
+
 th,
 td {
   text-align: center;
@@ -163,7 +172,7 @@ td {
   margin-right: 5px;
 }
 
-#imployee_table th {
+#employee_table th {
   width: 20%;
 }
 
@@ -192,4 +201,21 @@ td {
 
 #time_table > table {
   overflow: hidden;
+}
+
+.box-header {
+  min-height: 50px;
+}
+
+#add_applicant_modal label {
+  margin-top: 5px;
+}
+
+#new_applicant_date {
+  cursor: default;
+}
+
+.datepicker-days td,
+.datepicker-days th {
+  cursor: pointer;
 }

@@ -130,32 +130,6 @@ router.get('/employee/admin', check_session, function(req, res, next) {
   }
 });
 
-// router.get('/employee/lookup', check_session, function(req, res, next) {
-//   var session = req.session;
-//   var user_data = null;
-//
-//   if (session.user_data) {
-//     user_data = session.user_data;
-//   }
-//   res.render('employee/lookup.html', {
-//     session: user_data ? true : false,
-//     user_data: JSON.stringify(user_data || {})
-//   });
-// });
-//
-// router.get('/employee/timetable', check_session, function(req, res, next) {
-//   var session = req.session;
-//   var user_data = null;
-//
-//   if (session.user_data) {
-//     user_data = session.user_data;
-//   }
-//   res.render('employee/timetable.html', {
-//     session: user_data ? true : false,
-//     user_data: JSON.stringify(user_data || {})
-//   });
-// });
-
 // entry_goods
 router.get('/entry-goods/inspection', check_session, function(req, res, next) {
   var session = req.session;
@@ -540,6 +514,29 @@ router.post('/employee/get_info', check_session, function(req, res) {
       res.json(result);
     });
   // }
+});
+
+router.post('/employee/add_applicant', function(req, res) {
+  features.employee.add_applicant(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+
+router.post('/employee/accept', function(req, res) {
+  features.employee.accept(req.body, function(result) {
+    res.json(result);
+  });
+});
+router.post('/employee/reject', function(req, res) {
+  features.employee.reject(req.body, function(result) {
+    res.json(result);
+  });
+});
+router.post('/employee/fire', function(req, res) {
+  features.employee.fire(req.body, function(result) {
+    res.json(result);
+  });
 });
 
 /*

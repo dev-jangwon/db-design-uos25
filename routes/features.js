@@ -58,6 +58,62 @@ features.employee.get_info = function(options, callback) {
   });
 };
 
+features.employee.add_applicant = function(options, callback) {
+  db.employee_add_applicant(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+features.employee.accept = function(options, callback) {
+  db.employee_accept(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+features.employee.reject = function(options, callback) {
+  db.employee_reject(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+features.employee.fire = function(options, callback) {
+  db.employee_fire(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
 features.sales = {};
 
 features.sales.lookup = function(callback) {

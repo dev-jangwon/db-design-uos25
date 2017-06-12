@@ -8,9 +8,6 @@ var init = function() {
   $.post('/employee/get_info', {
     branch_code: 'UOS001'
   }, function(data) {
-    console.log(data);
-    $('.loading_bg').hide();
-
     if (data.result) {
       applicants = data.applicant;
       employees = data.employee;
@@ -18,6 +15,11 @@ var init = function() {
       make_applicant_table();
       make_employee_table();
       make_time_table();
+
+      $('.loading_bg').hide();
+    } else {
+      $('.loading_bg').hide();
+      alert.show('데이터를 가져오는데 실패하였습니다.');
     }
   });
 };
@@ -63,7 +65,7 @@ var make_employee_table = function() {
         '<td>' + employees[i].EMPLOYEE_SALARY + '</td>' +
         '<td>' + parsed_date + '</td>' +
         '<td><div class="button-group">' +
-          '<button class="btn btn-danger reject">해고</button>' +
+          '<button class="btn btn-danger fire">해고</button>' +
         '</div></td>' +
       '</tr>'
     ].join('');
@@ -91,6 +93,9 @@ var make_time_table_data = function(callback) {
   var data = [];
   // mon:14~22,wed:14~22,fri:14~22
   for (var i = 0; i < employees.length; i++) {
+    if (!employees[i].WORK_TIME) {
+      continue;
+    }
     var part = employees[i].WORK_TIME.split(',');
     for (var j = 0; j < part.length; j++) {
       var day = part[j].split(':')[0];
@@ -177,4 +182,113 @@ $('#applicant_table_search').on('keyup', function() {
   } else {
     rows.show();
   }
+});
+
+$('#new_applicant_date').datepicker();
+
+$('#add_applicant_modal').on('hidden.bs.modal', function() {
+  $('#new_applicant_name').val('');
+  $('#new_applicant_id_card > option[value="y"]').attr('selected', 'selected');
+  $('#new_applicant_resume > option[value="y"]').attr('selected', 'selected');
+  $('#new_applicant_date').val('');
+});
+
+$('#add_applicant').on('click', function() {
+  $('#add_applicant_modal').modal('show');
+});
+
+$('#applicant_table').on('click', '.accept', function() {
+  var date = new Date();
+  date = date.toLocaleDateString().replace(/\ /g, '');
+  var splited = date.split('.');
+  if (splited[1].length == 1) {
+    splited[1] = '0' + splited[1];
+  }
+  date = splited.join('');
+  var $tr = $(this).parents('tr');
+  var code = $tr.attr('data-code');
+  var name = $tr.attr('data-name');
+
+  $('.loading_bg').show();
+
+  $.post('/employee/accept', {
+    code: code,
+    name: name,
+    date: date,
+    branch_code: 'UOS001'
+  }, function(data) {
+    $('.loading_bg').hide();
+    if (data.result) {
+      window.location.reload();
+    } else {
+      alert.show('고용에 실패하였습니다.');
+    }
+  });
+});
+
+$('#applicant_table').on('click', '.reject', function() {
+  var $tr = $(this).parents('tr');
+  var code = $tr.attr('data-code');
+
+  $('.loading_bg').show();
+
+  $.post('/employee/reject', {
+    code: code
+  }, function(data) {
+    $('.loading_bg').hide();
+    if (data.result) {
+      window.location.reload();
+    } else {
+      alert.show('삭제에 실패하였습니다.');
+    }
+  });
+});
+
+$('#employee_table').on('click', '.fire', function() {
+  var $tr = $(this).parents('tr');
+  var code = $tr.attr('data-code');
+
+  $('.loading_bg').show();
+
+  $.post('/employee/fire', {
+    code: code
+  }, function(data) {
+    $('.loading_bg').hide();
+    if (data.result) {
+      window.location.reload();
+    } else {
+      alert.show('해고에 실패하였습니다.');
+    }
+  });
+});
+
+$('#add_applicant_modal .ok_btn').on('click', function() {
+  var name = $('#new_applicant_name').val();
+  var id_card = $('#new_applicant_id_card').val();
+  var resume = $('#new_applicant_resume').val();
+  var date = $('#new_applicant_date').val().split('/');
+  date = date[2] + date[0] + date[1];
+
+  if (!name || !id_card || !resume || !date) {
+    alert.show('내용을 모두 입력해주세요.');
+    return;
+  }
+
+  $('.loading_bg').show();
+
+  $.post('/employee/add_applicant', {
+    name: name,
+    id_card: id_card,
+    resume: resume,
+    date: date,
+    branch_code: 'UOS001'
+  }, function(data) {
+    $('.loading_bg').hide();
+    if (data.result) {
+      $('#add_applicant_modal').modal('hide');
+      window.location.reload();
+    } else {
+      alert.show('등록에 실패하였습니다.');
+    }
+  });
 });

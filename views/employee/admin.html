@@ -82,7 +82,7 @@
                   <h3 class="box-title">지원자 목록</h3>
                   <div class="pull-right">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="text" id="applicant_table_search" class="form-control pull-right" placeholder="Search">
+                      <input type="text" id="applicant_table_search" class="form-control pull-right" placeholder="검 색">
 
                       <div class="input-group-btn">
                         <button class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -91,7 +91,7 @@
                   </div>
                 </div>
 
-                <div class="box-body">
+                <div class="box-body applicant_box">
                   <table id="applicant_table" class="table table-hover table-responsive table-striped">
                     <thead>
                       <tr class="table_head applicant_head">
@@ -106,6 +106,9 @@
                     </tbody>
                   </table>
                 </div>
+                <div class="box-footer">
+                  <button class="btn btn-success pull-right" id="add_applicant">지원자 등록</button>
+                </div>
               </div>
             </div>
             <div class="col-md-6 pull-right">
@@ -116,7 +119,7 @@
                   <h3 class="box-title">직원 목록</h3>
                   <div class="pull-right">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="text" id="employee_table_search" class="form-control pull-right" placeholder="Search">
+                      <input type="text" id="employee_table_search" class="form-control pull-right" placeholder="검 색">
 
                       <div class="input-group-btn">
                         <button class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -131,7 +134,7 @@
                       <tr class="table_head employee_head">
                         <th>이름</th>
                         <th>직급</th>
-                        <th>월급</th>
+                        <th>시급</th>
                         <th>근무 시작일</th>
                         <th></th>
                       </tr>
@@ -171,6 +174,61 @@
 </div>
 <!-- ./wrapper -->
 
+
+<!-- add applicant modal -->
+<div id="add_applicant_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>지원자 등록</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row form-group">
+          <label for="new_applicant_name" class="col-sm-3 control-label">이  름</label>
+          <div class="col-sm-9">
+            <input type="name" class="form-control" id="new_applicant_name" placeholder="Name">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="new_applicant_id_card" class="col-sm-3 control-label">주민등록등본</label>
+          <div class="col-sm-9">
+            <select class="form-control" id="new_applicant_id_card">
+              <option value="y"> 제  출 </option>
+              <option value="n"> 미제출 </option>
+            </select>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="new_applicant_resume" class="col-sm-3 control-label">이력서</label>
+          <div class="col-sm-9">
+            <select class="form-control" id="new_applicant_resume">
+              <option value="y"> 제  출 </option>
+              <option value="n"> 미제출 </option>
+            </select>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="new_applicant_date" class="col-sm-3 control-label">지원 일자</label>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <input type="name" class="form-control" id="new_applicant_date" placeholder="Apply Date">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default cancel_btn" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary ok_btn">확인</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- alert modal -->
 <div id="alert_modal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
     <div class="modal-content">
@@ -188,6 +246,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
 <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
@@ -201,6 +260,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
 <script src="/libs/easycal/easycal.js"></script>
+<script src="/libs/datepicker/bootstrap-datepicker.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>
