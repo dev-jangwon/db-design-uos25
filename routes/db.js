@@ -632,6 +632,59 @@ module.exports = {
         });
     },
 
+    event_modify: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'UPDATE EVENT ' +
+                    'SET EVENT_NAME = :event_name, ' +
+                    'EVENT_DESC = :event_desc, ' +
+                    'EVENT_TERM = :event_term ' +
+                    'WHERE EVENT_CODE = :event_code',
+                    [options.event_name, options.event_desc, options.event_term, options.event_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    event_delete: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'DELETE FROM EVENT ' +
+                    'WHERE EVENT_CODE = :event_code',
+                    [options.event_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
     /* 이벤트 아이템 관련 */
     event_item_lookup: function(options, callback) {
         async.waterfall([
@@ -643,6 +696,57 @@ module.exports = {
                     'AND ITEM_EVENT.ITEM_CODE = ITEM.ITEM_CODE',
                     [options.event_code],
                     { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    event_item_modify: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'UPDATE ITEM_EVENT ' +
+                    'SET EVENT_INFO = :event_info ' +
+                    'WHERE EVENT_CODE = :event_code',
+                    [options.event_info, options.event_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    event_item_delete: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'DELETE FROM ITEM_EVENT ' +
+                    'WHERE EVENT_CODE = :event_code',
+                    [options.event_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
                     function(err, result) {
                         if (err) {
                             console.log(err);

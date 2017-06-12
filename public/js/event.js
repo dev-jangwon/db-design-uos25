@@ -59,4 +59,40 @@ $(function() {
             dialog.show(obj);
         });
     });
+
+    $('#event_lookup_modify').click(function(e) {
+        var post_data = {
+            "event_code": $('#event_dialog_modal_code').val(),
+            "event_name": $('#event_dialog_modal_name').val(),
+            "event_desc": $('#event_dialog_modal_desc').val(),
+            "event_term": $('#event_dialog_modal_term').val(),
+            "event_info": $('#event_dialog_modal_info').val()
+        };
+
+        $.post('/event/item/modify', post_data, function (data) {
+            if (data && data.result) {
+                location.reload();
+            } else {
+                alert("실패");
+            }
+        });
+
+        e.stopPropagation();
+    });
+
+    $('#event_lookup_delete').click(function(e) {
+        var post_data = {
+            "event_code": $('#event_dialog_modal_code').val()
+        };
+
+        $.post('/event/item/delete', post_data, function (data) {
+            if (data && data.result) {
+                location.reload();
+            } else {
+                alert("실패");
+            }
+        });
+
+        e.stopPropagation();
+    });
 });

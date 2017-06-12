@@ -550,5 +550,17 @@ router.get('/event/item/lookup', function(req, res) {
     });
 });
 
+router.post('/event/item/modify', function(req, res) {
+    features.event_item.modify(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/event/item/delete', function(req, res) {
+    features.event_item.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
 
 module.exports = router;

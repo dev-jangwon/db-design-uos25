@@ -358,4 +358,38 @@ features.event_item.lookup = function(options, callback) {
     });
 };
 
+features.event_item.modify = function(options, callback) {
+    db.event_item_modify(options, function(err, result) {
+        db.event_modify(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
+features.event_item.delete = function(options, callback) {
+    db.event_item_delete(options, function(err, result) {
+        db.event_delete(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
 module.exports = features;
