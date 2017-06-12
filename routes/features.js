@@ -324,4 +324,38 @@ features.event.enroll = function(options, callback) {
     });
 };
 
+features.event.lookup_all = function(options, callback) {
+    db.event_lookup_all(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+/* 이벤트 아이템 */
+
+features.event_item = {};
+
+features.event_item.lookup = function(options, callback) {
+    db.event_item_lookup(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
 module.exports = features;

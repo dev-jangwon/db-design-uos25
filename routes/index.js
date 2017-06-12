@@ -534,4 +534,21 @@ router.post('/event/enroll', function(req,res) {
     });
 });
 
+router.get('/event/lookup/all', function(req, res) {
+    features.event.lookup_all(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+/*
+ 물품 이벤트
+ */
+
+router.get('/event/item/lookup', function(req, res) {
+    features.event_item.lookup(req.query, function(result) {
+        res.json(result);
+    });
+});
+
+
 module.exports = router;

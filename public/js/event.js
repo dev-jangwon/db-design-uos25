@@ -2,6 +2,8 @@
  * Created by jangwon on 2017. 6. 12..
  */
 
+dialog.init('event_dialog_modal')
+
 $(function() {
     $("#event_enroll_button").click(function() {
         var event_name = $("#event_name").val();
@@ -25,6 +27,36 @@ $(function() {
 
         $.post('/event/enroll', post_data, function(data) {
             console.log(data);
+        });
+    });
+
+    $('#event_view_table').on('click', 'tr', function() {
+        var row = event_view_table.row(this).data();
+
+        $.get('/event/item/lookup', {
+            'event_code': row[0]
+        }, function(result) {
+            var data = result.data;
+
+            var info;
+            $("#event_dialog_modal_items").empty();
+
+            for (var i = 0; i < data.length; i++) {
+                var item_code = data[i].ITEM_CODE;
+                var item_name = data[i].ITEM_NAME;
+                info = data[i].EVENT_INFO;
+                $("#event_dialog_modal_items").append("<option value=" + data[i].ITEM_CODE + ">" + data[i].ITEM_NAME + "</option>");
+            }
+
+            $('#event_dialog_modal_info option[value="'+info+'"]').attr("selected","selected");
+
+            var obj = {
+                'event_dialog_modal_code': row[0],
+                'event_dialog_modal_name': row[1],
+                'event_dialog_modal_desc': row[2],
+                'event_dialog_modal_term': row[3]
+            }
+            dialog.show(obj);
         });
     });
 });

@@ -607,5 +607,52 @@ module.exports = {
         ], function(err) {
             callback(err, true);
         });
+    },
+
+    // 이벤트 전체 조회
+    event_lookup_all: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT * ' +
+                    'FROM EVENT',
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    /* 이벤트 아이템 관련 */
+    event_item_lookup: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT * from ITEM_EVENT, ITEM ' +
+                    'WHERE EVENT_CODE = (:event_code)' +
+                    'AND ITEM_EVENT.ITEM_CODE = ITEM.ITEM_CODE',
+                    [options.event_code],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
     }
 };
