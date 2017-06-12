@@ -170,19 +170,6 @@ router.get('/event/lookup', check_session, function(req, res, next) {
 });
 
 // excetion_goods
-router.get('/exception-goods/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exception_goods/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 router.get('/exception-goods/enroll', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
@@ -204,19 +191,6 @@ router.get('/exception-goods/lookup', check_session, function(req, res, next) {
     user_data = session.user_data;
   }
   res.render('exception_goods/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/exception-goods/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exception_goods/modify.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -562,5 +536,14 @@ router.post('/event/item/delete', function(req, res) {
     });
 });
 
+/*
+ 예외물품
+ */
+
+router.post('/exception/enroll', function(req, res) {
+    features.exception.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
 
 module.exports = router;
