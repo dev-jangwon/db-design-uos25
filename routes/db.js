@@ -73,23 +73,89 @@ module.exports = {
 	customer_lookup: function(options, callback) {
 		var code = options.customer_code;
 		async.waterfall([
-      connect_db,
-      function(db, next) {
-        db.execute(
-          'SELECT * ' +
-          'FROM CUSTOMER ' +
-					'WHERE CUSTOMER_CODE=:code',
-          [code],
-          { outFormat: oracledb.OBJECT },
-        function(err, result) {
-          db.close();
-          next(null, result.rows);
+          connect_db,
+          function(db, next) {
+            db.execute(
+              'SELECT * ' +
+              'FROM CUSTOMER ' +
+                        'WHERE CUSTOMER_CODE=:code',
+              [code],
+              { outFormat: oracledb.OBJECT },
+            function(err, result) {
+              db.close();
+              next(null, result.rows);
+            });
+          }
+        ], function(err, result) {
+          callback(err, result);
         });
-      }
-    ], function(err, result) {
-      callback(err, result);
-    });
 	},
+
+    // 고객 전체 조회
+    customer_lookup_all: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT * ' +
+                    'FROM CUSTOMER',
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    customer_count: function(callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "SELECT count(*) FROM CUSTOMER",
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        var count = result.rows[0]['COUNT(*)'] + 1;
+                        var customer_code = 'CT' + count;
+                        db.close();
+                        next(null, customer_code);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    customer_enroll: function(options, callback) {
+        var code = options.customer_code;
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "INSERT INTO CUSTOMER (CUSTOMER_CODE, CUSTOMER_NAME, CUSTOMER_PHONE_NUMBER, CUSTOMER_AGE, CUSTOMER_SEX, CUSTOMER_MILEAGE) " +
+                    "VALUES (:customer_code, :customer_name, :customer_phone_number, :customer_age, :customer_sex, :customer_mileage)",
+                    [options.customer_code, options.customer_name, options.customer_phone_number, options.customer_age, options.customer_sex, 0],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
 
 	// 물품 조회
 	item_lookup: function(options, callback) {

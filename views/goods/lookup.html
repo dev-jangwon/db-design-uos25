@@ -172,16 +172,16 @@
 <script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <script>
     var item_data;
-    var view_table;
+    var item_view_table;
     $.get('/item/lookup/all', function (data) {
         item_data = data.data;
 
-        view_table = $('#item_view_table').DataTable({
+        item_view_table = $('#item_view_table').DataTable({
             dom: 't'
         });
 
         for (var i = 0; i < item_data.length; i++) {
-            view_table.row.add([
+            item_view_table.row.add([
                 item_data[i].ITEM_CODE,
                 item_data[i].ITEM_BARCODE,
                 item_data[i].ITEM_NAME,

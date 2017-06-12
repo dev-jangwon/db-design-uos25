@@ -34,8 +34,6 @@ $(function() {
 
         var item_expiration_date = item_ex_date;
 
-        console.log(item_ex_date);
-
         if (item_ex_date == "") {
             item_expiration_date = "99999999";
         }
@@ -81,7 +79,7 @@ $(function() {
     });
 
     $('#item_view_table').on('click', 'tr', function() {
-        var row = view_table.row(this).data();
+        var row = item_view_table.row(this).data();
         var obj = {
             'item_dialog_modal_code': row[0],
             'item_dialog_modal_barcode': row[1],

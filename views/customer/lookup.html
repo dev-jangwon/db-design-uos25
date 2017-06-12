@@ -40,20 +40,46 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                고객 정보 조회 / 수정
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i>고객</a></li>
+                <li class="active">고객 조회 / 수정</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table"></i>
 
+                            <h3 class="box-title">고객 정보</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="customer_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="item_view_table_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">고객 코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">이름</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">전화번호</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">나이</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">성별</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">마일리지</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
             <!-- Your Page Content Here -->
-
         </section>
         <!-- /.content -->
     </div>
@@ -78,6 +104,31 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+    var customer_data;
+    var customer_view_table;
+    $.get('/customer/lookup/all', function (data) {
+        customer_data = data.data;
+
+        customer_view_table = $('#customer_view_table').DataTable({
+            dom: 't'
+        });
+
+        for (var i = 0; i < customer_data.length; i++) {
+            customer_view_table.row.add([
+                customer_data[i].CUSTOMER_CODE,
+                customer_data[i].CUSTOMER_NAME,
+                customer_data[i].CUSTOMER_PHONE_NUMBER,
+                customer_data[i].CUSTOMER_AGE,
+                customer_data[i].CUSTOMER_SEX,
+                customer_data[i].CUSTOMER_MILEAGE
+            ]).draw('false');
+        }
+    });
+</script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>

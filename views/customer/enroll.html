@@ -40,20 +40,66 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                고객 정보 등록
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i>고객</a></li>
+                <li class="active">고객 등록</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-bullhorn"></i>
+                    <h3 class="box-title">고객 정보</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form id = "item_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="customer_name" class="col-sm-2 control-label">고객 이름</label>
 
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="customer_name" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_phone" class="col-sm-2 control-label">전화번호</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="customer_phone" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_age" class="col-sm-2 control-label">나이</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="customer_age" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_sex" class="col-sm-2 control-label">성별</label>
+                            <div class="col-sm-10">
+                                <select id = "customer_sex" class="form-control" style="width: 100%;">
+                                    <option value="" hidden>성별을 선택해주세요</option>
+                                    <option value="1">남</option>
+                                    <option value="2">여</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button id = "customer_enroll_button" class="btn btn-primary center-block">등록</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
             <!-- Your Page Content Here -->
-
         </section>
         <!-- /.content -->
     </div>
@@ -78,8 +124,13 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/customer.js"></script>
 <script src="/js/auth.js"></script>
 </body>
 </html>

@@ -65,6 +65,39 @@ features.customer.lookup = function(options, callback) {
   });
 };
 
+features.customer.lookup_all = function(options, callback) {
+    db.customer_lookup_all(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.customer.enroll = function(options, callback) {
+    db.customer_count(function(err, customer_code) {
+        options.customer_code = customer_code;
+        db.customer_enroll(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
 // 상품 관련
 features.item = {};
 

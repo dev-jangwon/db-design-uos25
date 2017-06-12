@@ -49,20 +49,6 @@ router.get('/login', function(req, res, next) {
 });
 
 // customer
-router.get('/customer/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-
-  res.render('customer/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 router.get('/customer/enroll', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
@@ -84,19 +70,6 @@ router.get('/customer/lookup', check_session, function(req, res, next) {
     user_data = session.user_data;
   }
   res.render('customer/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/customer/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('customer/modify.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -516,6 +489,18 @@ router.post('/customer/lookup', function(req, res) {
   });
 });
 
+router.get('/customer/lookup/all', function(req, res) {
+    features.customer.lookup_all(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/customer/enroll', function(req, res) {
+    features.customer.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
 /*
   item 물품 관련
 */
@@ -540,13 +525,13 @@ router.post('/item/enroll',function(req,res) {
   });
 });
 
-router.post('/item/modify', function(req, res) {
+router.post('item/modify', function(req, res) {
   features.item.modify(req.body, function(result) {
     res.json(result);
   })
 });
 
-router.post('/item/delete', function(req, res) {
+router.post('item/delete', function(req, res) {
     features.item.delete(req.body, function(result) {
         res.json(result);
     })
