@@ -40,18 +40,43 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                이벤트 조회 / 수정
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 이벤트</a></li>
+                <li class="active">이벤트 조회 / 수정</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table"></i>
 
+                            <h3 class="box-title">이벤트 정보</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="event_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="event_view_table_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="event_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">이벤트 코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="event_view_table" rowspan="1" colspan="1" aria-label="">이름</th>
+                                    <th class="sorting" tabindex="0" aria-controls="event_view_table" rowspan="1" colspan="1" aria-label="">설명</th>
+                                    <th class="sorting" tabindex="0" aria-controls="event_view_table" rowspan="1" colspan="1" aria-label="">기간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
             <!-- Your Page Content Here -->
 
         </section>
@@ -63,7 +88,83 @@
     <% include ../layout/footer.ejs %>
 </div>
 <!-- ./wrapper -->
-
+<div id="event_dialog_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>이벤트 수정</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="event_dialog_modal_code" style="padding-top:5px;"></i>이벤트 코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="event_dialog_modal_code" placeholder="이벤트 코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="event_dialog_modal_name" style="padding-top:5px;"></i>이름</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="event_dialog_modal_name" placeholder="이름">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="event_dialog_modal_desc" style="padding-top:5px;"></i>설명</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" rows="3" id="event_dialog_modal_desc" placeholder="설명"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="event_dialog_modal_term" style="padding-top:5px;"></i>기간</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="event_dialog_modal_term" placeholder="기간">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="event_dialog_modal_items" style="padding-top:5px;"></i>물품</label>
+                        <div class="col-sm-9">
+                            <select id = "event_dialog_modal_items" class="form-control" style="width: 100%;" multiple="multiple">
+                                <option value="" hidden>이벤트에 등록할 물품를 선택해주세요</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" style="padding-top:5px;"></i>종류</label>
+                        <div class="col-sm-9">
+                            <select id = "event_dialog_modal_info" class="form-control" style="width: 100%;">
+                                <option value="" hidden>분류를 선택해주세요</option>
+                                <option value="A/11">1+1행사</option>
+                                <option value="B/0.5">5% 할인</option>
+                                <option value="B/0.10">10% 할인</option>
+                                <option value="B/0.15">15% 할인</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div style="text-align: center">
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="event_lookup_modify">수정</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="event_lookup_delete">삭제</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>-->
+            <!--</div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
@@ -74,8 +175,33 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <!-- AdminLTE App -->
+<script>
+    var event_data;
+    var event_view_table;
+    $.get('/event/lookup/all', function (data) {
+        event_data = data.data;
+
+        event_view_table = $('#event_view_table').DataTable({
+            dom: 't'
+        });
+
+        for (var i = 0; i < event_data.length; i++) {
+            event_view_table.row.add([
+                event_data[i].EVENT_CODE,
+                event_data[i].EVENT_NAME,
+                event_data[i].EVENT_DESC,
+                event_data[i].EVENT_TERM
+            ]).draw('false');
+        }
+    });
+</script>
 <script src="/js/app.min.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/event.js"></script>
 <script src="/js/auth.js"></script>
 </body>
 </html>

@@ -49,20 +49,6 @@ router.get('/login', function(req, res, next) {
 });
 
 // customer
-router.get('/customer/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-
-  res.render('customer/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 router.get('/customer/enroll', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
@@ -84,19 +70,6 @@ router.get('/customer/lookup', check_session, function(req, res, next) {
     user_data = session.user_data;
   }
   res.render('customer/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/customer/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('customer/modify.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -158,19 +131,6 @@ router.get('/entry-goods/lookup', check_session, function(req, res, next) {
 });
 
 // event
-router.get('/event/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('event/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 router.get('/event/enroll', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
@@ -192,19 +152,6 @@ router.get('/event/lookup', check_session, function(req, res, next) {
     user_data = session.user_data;
   }
   res.render('event/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/event/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('event/modify.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -264,19 +211,6 @@ router.get('/exception-goods/modify', check_session, function(req, res, next) {
 });
 
 // exclusive_product
-router.get('/exclusive-product/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exclusive_product/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 router.get('/exclusive-product/enroll', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
@@ -285,19 +219,6 @@ router.get('/exclusive-product/enroll', check_session, function(req, res, next) 
     user_data = session.user_data;
   }
   res.render('exclusive_product/enroll.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/exclusive-product/lookup', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exclusive_product/lookup.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -325,19 +246,6 @@ router.get('/goods/lookup', check_session, function(req, res, next) {
     user_data = session.user_data;
   }
   res.render('goods/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/goods/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('goods/modify.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -563,10 +471,34 @@ router.post('/customer/lookup', function(req, res) {
   });
 });
 
+router.get('/customer/lookup/all', function(req, res) {
+    features.customer.lookup_all(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/customer/enroll', function(req, res) {
+    features.customer.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/customer/modify', function(req, res) {
+    features.customer.modify(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/customer/delete', function(req, res) {
+    features.customer.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
 /*
   item 물품 관련
 */
-router.post('/item/lookup', function(req,res) {
+router.post('/item/lookup', function(req, res) {
   features.item.lookup(req.body, function(result) {
     features.branch_item.lookup(req.body, function(mileage_result) {
       result.mileage_data = mileage_result.data;
@@ -575,10 +507,28 @@ router.post('/item/lookup', function(req,res) {
   });
 });
 
+router.get('/item/lookup/all', function(req, res) {
+    features.item.lookup_all(req.body, function(result) {
+      res.json(result);
+    });
+});
+
 router.post('/item/enroll',function(req,res) {
   features.item.enroll(req.body, function(result) {
       res.json(result);
   });
+});
+
+router.post('item/modify', function(req, res) {
+  features.item.modify(req.body, function(result) {
+    res.json(result);
+  })
+});
+
+router.post('item/delete', function(req, res) {
+    features.item.delete(req.body, function(result) {
+        res.json(result);
+    })
 });
 
 /*
@@ -589,5 +539,62 @@ router.post('/branch_item/lookup', function(req,res) {
     res.json(result);
   });
 });
+
+router.post('/branch_item/enroll', function(req,res) {
+    features.branch_item.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/branch_item/delete', function(req,res) {
+    features.branch_item.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/branch_item/modify', function(req,res) {
+    features.branch_item.modify(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+/*
+ 이벤트
+ */
+
+router.post('/event/enroll', function(req,res) {
+    features.event.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/event/lookup/all', function(req, res) {
+    features.event.lookup_all(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+/*
+ 물품 이벤트
+ */
+
+router.get('/event/item/lookup', function(req, res) {
+    features.event_item.lookup(req.query, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/event/item/modify', function(req, res) {
+    features.event_item.modify(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/event/item/delete', function(req, res) {
+    features.event_item.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
 
 module.exports = router;

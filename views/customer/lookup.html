@@ -40,20 +40,46 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                고객 정보 조회 / 수정
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i>고객</a></li>
+                <li class="active">고객 조회 / 수정</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table"></i>
 
+                            <h3 class="box-title">고객 정보</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="customer_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="item_view_table_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">고객 코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">이름</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">전화번호</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">나이</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">성별</th>
+                                    <th class="sorting" tabindex="0" aria-controls="customer_view_table" rowspan="1" colspan="1" aria-label="">마일리지</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
             <!-- Your Page Content Here -->
-
         </section>
         <!-- /.content -->
     </div>
@@ -63,7 +89,75 @@
     <% include ../layout/footer.ejs %>
 </div>
 <!-- ./wrapper -->
-
+<div id="customer_dialog_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>고객 수정</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_code" style="padding-top:5px;"></i>고객코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_code" placeholder="고객코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_name" style="padding-top:5px;"></i>이름</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_name" placeholder="이름">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_phone" style="padding-top:5px;"></i>전화번호</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_phone" placeholder="전화번호">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_age" style="padding-top:5px;"></i>나이</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_age" placeholder="나이">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_sex" style="padding-top:5px;"></i>성별</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_sex" placeholder="성별">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_mileage" style="padding-top:5px;"></i>마일리지</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_mileage" placeholder="마일리지">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div style="text-align: center">
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="customer_lookup_modify">수정</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="customer_lookup_delete">삭제</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>-->
+            <!--</div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
@@ -78,9 +172,35 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+    var customer_data;
+    var customer_view_table;
+    $.get('/customer/lookup/all', function (data) {
+        customer_data = data.data;
+
+        customer_view_table = $('#customer_view_table').DataTable({
+            dom: 't'
+        });
+
+        for (var i = 0; i < customer_data.length; i++) {
+            customer_view_table.row.add([
+                customer_data[i].CUSTOMER_CODE,
+                customer_data[i].CUSTOMER_NAME,
+                customer_data[i].CUSTOMER_PHONE_NUMBER,
+                customer_data[i].CUSTOMER_AGE,
+                customer_data[i].CUSTOMER_SEX,
+                customer_data[i].CUSTOMER_MILEAGE
+            ]).draw('false');
+        }
+    });
+</script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>
-<script src="/js/auth.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/customer.js"></script>
 </body>
 </html>
