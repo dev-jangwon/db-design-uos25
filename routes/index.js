@@ -501,6 +501,18 @@ router.post('/customer/enroll', function(req, res) {
     });
 });
 
+router.post('/customer/modify', function(req, res) {
+    features.customer.modify(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/customer/delete', function(req, res) {
+    features.customer.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
 /*
   item 물품 관련
 */

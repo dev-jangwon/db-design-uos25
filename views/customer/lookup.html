@@ -89,7 +89,75 @@
     <% include ../layout/footer.ejs %>
 </div>
 <!-- ./wrapper -->
-
+<div id="customer_dialog_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>고객 수정</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_code" style="padding-top:5px;"></i>고객코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_code" placeholder="고객코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_name" style="padding-top:5px;"></i>이름</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_name" placeholder="이름">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_phone" style="padding-top:5px;"></i>전화번호</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_phone" placeholder="전화번호">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_age" style="padding-top:5px;"></i>나이</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_age" placeholder="나이">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_sex" style="padding-top:5px;"></i>성별</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_sex" placeholder="성별">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="customer_dialog_modal_mileage" style="padding-top:5px;"></i>마일리지</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="customer_dialog_modal_mileage" placeholder="마일리지">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div style="text-align: center">
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="customer_lookup_modify">수정</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="customer_lookup_delete">삭제</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>-->
+            <!--</div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
@@ -132,6 +200,7 @@
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>
-<script src="/js/auth.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/customer.js"></script>
 </body>
 </html>

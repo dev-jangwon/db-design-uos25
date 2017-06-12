@@ -98,6 +98,36 @@ features.customer.enroll = function(options, callback) {
     });
 };
 
+features.customer.modify = function(options, callback) {
+    db.customer_modify(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.customer.delete = function(options, callback) {
+    db.customer_delete(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
 // 상품 관련
 features.item = {};
 

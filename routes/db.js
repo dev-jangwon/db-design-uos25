@@ -157,6 +157,58 @@ module.exports = {
         });
     },
 
+    customer_modify: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'UPDATE CUSTOMER ' +
+                    'SET CUSTOMER_NAME = :customer_name, ' +
+                    'CUSTOMER_PHONE_NUMBER = :customer_phone_number, ' +
+                    'CUSTOMER_AGE = :customer_age, ' +
+                    'CUSTOMER_SEX = :customer_sex, ' +
+                    'CUSTOMER_MILEAGE = :customer_mileage ' +
+                    'WHERE CUSTOMER_CODE = :customer_code',
+                    [options.customer_name, options.customer_phone_number, options.customer_age, options.customer_sex, options.customer_mileage, options.customer_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    customer_delete: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'DELETE FROM CUSTOMER ' +
+                    'WHERE CUSTOMER_CODE = :customer_code',
+                    [options.customer_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
 	// 물품 조회
 	item_lookup: function(options, callback) {
 		// var code = options.item_code;
