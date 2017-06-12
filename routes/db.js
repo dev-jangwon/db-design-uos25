@@ -943,5 +943,53 @@ module.exports = {
         ], function(err, result) {
             callback(err, result);
         });
+    },
+
+    /* 예외물품 관련 */
+
+    exception_enroll: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "INSERT INTO EXCEPT_ITEM (EXCEPT_ITEM_CODE, EXCEPT_DO_DATE, ITEM_CODE, EXCEPT_TYPE_CODE, BRANCH_CODE, CUSTOMER_CODE, EXCEPT_ITEM_COUNT) " +
+                    "VALUES (:except_item_code, :except_do_date, :item_code, :except_type_code, :branch_code, :customer_code, :except_item_count)",
+                    [options.except_item_code, options.except_do_date, options.item_code, options.except_type_code, options.branch_code, options.customer_code, options.except_item_count],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    exception_count: function(callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "SELECT COUNT(*) FROM EXCEPT_ITEM",
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        var count = result.rows[0]['COUNT(*)'] + 1;
+                        var except_item_code = 'EC' + count;
+                        db.close();
+                        next(null, except_item_code);
+                    }
+                );
+            }
+        ], function(err, item_code) {
+            callback(err, item_code);
+        });
     }
 };

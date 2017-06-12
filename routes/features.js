@@ -479,4 +479,27 @@ features.event_item.delete = function(options, callback) {
     });
 };
 
+/* 예외물품 */
+
+features.exception = {};
+
+features.exception.enroll = function(options, callback) {
+    db.exception_count(function(err, except_item_code) {
+        options.except_item_code = except_item_code;
+        db.exception_enroll(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
+
 module.exports = features;
