@@ -381,6 +381,38 @@ router.post('/employee/fire', function(req, res) {
   });
 });
 
+
+/*
+  request & arrive 주문 및 입고 관련
+*/
+
+router.post('/request/get', function(req, res) {
+  features.request.get(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/request/request_item', function(req, res) {
+  features.request.get_item(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+
+router.post('/arrive/get', function(req, res) {
+  features.arrive.get(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/arrive/arrive_item', function(req, res) {
+  features.arrive.get_item(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+
+
 /*
   sales 판매 관련
 */

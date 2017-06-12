@@ -64,7 +64,7 @@ module.exports = {
           { outFormat: oracledb.OBJECT },
         function(err, result) {
           db.close();
-          next(null, result.rows);
+          next(err, result.rows);
         });
       }
     ], function(err, result) {
@@ -86,7 +86,7 @@ module.exports = {
 					{ outFormat: oracledb.OBJECT },
 				function(err, result) {
 					db.close();
-					next(null, result.rows);
+					next(err, result.rows);
 				});
 			}
 		], function(err, result) {
@@ -232,6 +232,98 @@ module.exports = {
 		});
 	},
 
+	// 주문 목록 가져오기
+	request_get: function(options, callback) {
+		var branch_code = options.branch_code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'SELECT * ' +
+					'FROM REQUEST ' +
+					'WHERE BRANCH_CODE=:code ' +
+					'ORDER BY REQUEST_CODE',
+					[branch_code],
+					{ outFormat: oracledb.OBJECT },
+				function(err, result) {
+					db.close();
+					next(err, result.rows);
+				});
+			}
+		], function(err, result) {
+			callback(err, result);
+		});
+	},
+
+	request_get_item: function(options, callback) {
+		var code = options.code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'SELECT * ' +
+					'FROM REQUEST_ITEM R, ITEM I ' +
+					'WHERE R.REQUEST_CODE=:request_code ' +
+					'AND R.ITEM_CODE=I.ITEM_CODE',
+					[code],
+					{ outFormat: oracledb.OBJECT },
+				function(err, result) {
+					db.close();
+					next(err, result.rows);
+				});
+			}
+		], function(err, result) {
+			callback(err, result);
+		});
+	},
+
+	arrive_get: function(options, callback) {
+		var code = options.code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'SELECT * ' +
+					'FROM ARRIVE ' +
+					'WHERE ARRIVE_CODE=:arrive_code ' +
+					'ORDER BY ARRIVE_CODE',
+					[code],
+					{ outFormat: oracledb.OBJECT },
+				function(err, result) {
+					db.close();
+					next(err, result.rows);
+				});
+			}
+		], function(err, result) {
+			callback(err, result);
+		});
+	},
+
+	arrive_get_item: function(options, callback) {
+		var code = options.code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'SELECT * ' +
+					'FROM ARRIVE_ITEM A, ITEM I ' +
+					'WHERE A.ARRIVE_CODE=:arrive_code ' +
+					'AND A.ITEM_CODE=I.ITEM_CODE',
+					[code],
+					{ outFormat: oracledb.OBJECT },
+				function(err, result) {
+					db.close();
+					next(err, result.rows);
+				});
+			}
+		], function(err, result) {
+			callback(err, result);
+		});
+	},
 
 
 	// 판매 조회

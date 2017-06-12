@@ -114,6 +114,70 @@ features.employee.fire = function(options, callback) {
   });
 };
 
+features.request = {};
+
+features.request.get = function(options, callback) {
+  db.request_get(options, function(err, data) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        requests: data
+      });
+    }
+  });
+};
+
+features.request.get_item = function(options, callback) {
+  db.request_get_item(options, function(err, data) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        data: data
+      });
+    }
+  })
+};
+
+features.arrive = {};
+
+features.arrive.get = function(options, callback) {
+  db.arrive_get(options, function(err, data) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        data: data
+      });
+    }
+  });
+};
+
+features.arrive.get_item = function(options, callback) {
+  db.arrive_get_item(options, function(err, data) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        data: data
+      });
+    }
+  })
+};
+
 features.sales = {};
 
 features.sales.lookup = function(callback) {

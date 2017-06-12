@@ -58,19 +58,84 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                입고 및 주문 관리
-                <small>입고 목록과 주문 목록을 관리합니다.</small>
+                주문 및 입고 관리
+                <small>주문 목록과 입고 목록을 관리합니다.</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> 입고 및 주문</a></li>
-                <li class="active">입고 및 주문 관리</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 주문 및 입고</a></li>
+                <li class="active">주문 및 입고 관리</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
 
-            <!-- Your Page Content Here -->
+          <div class="first_box row">
+            <div class="col-md-6">
+              <div class="box box-primary">
+                <div class="box-header" style="height: 50px;">
+                  <i class="fa fa-cart-plus"></i>
+
+                  <h3 class="box-title">주문 목록</h3>
+                </div>
+
+                <div class="box-body request_box">
+                  <table id="request_table" class="table table-hover table-responsive table-striped">
+                    <thead>
+                      <tr class="table_head request_head">
+                        <th>주문 코드</th>
+                        <th>주문 일자</th>
+                        <th style="width: 201px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="box-footer">
+                  <button class="btn btn-primary pull-right" id="add_request">주문 등록</button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-6 pull-right">
+              <div class="box box-primary">
+                <div class="box-header" style="height: 50px;">
+                  <i class="fa fa-cart-arrow-down"></i>
+
+                  <h3 class="box-title">입고 목록</h3>
+                </div>
+
+                <div class="box-body arrive_box">
+                  <div id="no_selected" style="padding: 10px;">
+                    입고 조회를 할 주문을 선택해 주세요.
+                  </div>
+                  <div id="no_arrive" style="display: none; padding: 10px;">
+                    해당 주문에 대한 입고가 존재하지 않습니다.
+                  </div>
+
+                  <table id="arrive_table" class="table table-hover table-responsive table-striped" style="display: none;">
+                    <thead>
+                      <tr class="table_head arrive_head">
+                        <th>입고 코드</th>
+                        <th>입고 일자</th>
+                        <th style="width: 115px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="box-footer">
+                  <button class="btn btn-primary pull-right" id="check_arrive">입고 확인</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
 
         </section>
         <!-- /.content -->
@@ -81,6 +146,95 @@
     <% include ../layout/footer.ejs %>
 </div>
 <!-- ./wrapper -->
+
+
+<!-- request item modal -->
+<div id="request_item_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 600px;margin-top: 200px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="fa fa-shopping-cart" style="margin-right: 10px;"></i>주문 상세 정보</h4>
+      </div>
+      <div class="modal-body">
+        <table id="request_item_table" class="table table-hover table-responsive table-striped">
+          <thead>
+            <tr class="table_head request_item_head">
+              <th>물품 코드</th>
+              <th>물품 이름</th>
+              <th>물품 가격</th>
+              <th>주문 수량</th>
+              <th>총 가격</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+
+        <div style="height: 40px; margin-top: 30px;">
+          <div class="form-group">
+            <label class="sr-only" for="total_request_item_price">총 주문 가격</label>
+            <div class="input-group pull-right" style="width: 220px;">
+              <div class="input-group-addon" style="background-color: #ddd;">총 주문 가격</div>
+              <div class="form-control" id="total_request_item_price"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- arrive item modal -->
+<div id="arrive_item_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 600px;margin-top: 200px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="fa fa-shopping-cart" style="margin-right: 10px;"></i>입고 상세 정보</h4>
+      </div>
+      <div class="modal-body">
+        <table id="arrive_item_table" class="table table-hover table-responsive table-striped">
+          <thead>
+            <tr class="table_head arrive_item_head">
+              <th>물품 코드</th>
+              <th>물품 이름</th>
+              <th>주문 수량</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- alert modal -->
+<div id="alert_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>알림</h4>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: center;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- REQUIRED JS SCRIPTS -->
 <script>
@@ -94,7 +248,11 @@
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
+<script src="/js/alert.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/entry_order.js"></script>
+<script>
+  init();
+</script>
 </body>
 </html>

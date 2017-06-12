@@ -184,7 +184,9 @@ $('#applicant_table_search').on('keyup', function() {
   }
 });
 
-$('#new_applicant_date').datepicker();
+$('#new_applicant_date').datepicker({
+  format: "yyyy/mm/dd"
+});
 
 $('#add_applicant_modal').on('hidden.bs.modal', function() {
   $('#new_applicant_name').val('');
