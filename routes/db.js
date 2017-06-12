@@ -147,7 +147,8 @@ module.exports = {
                     'ITEM_CLASSIFICATION = :item_classification ' +
                     'WHERE ITEM_CODE = :item_code',
                     [options.item_barcode, options.item_name, options.item_price, options.item_expiration_date, options.item_classification, options.item_code],
-                    { outFormat: oracledb.OBJECT,
+                    {
+                        outFormat: oracledb.OBJECT,
                         autoCommit: true
                     },
                     function(err, result) {
@@ -168,9 +169,13 @@ module.exports = {
             connect_db,
             function(db, next) {
                 db.execute(
-                    '',
-                    [],
-                    { outFormat: oracledb.OBJECT },
+                    'DELETE FROM ITEM ' +
+                    'WHERE ITEM_CODE = :item_code',
+                    [options.item_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
                     function(err, result) {
                         db.close();
                         next(null, result.rows);
@@ -183,7 +188,6 @@ module.exports = {
 
     // 물품 등록
     item_enroll: function(options, callback) {
-	    console.log(options);
         async.waterfall([
             connect_db,
             function(db, next) {

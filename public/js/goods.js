@@ -116,17 +116,18 @@ $(function() {
 
     $('#item_lookup_delete').click(function(e) {
         var post_data = {
-
+            "item_code": $('#item_dialog_modal_code').val()
         };
 
-        $.post('/item/modify', post_data, function (data) {
-            console.log(data);
-            if (data) {
-                // location.reload();
+        $.post('/item/delete', post_data, function (data) {
+            if (data && data.result) {
+                location.reload();
             } else {
-                // alert("실패");
+                alert("실패");
             }
         });
+
+        e.stopPropagation();
     });
 });
 

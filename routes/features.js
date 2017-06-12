@@ -133,7 +133,6 @@ features.item.enroll = function(options, callback) {
       options.item_code = item_code;
       options.item_barcode = options.item_code + options.item_price;
       db.item_enroll(options, function(err, result) {
-          console.log('feature.js item_enroll: ', result);
           if (err) {
               callback({
                   result: false
