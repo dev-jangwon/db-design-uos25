@@ -501,5 +501,34 @@ features.exception.enroll = function(options, callback) {
     });
 };
 
+features.exception.lookup_all = function(options, callback) {
+    db.exception_lookup_all(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.exception.delete = function(options, callback) {
+    db.exception_delete(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
 
 module.exports = features;

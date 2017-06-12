@@ -991,5 +991,52 @@ module.exports = {
         ], function(err, item_code) {
             callback(err, item_code);
         });
+    },
+
+    exception_lookup_all: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT * ' +
+                    'FROM EXCEPT_ITEM',
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    exception_delete: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'DELETE FROM EXCEPT_ITEM ' +
+                    'WHERE EXCEPT_ITEM_CODE = :except_item_code',
+                    [options.except_item_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
     }
 };

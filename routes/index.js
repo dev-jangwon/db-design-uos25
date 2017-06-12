@@ -580,4 +580,16 @@ router.post('/exception/enroll', function(req, res) {
     });
 });
 
+router.get('/exception/lookup/all', function(req, res) {
+    features.exception.lookup_all(req.query, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/exception/delete', function(req, res) {
+    features.exception.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
 module.exports = router;
