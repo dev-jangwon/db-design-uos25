@@ -347,6 +347,9 @@ module.exports = {
                 );
             }
         ], function(err, item_code) {
+						if(err){
+							console.log(err);
+						}
             callback(err, item_code);
         });
     },
@@ -654,5 +657,124 @@ module.exports = {
         ], function(err, result) {
             callback(err, result);
         });
-    }
+    },
+
+		/* 생활서비스 관련 */
+
+		service_count: function(callback) {
+			async.waterfall([
+					connect_db,
+					function(db, next) {
+							db.execute(
+									"SELECT COUNT(*) FROM SERVICE",
+									[],
+									{ outFormat: oracledb.OBJECT },
+									function(err, result) {
+											var count = result.rows[0]['COUNT(*)'] + 1;
+											var service_code = 'SV' + count;
+											db.close();
+											next(null, service_code);
+									}
+							);
+					}
+			], function(err, service_code) {
+					callback(err, service_code);
+			});
+		},
+
+		service_enroll: function(options, callback) {
+			async.waterfall([
+				connect_db,
+				function(db,next) {
+					db.execute(
+						"INSERT INTO SERVICE(SERVICE_CODE,SERVICE_NAME,SERVICE_INFO,BRANCH_CODE) " +
+						"VALUES (:service_code, :service_name, :service_info, :branch_code)",
+						[options.service_code, options.service_name, options.service_info, options.branch_code],
+						{
+							outFormat: oracledb.OBJECT,
+							autoCommit: true
+						},
+						function(err,result) {
+							if(err) {
+								console.log(err);
+							}
+							db.close();
+							next(null,result);
+						});
+				}
+			], function(err,result) {
+				callback(err,result);
+			});
+		},
+
+		service_lookup: function(options, callback) {
+			var code = options.branch_code;
+			async.waterfall([
+        connect_db,
+        function(db, next) {
+          db.execute(
+            'SELECT * ' +
+            'FROM SERVICE ' +
+            'WHERE BRANCH_CODE=:code ' +
+						'ORDER BY SERVICE_NAME',
+            [code],
+            { outFormat: oracledb.OBJECT },
+          function(err, result) {
+            db.close();
+            next(null, result.rows);
+          });
+        }
+      ], function(err, result) {
+        callback(err, result);
+      });
+		},
+
+		service_modify: function(options, callback) {
+			async.waterfall([
+        connect_db,
+        function(db, next) {
+          db.execute(
+            'UPDATE SERVICE ' +
+						'SET SERVICE_NAME = :service_name, ' +
+						'SERVICE_INFO = :service_info ' +
+						'WHERE SERVICE_CODE = :service_code',
+            [options.service_name, options.service_info, options.service_code],
+            {
+							outFormat: oracledb.OBJECT,
+							autoCommit: true
+						},
+          function(err, result) {
+						if(err){
+							console.log(err);
+						}
+            db.close();
+            next(null, result.rows);
+          });
+        }
+      ], function(err, result) {
+        callback(err, result);
+      });
+		},
+
+		service_delete: function(options, callback) {
+			async.waterfall([
+        connect_db,
+        function(db, next) {
+          db.execute(
+            'DELETE FROM SERVICE ' +
+						'WHERE SERVICE_CODE = :service_code' ,
+            [options.service_code],
+            {
+							outFormat: oracledb.OBJECT,
+							autoCommit: true
+						},
+          function(err, result) {
+            db.close();
+            next(null, result.rows);
+          });
+        }
+      ], function(err, result) {
+        callback(err, result);
+      });
+		}
 };

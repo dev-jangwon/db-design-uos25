@@ -358,4 +358,70 @@ features.event_item.lookup = function(options, callback) {
     });
 };
 
+/* 생활 서비스 */
+features.service = {};
+
+features.service.lookup = function(options, callback) {
+  db.service_lookup(options, function(err, result) {
+    if (err) {
+        callback({
+            result: false
+        });
+    } else {
+        callback({
+            result: true,
+            data: result
+        });
+    }
+  });
+};
+
+features.service.enroll = function(options, callback) {
+  db.service_count(function(err, service_code) {
+    options.service_code = service_code;
+    db.service_enroll(options, function(err, result) {
+      if (err) {
+          callback({
+              result: false
+          });
+      } else {
+          callback({
+              result: true,
+              data: result
+          });
+      }
+    });
+  })
+};
+
+features.service.modify = function(options, callback) {
+  db.service_modify(options, function(err,result) {
+    if (err) {
+        callback({
+            result: false
+        });
+    } else {
+        callback({
+            result: true,
+            data: result
+        });
+    }
+  })
+};
+
+features.service.delete = function(options, callback) {
+  db.service_delete(options, function(err,result) {
+    if (err) {
+        callback({
+            result: false
+        });
+    } else {
+        callback({
+            result: true,
+            data: result
+        });
+    }
+  });
+}
+
 module.exports = features;

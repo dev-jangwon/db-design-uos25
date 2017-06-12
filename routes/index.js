@@ -550,5 +550,34 @@ router.get('/event/item/lookup', function(req, res) {
     });
 });
 
+/*
+  생활 서비스
+*/
+router.post('/service/enroll', function(req,res) {
+    features.service.enroll(req.body, function(result) {
+      res.json(result);
+    });
+});
+
+router.post('/service/lookup', function (req,res) {
+    features.service.lookup(req.body, function(result) {
+      res.json(result);
+    });
+});
+
+router.post('/service/modify', function (req,res) {
+    features.service.modify(req.body, function(result) {
+      res.json(result);
+    });
+});
+
+router.post('/service/delete', function (req,res) {
+    features.service.delete(req.body, function(result) {
+
+
+      res.json(result);
+    });
+})
+
 
 module.exports = router;
