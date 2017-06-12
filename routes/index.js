@@ -342,19 +342,6 @@ router.get('/goods/lookup', check_session, function(req, res, next) {
   });
 });
 
-router.get('/goods/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('goods/modify.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 //living_services
 router.get('/living-services/delete', check_session, function(req, res, next) {
   var session = req.session;
@@ -532,7 +519,7 @@ router.post('/customer/lookup', function(req, res) {
 /*
   item 물품 관련
 */
-router.post('/item/lookup', function(req,res) {
+router.post('/item/lookup', function(req, res) {
   features.item.lookup(req.body, function(result) {
     features.branch_item.lookup(req.body, function(mileage_result) {
       result.mileage_data = mileage_result.data;
@@ -541,10 +528,28 @@ router.post('/item/lookup', function(req,res) {
   });
 });
 
+router.get('/item/lookup/all', function(req, res) {
+    features.item.lookup_all(req.body, function(result) {
+      res.json(result);
+    });
+});
+
 router.post('/item/enroll',function(req,res) {
   features.item.enroll(req.body, function(result) {
       res.json(result);
   });
+});
+
+router.post('/item/modify', function(req, res) {
+  features.item.modify(req.body, function(result) {
+    res.json(result);
+  })
+});
+
+router.post('/item/delete', function(req, res) {
+    features.item.delete(req.body, function(result) {
+        res.json(result);
+    })
 });
 
 /*

@@ -69,7 +69,7 @@ features.customer.lookup = function(options, callback) {
 features.item = {};
 
 features.item.lookup = function(options, callback) {
-  db.item_lookup(options, function(err,result) {
+  db.item_lookup(options, function(err, result) {
     if (err) {
       callback({
         result: false
@@ -81,6 +81,51 @@ features.item.lookup = function(options, callback) {
       });
     }
   });
+};
+
+features.item.lookup_all = function(options, callback) {
+    db.item_lookup_all(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.item.modify = function(options, callback) {
+    db.item_modify(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.item.delete = function(options, callback) {
+    db.item_delete(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
 };
 
 features.item.enroll = function(options, callback) {

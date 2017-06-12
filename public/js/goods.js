@@ -2,6 +2,8 @@
  * Created by jangwon on 2017. 6. 10..
  */
 
+dialog.init('item_dialog_modal')
+
 $(function() {
     // $('#item_ex_date').datepicker();
 
@@ -31,6 +33,8 @@ $(function() {
         var item_image = $("#item_image_input")[0];
 
         var item_expiration_date = item_ex_date;
+
+        console.log(item_ex_date);
 
         if (item_ex_date == "") {
             item_expiration_date = "99999999";
@@ -73,7 +77,56 @@ $(function() {
 
         $.post('/item/enroll', post_data, function(data) {
             console.log(data);
-        })
+        });
+    });
+
+    $('#item_view_table').on('click', 'tr', function() {
+        var row = view_table.row(this).data();
+        var obj = {
+            'item_dialog_modal_code': row[0],
+            'item_dialog_modal_barcode': row[1],
+            'item_dialog_modal_name': row[2],
+            'item_dialog_modal_price': row[3],
+            'item_dialog_modal_date': row[4],
+            'item_dialog_modal_class': row[5]
+        }
+        dialog.show(obj);
+    });
+
+    $('#item_lookup_modify').click(function(e) {
+        var post_data = {
+            "item_code": $('#item_dialog_modal_code').val(),
+            "item_barcode": $('#item_dialog_modal_barcode').val(),
+            "item_name": $('#item_dialog_modal_name').val(),
+            "item_classification": $('#item_dialog_modal_class').val(),
+            "item_price": $('#item_dialog_modal_price').val(),
+            "item_expiration_date": $('#item_dialog_modal_date').val()
+        };
+
+        $.post('/item/modify', post_data, function (data) {
+            if (data && data.result) {
+                location.reload();
+            } else {
+                alert("실패");
+            }
+        });
+
+        e.stopPropagation();
+    });
+
+    $('#item_lookup_delete').click(function(e) {
+        var post_data = {
+
+        };
+
+        $.post('/item/modify', post_data, function (data) {
+            console.log(data);
+            if (data) {
+                // location.reload();
+            } else {
+                // alert("실패");
+            }
+        });
     });
 });
 

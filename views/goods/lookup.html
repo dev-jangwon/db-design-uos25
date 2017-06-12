@@ -40,20 +40,46 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                물품 정보 조회 / 수정
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 물품 </a></li>
+                <li class="active">물품 정보 조회 / 수정</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table"></i>
 
+                            <h3 class="box-title">물품 정보</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="item_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="item_view_table_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">물품 코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">바코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">이름</th>
+                                    <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">가격</th>
+                                    <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">유통기한</th>
+                                    <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">분류</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
             <!-- Your Page Content Here -->
-
         </section>
         <!-- /.content -->
     </div>
@@ -63,19 +89,113 @@
     <% include ../layout/footer.ejs %>
 </div>
 <!-- ./wrapper -->
-
+<div id="item_dialog_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>물품 수정</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="item_dialog_modal_code" style="padding-top:5px;"></i>물품코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="item_dialog_modal_code" placeholder="물품코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="item_dialog_modal_barcode" style="padding-top:5px;"></i>바코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="item_dialog_modal_barcode" placeholder="바코드">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="item_dialog_modal_name" style="padding-top:5px;"></i>이름</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="item_dialog_modal_name" placeholder="이름">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="item_dialog_modal_price" style="padding-top:5px;"></i>가격</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="item_dialog_modal_price" placeholder="가격">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="item_dialog_modal_date" style="padding-top:5px;"></i>유통기한</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="item_dialog_modal_date" placeholder="유통기한">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="item_dialog_modal_class" style="padding-top:5px;"></i>분류</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="item_dialog_modal_class" placeholder="분류">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div style="text-align: center">
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="item_lookup_modify">수정</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="item_lookup_delete">삭제</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>-->
+            <!--</div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
   var session = '<%= session %>';
 </script>
-
 <!-- jQuery 2.2.3 -->
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+    var item_data;
+    var view_table;
+    $.get('/item/lookup/all', function (data) {
+        item_data = data.data;
+
+        view_table = $('#item_view_table').DataTable({
+            dom: 't'
+        });
+
+        for (var i = 0; i < item_data.length; i++) {
+            view_table.row.add([
+                item_data[i].ITEM_CODE,
+                item_data[i].ITEM_BARCODE,
+                item_data[i].ITEM_NAME,
+                item_data[i].ITEM_PRICE,
+                item_data[i].ITEM_EXPIRATION_DATE,
+                item_data[i].ITEM_CLASSIFICATION
+            ]).draw('false');
+        }
+    });
+</script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/goods.js"></script>
 </body>
 </html>

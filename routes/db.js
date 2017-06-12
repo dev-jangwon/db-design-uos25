@@ -114,6 +114,73 @@ module.exports = {
         });
 	},
 
+    // 물품 전체 조회
+    item_lookup_all: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT * ' +
+                    'FROM ITEM',
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    item_modify: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'UPDATE ITEM ' +
+                    'SET ITEM_BARCODE = :item_barcode, ' +
+                    'ITEM_NAME = :item_name, ' +
+                    'ITEM_PRICE = :item_price, ' +
+                    'ITEM_EXPIRATION_DATE = :item_expiration_date, ' +
+                    'ITEM_CLASSIFICATION = :item_classification ' +
+                    'WHERE ITEM_CODE = :item_code',
+                    [options.item_barcode, options.item_name, options.item_price, options.item_expiration_date, options.item_classification, options.item_code],
+                    { outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    item_delete: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    '',
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
     // 물품 등록
     item_enroll: function(options, callback) {
 	    console.log(options);
@@ -171,7 +238,7 @@ module.exports = {
             db.execute(
               'SELECT * ' +
               'FROM BRANCH_ITEM ' +
-                        'WHERE ITEM_CODE=:code',
+              'WHERE ITEM_CODE=:code',
               [code],
               { outFormat: oracledb.OBJECT },
                 function(err, result) {

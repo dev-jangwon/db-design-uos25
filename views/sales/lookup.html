@@ -50,13 +50,13 @@
                           </div>
                           <!-- /.box-header -->
                           <div class="box-body">
-                              <table id="selling_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="selling_table_info">
+                              <table id="selling_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="selling_view_table_info">
                                   <thead>
                                   <tr role="row">
-                                      <th class="sorting_asc" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">판매코드</th>
-                                      <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">판매금액</th>
-                                      <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">판매날짜</th>
-                                      <th class="sorting" tabindex="0" aria-controls="selling_table" rowspan="1" colspan="1" aria-label="">고객코드</th>
+                                      <th class="sorting_asc" tabindex="0" aria-controls="selling_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">판매코드</th>
+                                      <th class="sorting" tabindex="0" aria-controls="selling_view_table" rowspan="1" colspan="1" aria-label="">판매금액</th>
+                                      <th class="sorting" tabindex="0" aria-controls="selling_view_table" rowspan="1" colspan="1" aria-label="">판매날짜</th>
+                                      <th class="sorting" tabindex="0" aria-controls="selling_view_table" rowspan="1" colspan="1" aria-label="">고객코드</th>
                                   </tr>
                                   </thead>
                                   <tbody>
@@ -87,6 +87,9 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <script>
     var sale_data;
     $.post('/sales/lookup', function (data) {
@@ -104,10 +107,7 @@
             ]).draw('false');
         }
     });
-  </script>
-<!-- DataTable -->
-<script src="/libs/datatables/jquery.dataTables.min.js"></script>
-<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
+</script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/sales.js"></script>
