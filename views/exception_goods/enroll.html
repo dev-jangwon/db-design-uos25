@@ -40,18 +40,90 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                예외물품 등록
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 예외물품</a></li>
+                <li class="active">예외물품 등록</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-bullhorn"></i>
+                    <h3 class="box-title">예외물품 정보</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id = "exception_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="exception_name" class="col-sm-2 control-label">물품 이름</label>
+                            <div class="col-sm-10">
+                                <select id = "exception_name" class="form-control" style="width: 100%;">
+                                    <option value="" hidden>예외물품에 등록할 물품를 선택해주세요</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">분류 날짜</label>
 
+                            <div class="col-sm-10">
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="exception_date" placeholder="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exception_class" class="col-sm-2 control-label">예외 종류</label>
+                            <div class="col-sm-10">
+                                <select id = "exception_class" class="form-control" style="width: 100%;">
+                                    <option value="" hidden>종류를 선택해주세요</option>
+                                    <option value="EX1">고객 반품</option>
+                                    <option value="EX2">본사 반품</option>
+                                    <option value="EX3">폐기처분 - 유통기한 초과</option>
+                                    <option value="EX4">폐기처분 - 파손</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" id = "exception_customer_form">
+                            <label for="exception_customer" class="col-sm-2 control-label">고객 정보</label>
+                            <div class="col-sm-10">
+                                <div class = "row">
+                                    <div class = "col-sm-6">
+                                        <input type="text" class="form-control pull-right" id="exception_customer" placeholder="고객 이름" disabled>
+                                    </div>
+                                    <div class = "col-sm-6">
+                                        <div class = "col-sm-9">
+                                            <input type="text" class="form-control pull-right" id="exception_customer_search" placeholder="고객 코드 검색">
+                                        </div>
+                                        <div class = "col-sm-3">
+                                            <button id = "exception_customer_search_button" class="btn btn-primary btn-flat" style="width:100%">검색</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exception_count" class="col-sm-2 control-label">개수</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control pull-right" id="exception_count" placeholder="개수">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button id = "exception_enroll_button" class="btn btn-primary center-block">등록</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
             <!-- Your Page Content Here -->
 
         </section>
@@ -74,8 +146,18 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $.get('/item/lookup/all', function (data) {
+        item_data = data.data;
+        for (var i = 0; i < item_data.length; i++) {
+            $("#exception_name").append("<option value=" + item_data[i].ITEM_CODE + ">" + item_data[i].ITEM_NAME + "</option>");
+        }
+    });
+</script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/exception.js"></script>
 <script src="/js/auth.js"></script>
 </body>
 </html>

@@ -79,64 +79,39 @@ router.get('/customer/lookup', check_session, function(req, res, next) {
 router.get('/employee/admin', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
+  var is_admin = false;
 
   if (session.user_data) {
     user_data = session.user_data;
+    is_admin = session.user_data.EMPLOYEE_RANK == 'master' ? true : false;
   }
-  res.render('employee/admin.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
+
+  if (is_admin) {
+    res.render('employee/admin.html', {
+      session: user_data ? true : false,
+      user_data: JSON.stringify(user_data || {})
+    });
+  } else {
+    var url = new Buffer(req.protocol + '://' + req.get('host') + req.originalUrl).toString('base64');
+    var no_session = new Buffer('no_session').toString('base64');
+
+    // res.redirect('/login?q=' + url + '&o=' + no_session);
+    res.render('employee/admin.html', {
+      session: user_data ? true : false,
+      user_data: JSON.stringify(user_data || {})
+    });
+  }
 });
 
-router.get('/employee/lookup', check_session, function(req, res, next) {
+// entry and order
+router.get('/entry-order/management', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
 
   if (session.user_data) {
     user_data = session.user_data;
   }
-  res.render('employee/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/employee/timetable', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('employee/timetable.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-// entry_goods
-router.get('/entry-goods/inspection', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('entry_goods/inspection.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/entry-goods/lookup', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('entry_goods/lookup.html', {
+  res.render('entry_goods/management.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -170,19 +145,6 @@ router.get('/event/lookup', check_session, function(req, res, next) {
 });
 
 // excetion_goods
-router.get('/exception-goods/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exception_goods/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 router.get('/exception-goods/enroll', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
@@ -204,19 +166,6 @@ router.get('/exception-goods/lookup', check_session, function(req, res, next) {
     user_data = session.user_data;
   }
   res.render('exception_goods/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/exception-goods/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exception_goods/modify.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -303,33 +252,6 @@ router.get('/living-services/lookup', check_session, function(req, res, next) {
   });
 });
 
-//order
-router.get('/order/enroll', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('order/enroll.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/order/lookup', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('order/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 // payment
 router.get('/payment/payment', check_session, function(req, res, next) {
   var session = req.session;
@@ -402,13 +324,8 @@ router.get('/stock/modify', check_session, function(req, res, next) {
 // REST API
 
 /*
-  sales 판매 관련
+  로그인/로그아웃
 */
-router.post('/sales/lookup', function(req, res) {
-  features.sales.lookup(function(result) {
-    res.json(result);
-  });
-});
 
 router.post('/signin', function(req, res) {
   features.signin(req, function(result) {
@@ -420,6 +337,57 @@ router.post('/signout', check_session, function(req, res) {
   req.session.destroy(function() {
     res.json({});
   })
+});
+
+/*
+  employee
+*/
+router.post('/employee/get_info', check_session, function(req, res) {
+  // var session = req.session || {};
+  // var user_data = session.user_data;
+  //
+  // if (user_data.EMPLOYEE_RANK != 'master') {
+  //   console.log('1');
+  //   res.json({
+  //     result: false
+  //   });
+  // } else {
+    features.employee.get_info(req.body, function(result) {
+      res.json(result);
+    });
+  // }
+});
+
+router.post('/employee/add_applicant', function(req, res) {
+  features.employee.add_applicant(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+
+router.post('/employee/accept', function(req, res) {
+  features.employee.accept(req.body, function(result) {
+    res.json(result);
+  });
+});
+router.post('/employee/reject', function(req, res) {
+  features.employee.reject(req.body, function(result) {
+    res.json(result);
+  });
+});
+router.post('/employee/fire', function(req, res) {
+  features.employee.fire(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+/*
+  sales 판매 관련
+*/
+router.post('/sales/lookup', function(req, res) {
+  features.sales.lookup(function(result) {
+    res.json(result);
+  });
 });
 
 router.post('/selling/enroll', function(req,res) {
@@ -550,6 +518,7 @@ router.get('/event/item/lookup', function(req, res) {
     });
 });
 
+<<<<<<< HEAD
 /*
   생활 서비스
 */
@@ -579,5 +548,40 @@ router.post('/service/delete', function (req,res) {
     });
 })
 
+=======
+router.post('/event/item/modify', function(req, res) {
+    features.event_item.modify(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/event/item/delete', function(req, res) {
+    features.event_item.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+/*
+ 예외물품
+ */
+
+router.post('/exception/enroll', function(req, res) {
+    features.exception.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/exception/lookup/all', function(req, res) {
+    features.exception.lookup_all(req.query, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/exception/delete', function(req, res) {
+    features.exception.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+>>>>>>> a0151d9bf3cab88b0567310e721a3ac6a8163817
 
 module.exports = router;

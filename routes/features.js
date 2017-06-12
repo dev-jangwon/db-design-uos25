@@ -1,12 +1,12 @@
 var features = {};
 var db = require('./db.js');
+var async = require('async');
 
 features.signin = function(req, callback) {
   var id = req.body.id;
   var password = req.body.password;
 
   db.signin(req.body, function(err, result) {
-    console.log('result : ',result);
     if (err) {
       callback({
         result: false
@@ -23,6 +23,93 @@ features.signin = function(req, callback) {
           result: false
         });
       }
+    }
+  });
+};
+
+features.employee = {};
+
+features.employee.get_info = function(options, callback) {
+  var branch_code = options.branch_code;
+  var applicant_data;
+
+  async.waterfall([
+    function(next) { // get applicants
+      db.employee_get_applicant(branch_code, next);
+    },
+    function(applicants, next) { // get employees
+      applicant_data = applicants;
+      db.employee_get_employee(branch_code, next);
+    }
+  ], function(err, result) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      var employee_data = result;
+
+      callback({
+        result: true,
+        applicant: applicant_data,
+        employee: employee_data
+      });
+    }
+  });
+};
+
+features.employee.add_applicant = function(options, callback) {
+  db.employee_add_applicant(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+features.employee.accept = function(options, callback) {
+  db.employee_accept(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+features.employee.reject = function(options, callback) {
+  db.employee_reject(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+features.employee.fire = function(options, callback) {
+  db.employee_fire(options, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
     }
   });
 };
@@ -358,6 +445,7 @@ features.event_item.lookup = function(options, callback) {
     });
 };
 
+<<<<<<< HEAD
 /* 생활 서비스 */
 features.service = {};
 
@@ -423,5 +511,92 @@ features.service.delete = function(options, callback) {
     }
   });
 }
+=======
+features.event_item.modify = function(options, callback) {
+    db.event_item_modify(options, function(err, result) {
+        db.event_modify(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
+features.event_item.delete = function(options, callback) {
+    db.event_item_delete(options, function(err, result) {
+        db.event_delete(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
+/* 예외물품 */
+
+features.exception = {};
+
+features.exception.enroll = function(options, callback) {
+    db.exception_count(function(err, except_item_code) {
+        options.except_item_code = except_item_code;
+        db.exception_enroll(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
+features.exception.lookup_all = function(options, callback) {
+    db.exception_lookup_all(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.exception.delete = function(options, callback) {
+    db.exception_delete(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+>>>>>>> a0151d9bf3cab88b0567310e721a3ac6a8163817
 
 module.exports = features;
