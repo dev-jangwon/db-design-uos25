@@ -228,6 +228,51 @@ features.branch_item.lookup = function(options, callback) {
   });
 };
 
+features.branch_item.enroll = function(options, callback) {
+    db.branch_item_enroll(options, function(err,result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.branch_item.delete = function(options, callback) {
+    db.branch_item_delete(options, function(err,result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.branch_item.modify = function(options, callback) {
+    db.branch_item_modify(options, function(err,result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
 /* 판매 관련. */
 features.selling = {};
 

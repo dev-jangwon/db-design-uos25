@@ -372,6 +372,82 @@ module.exports = {
               callback(err, result);
             });
 	},
+
+    branch_item_enroll: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "INSERT INTO BRANCH_ITEM (ITEM_CODE, MILEAGE_RATE) " +
+                    "VALUES(:item_code, :mileage_rate)",
+                    [options.item_code, options.mileage_rate],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    branch_item_delete: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'DELETE FROM BRANCH_ITEM ' +
+                    'WHERE ITEM_CODE = :item_code',
+                    [options.item_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    branch_item_modify: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'UPDATE BRANCH_ITEM ' +
+                    'SET MILEAGE_RATE = :mileage_rate ' +
+                    'WHERE ITEM_CODE = :item_code',
+                    [options.mileage_rate, options.item_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
 	/* 판매관련 */
 	//selling count를 통해 selling_code 생성
 	selling_count: function(callback) {

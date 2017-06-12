@@ -249,19 +249,6 @@ router.get('/exception-goods/modify', check_session, function(req, res, next) {
 });
 
 // exclusive_product
-router.get('/exclusive-product/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exclusive_product/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
 router.get('/exclusive-product/enroll', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
@@ -270,19 +257,6 @@ router.get('/exclusive-product/enroll', check_session, function(req, res, next) 
     user_data = session.user_data;
   }
   res.render('exclusive_product/enroll.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/exclusive-product/lookup', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('exclusive_product/lookup.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -556,6 +530,24 @@ router.post('/branch_item/lookup', function(req,res) {
   features.branch_item.lookup(req.body, function(result) {
     res.json(result);
   });
+});
+
+router.post('/branch_item/enroll', function(req,res) {
+    features.branch_item.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/branch_item/delete', function(req,res) {
+    features.branch_item.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/branch_item/modify', function(req,res) {
+    features.branch_item.modify(req.body, function(result) {
+        res.json(result);
+    });
 });
 
 module.exports = router;
