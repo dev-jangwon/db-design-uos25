@@ -298,4 +298,30 @@ features.selling.enroll = function(options, callback) {
   });
 };
 
+/* 이벤트 */
+
+features.event = {};
+
+features.event.enroll = function(options, callback) {
+    db.event_count(function(err, event_code) {
+        options.event_code = event_code;
+
+        db.event_enroll(options, function(err, result) {
+
+            db.event_item_enroll(options, function(err, result) {
+                if (err) {
+                    callback({
+                        result: false
+                    });
+                } else {
+                    callback({
+                        result: true,
+                        data: result
+                    });
+                }
+            });
+        });
+    });
+};
+
 module.exports = features;

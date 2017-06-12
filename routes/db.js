@@ -527,5 +527,85 @@ module.exports = {
         ], function(err) {
 		    callback(err, true);
         });
-	}
+	},
+    /* 이벤트관련 */
+    event_count: function(callback) {
+        async.waterfall([
+            connect_db,
+            function(db,next) {
+                db.execute(
+                    "SELECT count(*) FROM EVENT",
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        var count = result.rows[0]['COUNT(*)'] + 1;
+                        var event_code = 'EV' + count;
+                        db.close();
+                        next(null, event_code);
+                    }
+                );
+            }
+        ], function(err, event_code) {
+            callback(err, event_code);
+        });
+    },
+
+    event_enroll: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "INSERT INTO EVENT (EVENT_CODE, EVENT_NAME, EVENT_DESC, EVENT_TERM) " +
+                    "VALUES(:event_code, :event_name, :event_desc, :event_term)",
+                    [options.event_code, options.event_name, options.event_desc, options.event_term],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(null, result);
+                    });
+            }], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    event_item_enroll: function(options, callback) {
+        var event_item_arr = options.event_items;
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                async.eachSeries(event_item_arr, function(item, callback) {
+                    db.execute(
+                        "INSERT INTO ITEM_EVENT (EVENT_CODE, ITEM_CODE, EVENT_INFO) " +
+                        "VALUES(:event_code, :item_code, :event_info)",
+                        [options.event_code, item, options.event_info],
+                        {
+                            outFormat: oracledb.OBJECT,
+                            autoCommit: true
+                        }, function(err, result) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            callback();
+                        });
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    db.close();
+                    next(null);
+                });
+            }
+        ], function(err) {
+            callback(err, true);
+        });
+    }
 };
