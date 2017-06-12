@@ -301,14 +301,16 @@ module.exports = {
             connect_db,
             function(db, next) {
                 db.execute(
-                    "SELECT count(*) FROM CUSTOMER",
+										'SELECT CUSTOMER_CODE ' +
+										'FROM CUSTOMER ' +
+										'ORDER BY CUSTOMER_CODE',
                     [],
                     { outFormat: oracledb.OBJECT },
                     function(err, result) {
-                        var count = result.rows[0]['COUNT(*)'] + 1;
-                        var customer_code = 'CT' + count;
+												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+												var new_code = 'CT' + (parseInt(last_code.replace('CT', ''), 10) + 1);
                         db.close();
-                        next(null, customer_code);
+                        next(err, new_code);
                     });
             }
         ], function(err, result) {
@@ -334,7 +336,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -364,7 +366,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -386,7 +388,7 @@ module.exports = {
                     },
                     function(err, result) {
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -409,7 +411,7 @@ module.exports = {
               { outFormat: oracledb.OBJECT },
             function(err, result) {
               db.close();
-              next(null, result.rows);
+              next(err, result.rows);
             });
           }
         ], function(err, result) {
@@ -429,7 +431,7 @@ module.exports = {
                     { outFormat: oracledb.OBJECT },
                     function(err, result) {
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -459,7 +461,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -481,7 +483,7 @@ module.exports = {
                     },
                     function(err, result) {
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -507,7 +509,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result);
+                        next(err, result);
                     });
             }
         ], function(err, result) {
@@ -519,17 +521,18 @@ module.exports = {
         async.waterfall([
             connect_db,
             function(db, next) {
-                db.execute(
-                    "SELECT COUNT(*) FROM ITEM",
-                    [],
-                    { outFormat: oracledb.OBJECT },
-                    function(err, result) {
-                        var count = result.rows[0]['COUNT(*)'] + 1;
-                        var item_code = 'IT' + count;
-                        db.close();
-                        next(null, item_code);
-                    }
-                );
+								db.execute(
+										'SELECT ITEM_CODE ' +
+										'FROM ITEM ' +
+										'ORDER BY ITEM_CODE',
+										[],
+										{ outFormat: oracledb.OBJECT },
+										function(err, result) {
+												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+												var new_code = 'IT' + (parseInt(last_code.replace('IT', ''), 10) + 1);
+												db.close();
+												next(err, new_code);
+										});
             }
         ], function(err, item_code) {
             callback(err, item_code);
@@ -550,7 +553,7 @@ module.exports = {
               { outFormat: oracledb.OBJECT },
                 function(err, result) {
                   db.close();
-                  next(null, result.rows);
+                  next(err, result.rows);
                 });
               }
             ], function(err, result) {
@@ -575,7 +578,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -600,7 +603,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -626,7 +629,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -639,17 +642,18 @@ module.exports = {
 		async.waterfall([
 			connect_db,
 			function(db,next) {
-				db.execute(
-					"SELECT count(*) FROM SELLING",
-					[],
-                    { outFormat: oracledb.OBJECT },
-					function(err, result) {
-						var count = result.rows[0]['COUNT(*)'] + 1;
-						var selling_code = 'SL' + count;
-						db.close();
-          	            next(null, selling_code);
-					}
-				);
+					db.execute(
+						'SELECT SELLING_CODE ' +
+						'FROM SELLING ' +
+						'ORDER BY SELLING_CODE',
+						[],
+						{ outFormat: oracledb.OBJECT },
+						function(err, result) {
+								var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+								var new_code = 'SL' + (parseInt(last_code.replace('SL', ''), 10) + 1);
+								db.close();
+								next(err, new_code);
+						});
 			}
 		], function(err, selling_code) {
             callback(err, selling_code);
@@ -674,7 +678,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result);
+                        next(err, result);
                     });
             }], function(err, result) {
                 callback(err, result);
@@ -706,7 +710,7 @@ module.exports = {
 		                console.log(err);
                     }
                     db.close();
-                    next(null);
+                    next(err);
                 });
             }
         ], function(err) {
@@ -718,20 +722,18 @@ module.exports = {
         async.waterfall([
             connect_db,
             function(db,next) {
-                db.execute(
-                    "SELECT count(*) FROM EVENT",
-                    [],
-                    { outFormat: oracledb.OBJECT },
-                    function(err, result) {
-                        if (err) {
-                            console.log(err);
-                        }
-                        var count = result.rows[0]['COUNT(*)'] + 1;
-                        var event_code = 'EV' + count;
-                        db.close();
-                        next(null, event_code);
-                    }
-                );
+								db.execute(
+										'SELECT EVENT_CODE ' +
+										'FROM EVENT ' +
+										'ORDER BY EVENT_CODE',
+										[],
+										{ outFormat: oracledb.OBJECT },
+										function(err, result) {
+												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+												var new_code = 'EV' + (parseInt(last_code.replace('EV', ''), 10) + 1);
+												db.close();
+												next(err, new_code);
+										});
             }
         ], function(err, event_code) {
             callback(err, event_code);
@@ -755,7 +757,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result);
+                        next(err, result);
                     });
             }], function(err, result) {
             callback(err, result);
@@ -786,7 +788,7 @@ module.exports = {
                         console.log(err);
                     }
                     db.close();
-                    next(null);
+                    next(err);
                 });
             }
         ], function(err) {
@@ -809,7 +811,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -837,7 +839,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -862,7 +864,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -886,7 +888,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -912,7 +914,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -937,7 +939,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -964,7 +966,7 @@ module.exports = {
                             console.log(err);
                         }
                         db.close();
-                        next(null, result.rows);
+                        next(err, result.rows);
                     });
             }
         ], function(err, result) {
@@ -976,17 +978,18 @@ module.exports = {
         async.waterfall([
             connect_db,
             function(db, next) {
-                db.execute(
-                    "SELECT COUNT(*) FROM EXCEPT_ITEM",
-                    [],
-                    { outFormat: oracledb.OBJECT },
-                    function(err, result) {
-                        var count = result.rows[0]['COUNT(*)'] + 1;
-                        var except_item_code = 'EC' + count;
-                        db.close();
-                        next(null, except_item_code);
-                    }
-                );
+								db.execute(
+										'SELECT EXCEPT_ITEM_CODE ' +
+										'FROM EXCEPT_ITEM ' +
+										'ORDER BY EXCEPT_ITEM_CODE',
+										[],
+										{ outFormat: oracledb.OBJECT },
+										function(err, result) {
+												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+												var new_code = 'EC' + (parseInt(last_code.replace('EC', ''), 10) + 1);
+												db.close();
+												next(err, new_code);
+										});
             }
         ], function(err, item_code) {
             callback(err, item_code);
