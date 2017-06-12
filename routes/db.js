@@ -1,4 +1,5 @@
 var oracledb = require('oracledb');
+oracledb.autoCommit = true;
 var async = require('async');
 
 var db_config = {
@@ -48,6 +49,190 @@ module.exports = {
 			}
 		});
 	},
+
+	// 지원자 조회
+	employee_get_applicant: function(branch_code, callback) {
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'SELECT * ' +
+          'FROM APPLICANT ' +
+					'WHERE BRANCH_CODE=:code ' +
+					'ORDER BY APPLICANT_DATE',
+          [branch_code],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+          db.close();
+          next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+      callback(err, result);
+    });
+	},
+
+	// 직원 조회
+	employee_get_employee: function(branch_code, callback) {
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'SELECT * ' +
+					'FROM EMPLOYEE ' +
+					'WHERE BRANCH_CODE=:code ' +
+					'ORDER BY EMPLOYEE_CODE',
+					[branch_code],
+					{ outFormat: oracledb.OBJECT },
+				function(err, result) {
+					db.close();
+					next(null, result.rows);
+				});
+			}
+		], function(err, result) {
+			callback(err, result);
+		});
+	},
+
+	employee_add_applicant: function(options, callback) {
+		var name = options.name;
+		var id_card = options.id_card;
+		var resume = options.resume;
+		var date = options.date;
+		var branch_code = options.branch_code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+          'SELECT APPLICANT_CODE ' +
+          'FROM APPLICANT ' +
+					'ORDER BY APPLICANT_CODE',
+          [],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+          next(err, {
+						rows: result.rows,
+						db: db
+					});
+        });
+			},
+			function(data, next) {
+				var last_code = data.rows[data.rows.length - 1].APPLICANT_CODE;
+				var new_code = 'AP' + (parseInt(last_code.replace('AP', ''), 10) + 1);
+
+				data.db.execute(
+						"INSERT INTO APPLICANT (APPLICANT_CODE, APPLICANT_DATE, APPLICANT_ID_CARD, APPLICANT_NAME, APPLICANT_RESUME, BRANCH_CODE) " +
+						"VALUES (:applicant_code, :applicant_date, :applicant_id_card, :applicant_name, :applicant_resume, :applicant_branch_code)",
+						[new_code, date, id_card, name, resume, branch_code],
+						{
+								outFormat: oracledb.OBJECT,
+								autoCommit: true
+						},
+						function(err) {
+								data.db.close();
+								next(err);
+						});
+			}
+		], function(err) {
+			callback(err);
+		});
+	},
+
+	employee_accept: function(options, callback) {
+		var code = options.code;
+		var name = options.name;
+		var date = options.date;
+		var branch_code = options.branch_code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+          'DELETE FROM APPLICANT ' +
+					'WHERE APPLICANT_CODE=:code',
+          [code],
+        function(err, result) {
+          next(err, db);
+        });
+			},
+			function(db, next) {
+				db.execute(
+          'SELECT EMPLOYEE_CODE ' +
+          'FROM EMPLOYEE ' +
+					'ORDER BY EMPLOYEE_CODE',
+          [],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+          next(err, {
+						rows: result.rows,
+						db: db
+					});
+        });
+			},
+			function(data, next) {
+				var last_code = data.rows[data.rows.length - 1].EMPLOYEE_CODE;
+				var new_code = 'EP' + (parseInt(last_code.replace('EP', ''), 10) + 1);
+
+				data.db.execute(
+						"INSERT INTO EMPLOYEE (EMPLOYEE_CODE, EMPLOYEE_NAME, EMPLOYEE_SALARY, EMPLOYEE_RANK, WORK_START_DATE, BRANCH_CODE, EMPLOYEE_PASSWORD) " +
+						"VALUES (:employee_code, :employee_name, :employee_salary, :employee_rank, :employee_date, :employee_branch_code, :employee_password)",
+						[new_code, name, 8000, 'employee', date, branch_code, '1234'],
+						{
+								outFormat: oracledb.OBJECT,
+								autoCommit: true
+						},
+						function(err) {
+								data.db.close();
+								next(err);
+						});
+			}
+		], function(err) {
+			callback(err);
+		});
+	},
+
+	employee_reject: function(options, callback) {
+		var code = options.code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'DELETE FROM APPLICANT ' +
+					'WHERE APPLICANT_CODE=:code',
+					[code],
+				function(err) {
+					db.close();
+					next(err);
+				});
+			},
+		], function(err) {
+			callback(err);
+		});
+	},
+
+	employee_fire: function(options, callback) {
+		var code = options.code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'DELETE FROM EMPLOYEE ' +
+					'WHERE EMPLOYEE_CODE=:code',
+					[code],
+				function(err) {
+					db.close();
+					next(err);
+				});
+			},
+		], function(err, result) {
+			callback(err);
+		});
+	},
+
+
 
 	// 판매 조회
   sales_lookup: function(callback) {

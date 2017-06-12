@@ -79,40 +79,28 @@ router.get('/customer/lookup', check_session, function(req, res, next) {
 router.get('/employee/admin', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
+  var is_admin = false;
 
   if (session.user_data) {
     user_data = session.user_data;
+    is_admin = session.user_data.EMPLOYEE_RANK == 'master' ? true : false;
   }
-  res.render('employee/admin.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
 
-router.get('/employee/lookup', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
+  if (is_admin) {
+    res.render('employee/admin.html', {
+      session: user_data ? true : false,
+      user_data: JSON.stringify(user_data || {})
+    });
+  } else {
+    var url = new Buffer(req.protocol + '://' + req.get('host') + req.originalUrl).toString('base64');
+    var no_session = new Buffer('no_session').toString('base64');
 
-  if (session.user_data) {
-    user_data = session.user_data;
+    // res.redirect('/login?q=' + url + '&o=' + no_session);
+    res.render('employee/admin.html', {
+      session: user_data ? true : false,
+      user_data: JSON.stringify(user_data || {})
+    });
   }
-  res.render('employee/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/employee/timetable', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('employee/timetable.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
 });
 
 // entry_goods
@@ -376,13 +364,8 @@ router.get('/stock/modify', check_session, function(req, res, next) {
 // REST API
 
 /*
-  sales 판매 관련
+  로그인/로그아웃
 */
-router.post('/sales/lookup', function(req, res) {
-  features.sales.lookup(function(result) {
-    res.json(result);
-  });
-});
 
 router.post('/signin', function(req, res) {
   features.signin(req, function(result) {
@@ -394,6 +377,57 @@ router.post('/signout', check_session, function(req, res) {
   req.session.destroy(function() {
     res.json({});
   })
+});
+
+/*
+  employee
+*/
+router.post('/employee/get_info', check_session, function(req, res) {
+  // var session = req.session || {};
+  // var user_data = session.user_data;
+  //
+  // if (user_data.EMPLOYEE_RANK != 'master') {
+  //   console.log('1');
+  //   res.json({
+  //     result: false
+  //   });
+  // } else {
+    features.employee.get_info(req.body, function(result) {
+      res.json(result);
+    });
+  // }
+});
+
+router.post('/employee/add_applicant', function(req, res) {
+  features.employee.add_applicant(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+
+router.post('/employee/accept', function(req, res) {
+  features.employee.accept(req.body, function(result) {
+    res.json(result);
+  });
+});
+router.post('/employee/reject', function(req, res) {
+  features.employee.reject(req.body, function(result) {
+    res.json(result);
+  });
+});
+router.post('/employee/fire', function(req, res) {
+  features.employee.fire(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+/*
+  sales 판매 관련
+*/
+router.post('/sales/lookup', function(req, res) {
+  features.sales.lookup(function(result) {
+    res.json(result);
+  });
 });
 
 router.post('/selling/enroll', function(req,res) {
