@@ -518,7 +518,6 @@ router.get('/event/item/lookup', function(req, res) {
     });
 });
 
-<<<<<<< HEAD
 /*
   생활 서비스
 */
@@ -546,9 +545,8 @@ router.post('/service/delete', function (req,res) {
 
       res.json(result);
     });
-})
+});
 
-=======
 router.post('/event/item/modify', function(req, res) {
     features.event_item.modify(req.body, function(result) {
         res.json(result);
@@ -582,6 +580,5 @@ router.post('/exception/delete', function(req, res) {
         res.json(result);
     });
 });
->>>>>>> a0151d9bf3cab88b0567310e721a3ac6a8163817
 
 module.exports = router;
