@@ -48,8 +48,8 @@ var make_stock_table = function(data, callback) {
         '<td>' + item_code + '</td>' +
         '<td>' + item_name + '</td>' +
         '<td>' + item_classification + '</td>' +
-        '<td>' + display_count + '</td>' +
         '<td>' + warehouse_count + '</td>' +
+        '<td>' + display_count + '</td>' +
       '</tr>'
     ].join('');
 
