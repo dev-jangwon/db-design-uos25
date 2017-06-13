@@ -775,18 +775,22 @@ module.exports = {
               next(err, result.rows);
             });
           },
-		  function(result, next) {
-              	var temp_date = result[0].ITEM_EXPIRATION_DATE;
+		  function(result, _callback) {
               	var obj = result[0];
-				async.map(result, function(item, next) {
-					if (item.ITEM_EXPIRATION_DATE < temp_date) {
-						temp_date = item.ITEM_EXPIRATION_DATE;
-						obj = item;
-					}
-					next();
-				}, function() {
-					next(null, obj);
-				});
+				if (!obj || obj.ITEM_EXPIRATION_DATE == 0) {
+                    _callback("no_stock");
+				} else {
+                    var temp_date = result[0].ITEM_EXPIRATION_DATE;
+                    async.map(result, function (item, _next) {
+                        if (item.ITEM_EXPIRATION_DATE < temp_date) {
+                            temp_date = item.ITEM_EXPIRATION_DATE;
+                            obj = item;
+                        }
+                        _next();
+                    }, function () {
+                        _callback(null, obj);
+                    });
+                }
 		  }
         ], function(err, result) {
           callback(err, result);
@@ -1506,7 +1510,8 @@ module.exports = {
             function(db, next) {
                 db.execute(
                     'SELECT * ' +
-                    'FROM EXCEPT_ITEM',
+                    'FROM EXCEPT_ITEM, EXCEPT_TYPE ' +
+					'WHERE EXCEPT_ITEM.EXCEPT_TYPE_CODE = EXCEPT_TYPE.EXCEPT_TYPE_CODE',
                     [],
                     { outFormat: oracledb.OBJECT },
                     function(err, result) {

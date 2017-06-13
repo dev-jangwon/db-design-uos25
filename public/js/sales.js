@@ -53,6 +53,11 @@ $(document).ready(function() {
         var etc_message = "";
 
         $.post('/item/lookup', { item_code: item_code }, function (data) {
+            if (!data.result) {
+                alert.show("물품 재고가 부족합니다. 재고를 수정해주세요.");
+                return;
+            }
+
             var item_data = data.data;
             var mileage_data = data.mileage_data[0];
             var event_data = data.event_info.data;
