@@ -279,6 +279,91 @@ module.exports = {
 		});
 	},
 
+	request_delete: function(options, callback) {
+		var request_code = options.code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'DELETE FROM REQUEST ' +
+					'WHERE REQUEST_CODE=:rq_code',
+					[request_code],
+				function(err) {
+					db.close();
+					next(err);
+				});
+			},
+		], function(err, result) {
+			callback(err);
+		});
+	},
+
+	request_count: function(callback) {
+			async.waterfall([
+					connect_db,
+					function(db, next) {
+							db.execute(
+									'SELECT REQUEST_CODE ' +
+									'FROM REQUEST ' +
+									'ORDER BY REQUEST_CODE',
+									[],
+									{ outFormat: oracledb.OBJECT },
+									function(err, result) {
+											var last_code;
+											if (result.rows.length == 0) {
+													last_code = 'RQ0';
+											} else {
+													last_code = result.rows[result.rows.length - 1].REQUEST_CODE;
+											}
+											var new_code = 'RQ' + (parseInt(last_code.replace('RQ', ''), 10) + 1);
+											db.close();
+											next(err, new_code);
+									});
+					}
+			], function(err, result) {
+					callback(err, result);
+			});
+	},
+
+	request_add: function(options, callback) {
+		async.waterfall([
+				connect_db,
+				function(db, next) {
+					db.execute(
+						'INSERT INTO REQUEST (REQUEST_CODE, REQUEST_DATE, BRANCH_CODE) ' +
+						'VALUES (:rq_code, :rq_date, :br_code)',
+						[options.code, options.date, options.branch_code],
+						{ outFormat: oracledb.OBJECT },
+					function(err) {
+						db.close();
+						next(err);
+					});
+				}
+		], function(err) {
+				callback(err, options.code);
+		});
+	},
+
+	request_item_add: function(options, callback) {
+		async.waterfall([
+				connect_db,
+				function(db, next) {
+					db.execute(
+						'INSERT INTO REQUEST_ITEM (REQUEST_CODE, REQUEST_ITEM_COUNT, ITEM_CODE) ' +
+						'VALUES (:rq_code, :it_count, :it_code)',
+						[options.rq_code, options.count, options.code],
+						{ outFormat: oracledb.OBJECT },
+					function(err) {
+						db.close();
+						next(err);
+					});
+				}
+		], function(err) {
+				callback(err);
+		});
+	},
+
 	arrive_get: function(options, callback) {
 		var code = options.code;
 
@@ -325,6 +410,83 @@ module.exports = {
 		});
 	},
 
+	arrive_confirm: function(options, callback) {
+		var item_code = options.item_code;
+		var item_count = options.item_count;
+		var item_expiration_date = options.item_expiration_date;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'SELECT WAREHOUSE_COUNT ' +
+					'FROM ITEM_COUNT ' +
+					'WHERE ITEM_CODE=:it_code AND ITEM_EXPIRATION_DATE=:it_date ',
+					[item_code, item_expiration_date],
+					{ outFormat: oracledb.OBJECT },
+				function(err, result) {
+					next(err, {
+						db: db,
+						rows: result ? result.rows : []
+					});
+				});
+			},
+			function(data, next) {
+				if (data.rows.length > 0) {
+					var new_count = parseInt(data.rows[0].WAREHOUSE_COUNT) + parseInt(item_count);
+
+					data.db.execute(
+						'UPDATE ITEM_COUNT ' +
+						'SET WAREHOUSE_COUNT=:it_count ' +
+						'WHERE ITEM_CODE=:it_code AND ITEM_EXPIRATION_DATE=:it_date ',
+						[new_count, item_code, item_expiration_date],
+						{ outFormat: oracledb.OBJECT },
+					function(err) {
+						data.db.close();
+						next(err);
+					});
+				} else {
+					data.db.execute(
+						'INSERT INTO ITEM_COUNT (ITEM_CODE, DISPLAY_COUNT, WAREHOUSE_COUNT, ITEM_EXPIRATION_DATE) ' +
+						'VALUES (:it_code, :d_count, :w_count, :it_date)',
+						[item_code, 0, item_count, item_expiration_date],
+						{ outFormat: oracledb.OBJECT },
+					function(err) {
+						data.db.close();
+						next(err);
+					});
+				}
+			}
+		], function(err) {
+			callback(err);
+		});
+	},
+
+	arrive_delete: function(options, callback) {
+		var arrive_code = options.code;
+
+		async.waterfall([
+			connect_db,
+			function(db, next) {
+				db.execute(
+					'DELETE FROM ARRIVE ' +
+					'WHERE ARRIVE_CODE=:ar_code',
+					[arrive_code],
+				function(err) {
+					db.close();
+					next(err);
+				});
+			},
+		], function(err, result) {
+			callback(err);
+		});
+	},
+
+	arrive_item_delete: function(options, callback) {
+
+	},
+
+
   employee_lookup_sum: function(options, callback) {
       async.waterfall([
           connect_db,
@@ -340,7 +502,7 @@ module.exports = {
           }
       ], function(err, result) {
           callback(err, result);
-      })
+      });
   },
 
 	// 판매 조회

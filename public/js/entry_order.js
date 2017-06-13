@@ -9,7 +9,6 @@ var init = function() {
   }, function(data) {
     if (data.result) {
       request_list = data.requests;
-      console.log(request_list);
 
       make_request_table();
 
@@ -96,17 +95,22 @@ var make_request_item_table = function(request_item_list, callback) {
 
 $('#arrive_table').on('click', '.arrive_lookup', function() {
   var $tr = $(this).parents('tr');
-  var code = $tr.attr('data-code');
+  var arrive_code = $tr.attr('data-code');
+  var request_code = arrive_code.replace('AR', 'RQ');
 
   $('.loading_bg').show();
 
   $.post('/arrive/arrive_item', {
-    code: code
+    arrive_code: arrive_code,
+    request_code: request_code
   }, function(data) {
     if (data.result) {
-      var arrive_item_list = data.data;
+      var arrive_item_list = data.arrive_item;
+      var request_item_list = data.request_item;
 
-      make_arrive_item_table(arrive_item_list, function() {
+      $('#arrive_item_modal').attr('data-code', arrive_code);
+
+      make_arrive_item_table(arrive_item_list, request_item_list, function() {
         $('.loading_bg').hide();
         $('#arrive_item_modal').modal('show');
       });
@@ -117,19 +121,28 @@ $('#arrive_table').on('click', '.arrive_lookup', function() {
   });
 });
 
-var make_arrive_item_table = function(arrive_item_list, callback) {
+var make_arrive_item_table = function(arrive_item_list, request_item_list, callback) {
   var arrive_item_table = $('#arrive_item_table');
   var table_body = arrive_item_table.find('tbody');
   table_body.empty();
 
-  for (var i = 0; i < arrive_item_list.length; i++) {
-    var item = arrive_item_list[i];
+  for (var i = 0; i < request_item_list.length; i++) {
+    var item = request_item_list[i];
+    var arrive_item_count = 0;
+
+    for (var j = 0; j < arrive_item_list.length; j++) {
+      if (arrive_item_list[j].ITEM_CODE == item.ITEM_CODE) {
+        arrive_item_count = arrive_item_list[j].ARRIVE_ITEM_COUNT;
+        break;
+      }
+    }
 
     var template = [
       '<tr>' +
         '<td>' + item.ITEM_CODE + '</td>' +
         '<td>' + item.ITEM_NAME + '</td>' +
-        '<td>' + item.ARRIVE_ITEM_COUNT + '</td>' +
+        '<td>' + item.REQUEST_ITEM_COUNT + '</td>' +
+        '<td>' + arrive_item_count + '</td>' +
       '</tr>'
     ].join('');
 
@@ -191,12 +204,128 @@ var make_arrive_table = function(data) {
   }
 };
 
-$('#add_request').on('click', function() {
+var item_list = [];
+var request_list = [];
 
+$('#add_request').on('click', function() {
+  request_list = [];
+  $('#add_request_table').find('tbody').empty();
+  var item_select = $('#add_item_code');
+
+  item_select.empty();
+
+  $('#total_add_request_price').html('<i class="fa fa-krw"></i><span style="font-size:16px;">0</span>');
+  $('#add_item_count').val(0);
+
+  $.get('/item/lookup/all', function (data) {
+      item_list = data.data;
+
+      for (var i = 0; i < item_list.length; i++) {
+        var template = [
+          '<option price="' + item_list[i].ITEM_PRICE + '" value="' + item_list[i].ITEM_CODE + '">',
+            item_list[i].ITEM_NAME,
+          '</option>'
+        ].join('');
+        item_select.append(template);
+      }
+      $('#add_request_modal').modal('show');
+  });
 });
 
-$('#check_arrive').on('click', function() {
-  if ($('#arrive_table').find('tbody').children().length > 0) {
-    
+$('#add_item_btn').on('click', function() {
+  var item_select = $('#add_item_code');
+  var code = item_select.val();
+  var name = $('#add_item_code > option:selected').text();
+  var price = $('#add_item_code > option:selected').attr('price');
+  var count = $('#add_item_count').val();
+  var table = $('#add_request_table');
+  var tbody = table.find('tbody');
+  var total_price = parseInt(price) * parseInt(count);
+  var new_price = parseInt($('#total_add_request_price > span').text()) + total_price;
+
+  if (count <= 0) {
+    alert.show('주문할 물품의 개수를 입력해주세요.', function() {
+      $('#add_item_count').focus();
+    });
+    return;
   }
+
+  var template = [
+    '<tr data-code="' + code + '">' +
+      '<td>' + name + '</td>' +
+      '<td><i class="fa fa-krw"></i>' + price + '</td>' +
+      '<td>' + count + '</td>' +
+      '<td><i class="fa fa-krw"></i>' + total_price + '</td>' +
+    '</tr>'
+  ].join('');
+
+  request_list.push({
+    item_code: code,
+    item_count: count
+  });
+  $('#total_add_request_price > span').text(new_price);
+  tbody.append(template);
+});
+
+$('#add_request_btn').on('click', function() {
+  var date = new Date();
+  date = date.toLocaleDateString().replace(/\ /g, '');
+  var splited = date.split('.');
+  if (splited[1].length == 1) {
+    splited[1] = '0' + splited[1];
+  }
+  if (splited[2].length == 1) {
+    splited[2] = '0' + splited[2];
+  }
+  date = splited.join('');
+
+  $.post('/request/add', {
+    data: request_list,
+    date: date,
+    branch_code: 'UOS001'
+  }, function(data) {
+    if (data.result) {
+      window.location.reload();
+    } else {
+      alert.show('주문 등록에 실패하였습니다.');
+    }
+  });
+});
+
+$('#add_item_count').on('keydown', function(e) {
+  if (e.keyCode == 13) {
+    $('#add_item_btn').click();
+  }
+})
+
+$('#confirm_arrive').on('click', function() {
+  var arrive_code = $('#arrive_item_modal').attr('data-code');
+  $('.loading_bg').show();
+
+  $.post('/arrive/confirm', {
+    code: arrive_code
+  }, function(data) {
+    if (!data.result) {
+      $('.loading_bg').hide();
+      alert.show('입고 확인 처리에 실패하였습니다.');
+    } else {
+      window.location.reload();
+    }
+  });
+});
+
+$('#rearrive').on('click', function() {
+  var arrive_code = $('#arrive_item_modal').attr('data-code');
+  $('.loading_bg').show();
+
+  $.post('/arrive/rearrive', {
+    code: arrive_code
+  }, function(data) {
+    if (!data.result) {
+      $('.loading_bg').hide();
+      alert.show('재입고 신청 처리에 실패하였습니다.');
+    } else {
+      window.location.reload();
+    }
+  });
 });

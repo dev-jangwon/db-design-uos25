@@ -398,6 +398,12 @@ router.post('/request/request_item', function(req, res) {
   });
 });
 
+router.post('/request/add', function(req, res) {
+  features.request.add(req.body, function(result) {
+    res.json(result);
+  });
+});
+
 
 router.post('/arrive/get', function(req, res) {
   features.arrive.get(req.body, function(result) {
@@ -411,6 +417,17 @@ router.post('/arrive/arrive_item', function(req, res) {
   });
 });
 
+router.post('/arrive/confirm', function(req, res) {
+  features.arrive.confirm(req.body, function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/arrive/rearrive', function(req, res) {
+  features.arrive.rearrive(req.body, function(result) {
+    res.json(result);
+  });
+});
 
 
 /*

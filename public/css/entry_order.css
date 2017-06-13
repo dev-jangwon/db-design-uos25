@@ -173,7 +173,7 @@ td {
 }
 
 .first_box .box-body {
-  height: 345px;
+  height: 400px;
   overflow: auto;
 }
 
@@ -185,4 +185,14 @@ td {
 #total_request_item_price {
   width: 120px;
   text-align: center;
+}
+
+#add_item_code {
+  width: 150px;
+  margin: 0px 20px;
+}
+
+#add_item_count {
+  width: 100px;
+  margin: 0px 20px;
 }

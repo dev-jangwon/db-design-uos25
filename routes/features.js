@@ -143,7 +143,44 @@ features.request.get_item = function(options, callback) {
         data: data
       });
     }
-  })
+  });
+};
+
+features.request.add = function(options, callback) {
+  async.waterfall([
+    function(next) {
+      db.request_count(next);
+    },
+    function(new_code, next) {
+      db.request_add({
+        code: new_code,
+        date: options.date,
+        branch_code: options.branch_code
+      }, next);
+    },
+    function(rq_code, next) {
+      var item_list = options.data;
+      async.map(item_list, function(item, _next) {
+        db.request_item_add({
+          rq_code: rq_code,
+          code: item.item_code,
+          count: item.item_count
+        }, _next);
+      }, function() {
+        next();
+      });
+    }
+  ], function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
 };
 
 features.arrive = {};
@@ -164,7 +201,27 @@ features.arrive.get = function(options, callback) {
 };
 
 features.arrive.get_item = function(options, callback) {
-  db.arrive_get_item(options, function(err, data) {
+  var request_data = [];
+  var arrive_data = [];
+
+  async.waterfall([
+    function(next) {
+      db.request_get_item({
+        code: options.request_code
+      }, function(err, data) {
+        next(err, data);
+      });
+    },
+    function(rq_data, next) {
+      request_data = rq_data;
+      db.arrive_get_item({
+        code: options.arrive_code
+      }, function(err, data) {
+        next(err, data);
+      });
+    }
+  ], function(err, data) {
+    arrive_data = data;
     if (err) {
       callback({
         result: false
@@ -172,11 +229,80 @@ features.arrive.get_item = function(options, callback) {
     } else {
       callback({
         result: true,
-        data: data
+        request_item: request_data,
+        arrive_item: arrive_data
       });
     }
-  })
+  });
 };
+
+features.arrive.confirm = function(options, callback) {
+  var arrive_code = options.code;
+  var request_code = arrive_code.replace('AR', 'RQ');
+
+  async.waterfall([
+    function(next) {
+      db.arrive_get_item({
+        code: arrive_code
+      }, function(err, data) {
+        next(err, data);
+      });
+    },
+    function(arrive_item, next) {
+      async.map(arrive_item, function(item, _next) {
+        db.arrive_confirm({
+          item_code: item.ITEM_CODE,
+          item_count: item.ARRIVE_ITEM_COUNT,
+          item_expiration_date: item.ITEM_EXPIRATION_DATE
+        }, _next);
+      }, function(err) {
+        next();
+      });
+    },
+    function(next) {
+      db.arrive_delete({
+        code: arrive_code
+      }, function(err) {
+        next(err);
+      });
+    },
+    function(next) {
+      db.request_delete({
+        code: request_code
+      }, function(err) {
+        next(err);
+      });
+    }
+  ], function(err, data) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+features.arrive.rearrive = function(options, callback) {
+  db.arrive_delete({
+    code: options.code
+  }, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
+
 
 features.sales = {};
 
