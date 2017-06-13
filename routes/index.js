@@ -478,8 +478,11 @@ router.post('/customer/delete', function(req, res) {
 router.post('/item/lookup', function(req, res) {
   features.item.lookup(req.body, function(result) {
     features.branch_item.lookup(req.body, function(mileage_result) {
-      result.mileage_data = mileage_result.data;
-      res.json(result);
+        result.mileage_data = mileage_result.data;
+        features.event_item.event_item_lookup_item_code(req.body, function(event_info) {
+            result.event_info = event_info;
+            res.json(result);
+        });
     });
   });
 });
