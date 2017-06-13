@@ -67,7 +67,6 @@
                                     <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">바코드</th>
                                     <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">이름</th>
                                     <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">가격</th>
-                                    <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">유통기한</th>
                                     <th class="sorting" tabindex="0" aria-controls="item_view_table" rowspan="1" colspan="1" aria-label="">분류</th>
                                 </tr>
                                 </thead>
@@ -126,14 +125,6 @@
                         <label class="control-label col-sm-3" for="item_dialog_modal_price" style="padding-top:5px;"></i>가격</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="item_dialog_modal_price" placeholder="가격">
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin:5px;">
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" for="item_dialog_modal_date" style="padding-top:5px;"></i>유통기한</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="item_dialog_modal_date" placeholder="유통기한">
                         </div>
                     </div>
                 </div>
@@ -203,7 +194,6 @@
                 item_data[i].ITEM_BARCODE,
                 item_data[i].ITEM_NAME,
                 item_data[i].ITEM_PRICE,
-                item_data[i].ITEM_EXPIRATION_DATE,
                 item_data[i].ITEM_CLASSIFICATION
             ]).draw('false');
         }

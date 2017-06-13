@@ -453,13 +453,13 @@ router.post('/item/enroll',function(req,res) {
   });
 });
 
-router.post('item/modify', function(req, res) {
+router.post('/item/modify', function(req, res) {
   features.item.modify(req.body, function(result) {
     res.json(result);
   })
 });
 
-router.post('item/delete', function(req, res) {
+router.post('/item/delete', function(req, res) {
     features.item.delete(req.body, function(result) {
         res.json(result);
     })
