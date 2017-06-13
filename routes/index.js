@@ -85,21 +85,22 @@ router.get('/employee/admin', check_session, function(req, res, next) {
     is_admin = session.user_data.EMPLOYEE_RANK == 'master' ? true : false;
   }
 
-  if (is_admin) {
-    res.render('employee/admin.html', {
-      session: user_data ? true : false,
-      user_data: JSON.stringify(user_data || {})
-    });
-  } else {
-    var url = new Buffer(req.protocol + '://' + req.get('host') + req.originalUrl).toString('base64');
-    var no_session = new Buffer('no_session').toString('base64');
+  res.render('employee/admin.html', {
+    session: user_data ? true : false,
+    user_data: JSON.stringify(user_data || {})
+  });
 
-    // res.redirect('/login?q=' + url + '&o=' + no_session);
-    res.render('employee/admin.html', {
-      session: user_data ? true : false,
-      user_data: JSON.stringify(user_data || {})
-    });
-  }
+  // if (is_admin) {
+  //   res.render('employee/admin.html', {
+  //     session: user_data ? true : false,
+  //     user_data: JSON.stringify(user_data || {})
+  //   });
+  // } else {
+  //   var url = new Buffer(req.protocol + '://' + req.get('host') + req.originalUrl).toString('base64');
+  //   var no_session = new Buffer('no_session').toString('base64');
+  //
+  //   res.redirect('/login?q=' + url + '&o=' + no_session);
+  // }
 });
 
 // entry and order
