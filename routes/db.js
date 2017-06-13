@@ -1124,7 +1124,8 @@ module.exports = {
                                 });
 						},
 						function(now_count, _next) {
-		        			var new_count = parseInt(now_count) - parseInt(value);
+		        			var new_count = parseInt(now_count.DISPLAY_COUNT) - parseInt(value);
+
                             db.execute(
                                 "UPDATE ITEM_COUNT " +
                                 "SET DISPLAY_COUNT=:d_count " +
