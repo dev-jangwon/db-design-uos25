@@ -5,6 +5,7 @@ $(document).ready(function() {
     $('#mileage_form_group').hide();
     $('#customer_code').attr('customer_code', '');
 
+    $('#selling_treeview').click();
     /*
      판매 등록 페이지
      */

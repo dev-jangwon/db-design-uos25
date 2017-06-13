@@ -3,6 +3,8 @@
  */
 
 $(function() {
+    $('#payment_treeview').click();
+
     var get_date_string = function(date) {
         date = date.toLocaleDateString().replace(/\ /g, '');
         var splited = date.split('.');

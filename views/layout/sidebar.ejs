@@ -16,147 +16,146 @@
     </div>
 
     <!-- search form (Optional) -->
-    <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-      </div>
-    </form>
+    <!--<form action="#" method="get" class="sidebar-form">-->
+      <!--<div class="input-group">-->
+        <!--<input type="text" name="q" class="form-control" placeholder="Search...">-->
+            <!--<span class="input-group-btn">-->
+              <!--<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>-->
+              <!--</button>-->
+            <!--</span>-->
+      <!--</div>-->
+    <!--</form>-->
     <!-- /.search form -->
 
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
-      <li class="header">HEADER</li>
-      <li><a href="#"><i class="fa fa-link"></i> <span>Temp</span></a></li>
+      <!--<li class="header"></li>-->
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-male"></i> <span>고객</span>
+        <a href="#" id="customer_treeview"><i class="fa fa-male"></i> <span>고객</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/customer/enroll">고객 등록</a></li>
-          <li><a href="/customer/lookup">고객 조회 / 수정</a></li>
+          <li id="customer_enroll_li"><a href="/customer/enroll">고객 등록</a></li>
+          <li id="customer_lookup_li"><a href="/customer/lookup">고객 조회 / 수정</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-users"></i> <span>직원</span>
+        <a href="#" id="employee_treeview"><i class="fa fa-users"></i> <span>직원</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/employee/admin">직원 관리</a></li>
+          <li id="employee_admin_li"><a href="/employee/admin">직원 관리</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-shopping-cart"></i> <span>주문 및 입고</span>
+        <a href="#" id="request_treeview"><i class="fa fa-shopping-cart"></i> <span>주문 및 입고</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/entry-order/management">주문 및 입고 관리</a></li>
+          <li id="request_management_li"><a href="/entry-order/management">주문 및 입고 관리</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-birthday-cake"></i> <span>이벤트</span>
+        <a href="#" id="event_treeview"><i class="fa fa-birthday-cake"></i> <span>이벤트</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/event/enroll">이벤트 등록</a></li>
-          <li><a href="/event/lookup">이벤트 조회 / 수정</a></li>
+          <li id="event_enroll_li"><a href="/event/enroll">이벤트 등록</a></li>
+          <li id="event_lookup_li"><a href="/event/lookup">이벤트 조회 / 수정</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-exclamation-triangle"></i> <span>예외 물품</span>
+        <a href="#" id="exception_treeview"><i class="fa fa-exclamation-triangle"></i> <span>예외 물품</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/exception-goods/enroll">예외물품 등록</a></li>
-          <li><a href="/exception-goods/lookup">예외물품 조회 / 삭제</a></li>
+          <li id="exception_enroll_li"><a href="/exception-goods/enroll">예외물품 등록</a></li>
+          <li id="exception_lookup_li"><a href="/exception-goods/lookup">예외물품 조회 / 삭제</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-star"></i> <span>편의점 전용상품</span>
+        <a href="#" id="exclusive_treeview"><i class="fa fa-star"></i> <span>편의점 전용상품</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/exclusive-product/enroll">편의점 전용상품 정보 등록 / 수정</a></li>
+          <li id="exclusive_enroll_li"><a href="/exclusive-product/enroll">편의점 전용상품 정보 등록 / 수정</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-archive"></i> <span>물품</span>
+        <a href="#" id="goods_treeview"><i class="fa fa-archive"></i> <span>물품</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/goods/enroll">물품 등록</a></li>
-          <li><a href="/goods/lookup">물품 조회 / 수정</a></li>
+          <li id="goods_enroll_li"><a href="/goods/enroll">물품 등록</a></li>
+          <li id="goods_lookup_li"><a href="/goods/lookup">물품 조회 / 수정</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-scribd"></i> <span>생활서비스</span>
+        <a href="#" id="service_treeview"><i class="fa fa-scribd"></i> <span>생활서비스</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/living-services/enroll">서비스 등록</a></li>
-          <li><a href="/living-services/lookup">서비스 조회/수정</a></li>
+          <li id="service_enroll_li"><a href="/living-services/enroll">서비스 등록</a></li>
+          <li id="service_lookup_li"><a href="/living-services/lookup">서비스 조회/수정</a></li>
           <!-- <li><a href="/living-services/delete">서비스 수정/삭제</a></li> -->
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-krw"></i> <span>지불</span>
+        <a href="#" id="payment_treeview"><i class="fa fa-krw"></i> <span>지불</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/payment/payment">지불</a></li>
+          <li id="payment_payment_li"><a href="/payment/payment">지불</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-money"></i> <span>판매</span>
+        <a href="#" id="selling_treeview"><i class="fa fa-money"></i> <span>판매</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/sales/enroll">판매 등록</a></li>
-          <li><a href="/sales/lookup">판매 조회</a></li>
+          <li id="sales_enroll_li"><a href="/sales/enroll">판매 등록</a></li>
+          <li id="sales_lookup_li"><a href="/sales/lookup">판매 조회</a></li>
         </ul>
       </li>
 
       <li class="treeview">
-        <a href="#"><i class="fa fa-archive"></i> <span>재고</span>
+        <a href="#" id="stock_treeview"><i class="fa fa-archive"></i> <span>재고</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/stock/management">재고 관리</a></li>
+          <li id="stock_management_li"><a href="/stock/management">재고 관리</a></li>
         </ul>
       </li>
 

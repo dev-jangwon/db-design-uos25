@@ -3,6 +3,8 @@ dialog.init('service_dialog_modal');
 alert.init('alert_modal');
 
 $(function() {
+    $('#service_treeview').click();
+
   $("#service_enroll_button").click(function() {
     var service_name = $("#service_name").val();
     var service_info = $("#service_info").val();

@@ -7,6 +7,8 @@ var init = function() {
   $.post('/request/get', {
     branch_code: 'UOS001'
   }, function(data) {
+      $('#request_treeview').click();
+
     if (data.result) {
       request_list = data.requests;
 

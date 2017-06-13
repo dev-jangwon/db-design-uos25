@@ -6,6 +6,8 @@ dialog.init('exception_dialog_modal');
 alert.init('alert_modal');
 
 $(function() {
+    $('#exception_treeview').click();
+
     var date = new Date();
     date = date.toLocaleDateString().replace(/\ /g, '');
     var splited = date.split('.');

@@ -200,7 +200,7 @@
         view_table = $('#selling_view_table').DataTable({
             dom: 't'
         });
-
+        $('#selling_treeview').click();
         for (var i = 0; i < sale_data.length; i++) {
           var date = sale_data[i].SELLING_DATE;
           var s1 = date.substring(0,4);

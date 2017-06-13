@@ -6,6 +6,8 @@ dialog.init('item_dialog_modal');
 alert.init('alert_modal');
 
 $(function() {
+    $('#goods_treeview').click();
+
     // $('#item_ex_date').datepicker();
 
     $("#item_image_input").on('change', function() {
