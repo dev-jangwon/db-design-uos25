@@ -533,7 +533,8 @@ module.exports = {
       function(db, next) {
         db.execute(
           'SELECT * ' +
-          'FROM SELLING',
+          'FROM SELLING ' +
+					'ORDER BY SELLING_DATE',
           [],
           { outFormat: oracledb.OBJECT },
         function(err, result) {

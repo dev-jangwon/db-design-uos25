@@ -19,6 +19,7 @@
         apply the skin class to the body tag so the changes take effect.
   -->
   <link rel="stylesheet" href="/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="/css/index.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,19 +41,67 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Page Header
-        <small>Optional description</small>
+        UOS25
+        <small>UOS25에 오신것을 환영합니다.</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-      </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
 
-      <!-- Your Page Content Here -->
+      <div class="first_box row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">최근 매출 현황</h3>
+
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                <canvas id="lineChart" style="height:250px"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+
+      <div class="second_box row">
+        <div class="col-md-6">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">고객 나이 분포</h3>
+
+            </div>
+            <div class="box-body">
+              <div class="col-md-8">
+                <canvas id="customer_chart" style="height:300px"></canvas>
+              </div>
+              <div id="customer_info" class="col-md-4">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="box box-danger">
+            <div class="box-header with-border">
+              <h3 class="box-title">고객 성별 분포</h3>
+
+            </div>
+            <div class="box-body">
+              <div class="col-md-8">
+                <canvas id="customer_sex_chart" style="height:300px"></canvas>
+              </div>
+              <div id="customer_sex_info" class="col-md-4">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
     </section>
     <!-- /.content -->
@@ -77,5 +126,9 @@
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script>
+  init();
+</script>
 </body>
 </html>

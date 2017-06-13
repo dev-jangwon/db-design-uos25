@@ -7,11 +7,11 @@ var check_session = function(req, res, next) {
   var url = new Buffer(req.protocol + '://' + req.get('host') + req.originalUrl).toString('base64');
   var no_session = new Buffer('no_session').toString('base64');
 
-  // if (session.user_data) {
-  //   next();
-  // } else {
-  //   res.redirect('/login?q=' + url + '&o=' + no_session);
-  // }
+  if (session.user_data) {
+    next();
+  } else {
+    res.redirect('/login?q=' + url + '&o=' + no_session);
+  }
   next();
 };
 /* GET home page. */
@@ -330,15 +330,15 @@ router.post('/signout', check_session, function(req, res) {
   employee
 */
 router.post('/employee/get_info', check_session, function(req, res) {
-  // var session = req.session || {};
-  // var user_data = session.user_data;
-  //
-  // if (user_data.EMPLOYEE_RANK != 'master') {
-  //   console.log('1');
-  //   res.json({
-  //     result: false
-  //   });
-  // } else {
+  var session = req.session || {};
+  var user_data = session.user_data;
+
+  if (user_data.EMPLOYEE_RANK != 'master') {
+    console.log('1');
+    res.json({
+      result: false
+    });
+  } else {
     features.employee.get_info(req.body, function(result) {
       res.json(result);
     });
@@ -438,6 +438,7 @@ router.post('/selling_item/lookup', function(req,res) {
     res.json(result);
   });
 });
+
 
 /*
   customer 고객 관련
