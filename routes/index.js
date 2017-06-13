@@ -12,7 +12,6 @@ var check_session = function(req, res, next) {
   } else {
     res.redirect('/login?q=' + url + '&o=' + no_session);
   }
-  next();
 };
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -322,7 +321,6 @@ router.post('/employee/get_info', check_session, function(req, res) {
   var user_data = session.user_data;
 
   if (user_data.EMPLOYEE_RANK != 'master') {
-    console.log('1');
     res.json({
       result: false
     });

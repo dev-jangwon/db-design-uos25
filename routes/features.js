@@ -35,11 +35,15 @@ features.employee.get_info = function(options, callback) {
 
   async.waterfall([
     function(next) { // get applicants
-      db.employee_get_applicant(branch_code, next);
+      db.employee_get_applicant(branch_code, function(err, result) {
+        next(err, result);
+      });
     },
     function(applicants, next) { // get employees
       applicant_data = applicants;
-      db.employee_get_employee(branch_code, next);
+      db.employee_get_employee(branch_code, function(err, result) {
+        next(err, result);
+      });
     }
   ], function(err, result) {
     if (err) {
