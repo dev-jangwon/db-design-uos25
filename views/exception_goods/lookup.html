@@ -40,18 +40,46 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                예외물품 조회 / 삭제
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 예외물품</a></li>
+                <li class="active">예외물품 조회 / 삭제</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table"></i>
 
+                            <h3 class="box-title">예외물품 정보</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="exception_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="exception_view_table_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">예외물품 코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">처리날짜</th>
+                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">물품코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">예외코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">지점코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">고객코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">처리개수</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
             <!-- Your Page Content Here -->
 
         </section>
@@ -63,7 +91,82 @@
     <% include ../layout/footer.ejs %>
 </div>
 <!-- ./wrapper -->
-
+<div id="exception_dialog_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>예외물품 삭제</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="exception_dialog_modal_except_code" style="padding-top:5px;"></i>예외물품 코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="exception_dialog_modal_except_code" placeholder="코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="exception_dialog_modal_except_date" style="padding-top:5px;"></i>처리 날짜</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="exception_dialog_modal_except_date" placeholder="날짜" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="exception_dialog_modal_item_code" style="padding-top:5px;"></i>물품 코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="exception_dialog_modal_item_code" placeholder="코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="exception_dialog_modal_excpet_item_code" style="padding-top:5px;"></i>물품 코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="exception_dialog_modal_excpet_item_code" placeholder="코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="exception_dialog_modal_branch_code" style="padding-top:5px;"></i>지점 코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="exception_dialog_modal_branch_code" placeholder="코드" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="exception_dialog_modal_customer_code" style="padding-top:5px;"></i>고객 코드</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="exception_dialog_modal_customer_code" placeholder="NULL" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="exception_dialog_modal_count" style="padding-top:5px;"></i>개수</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="exception_dialog_modal_count" placeholder="개수" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div style="text-align: center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="except_lookup_delete">삭제</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>-->
+            <!--</div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
@@ -74,8 +177,36 @@
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTable -->
+<script src="/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+    var exception_data;
+    var exception_view_table;
+    $.get('/exception/lookup/all', function (data) {
+        exception_data = data.data;
+
+        exception_view_table = $('#exception_view_table').DataTable({
+            dom: 't'
+        });
+
+        for (var i = 0; i < exception_data.length; i++) {
+            exception_view_table.row.add([
+                exception_data[i].EXCEPT_ITEM_CODE,
+                exception_data[i].EXCEPT_DO_DATE,
+                exception_data[i].ITEM_CODE,
+                exception_data[i].EXCEPT_TYPE_CODE,
+                exception_data[i].BRANCH_CODE,
+                exception_data[i].CUSTOMER_CODE,
+                exception_data[i].EXCEPT_ITEM_COUNT
+            ]).draw('false');
+        }
+    });
+</script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
 <script src="/js/auth.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/exception.js"></script>
 </body>
 </html>

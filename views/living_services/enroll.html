@@ -40,19 +40,57 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                생활 서비스 등록
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 서비스</a></li>
+                <li class="active">생활 서비스 등록</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
-
             <!-- Your Page Content Here -->
+            <div class="box box-default">
+              <div class="box-header with-border">
+                <i class="fa fa-bullhorn"></i>
+                <h3 class="box-title">서비스 정보</h3>
+              </div>
+
+              <div class="box-body">
+
+                <form id = "service_form" class="form-horizontal">
+                  <div class="form-group">
+                    <label for="service_name" class="col-sm-2 control-label">서비스 이름</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="service_name" placeholder="이름">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="service_info" class="col-sm-2 control-label">서비스 정보</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" rows="3" id="service_info" placeholder="서비스 정보"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="branch_code" class="col-sm-2 control-label">지점</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="branch_code" value="UOS001" disabled>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                          <button id = "service_enroll_button" class="btn btn-primary center-block">등록</button>
+                      </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
 
         </section>
         <!-- /.content -->
@@ -65,13 +103,18 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-
+<script>
+  var user_data = <%- user_data %>;
+  var session = '<%= session %>';
+</script>
 <!-- jQuery 2.2.3 -->
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/service.js"></script>
 <script src="/js/auth.js"></script>
 </body>
 </html>

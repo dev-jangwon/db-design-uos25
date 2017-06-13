@@ -325,6 +325,23 @@ module.exports = {
 		});
 	},
 
+  employee_lookup_sum: function(options, callback) {
+      async.waterfall([
+          connect_db,
+          function(db, next) {
+              db.execute(
+                  'SELECT SUM(EMPLOYEE_SALARY) AS SUM FROM EMPLOYEE',
+                  [],
+                  { outFormat: oracledb.OBJECT},
+              function (err, result) {
+                  db.close();
+                  next(null, result.rows[0].SUM);
+              });
+          }
+      ], function(err, result) {
+          callback(err, result);
+      })
+  },
 
 	// 판매 조회
   sales_lookup: function(callback) {
@@ -399,8 +416,13 @@ module.exports = {
                     [],
                     { outFormat: oracledb.OBJECT },
                     function(err, result) {
-												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
-												var new_code = 'CT' + (parseInt(last_code.replace('CT', ''), 10) + 1);
+                        var last_code;
+                        if (result.rows.length == 0) {
+                            last_code = 'CT0';
+                        } else {
+                            last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+                        }
+                        var new_code = 'CT' + (parseInt(last_code.replace('CT', ''), 10) + 1);
                         db.close();
                         next(err, new_code);
                     });
@@ -620,13 +642,21 @@ module.exports = {
 										[],
 										{ outFormat: oracledb.OBJECT },
 										function(err, result) {
-												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+                                            var last_code;
+                                            if (result.rows.length == 0) {
+                                                last_code = 'IT0';
+                                            } else {
+                                                last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+                                            }
 												var new_code = 'IT' + (parseInt(last_code.replace('IT', ''), 10) + 1);
 												db.close();
 												next(err, new_code);
 										});
             }
         ], function(err, item_code) {
+						if(err){
+							console.log(err);
+						}
             callback(err, item_code);
         });
     },
@@ -741,7 +771,12 @@ module.exports = {
 						[],
 						{ outFormat: oracledb.OBJECT },
 						function(err, result) {
-								var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+                            var last_code;
+                            if (result.rows.length == 0) {
+                                last_code = 'SL0';
+                            } else {
+                                last_code = result.rows[result.rows.length - 1].SELLING_CODE;
+                            }
 								var new_code = 'SL' + (parseInt(last_code.replace('SL', ''), 10) + 1);
 								db.close();
 								next(err, new_code);
@@ -809,6 +844,31 @@ module.exports = {
 		    callback(err, true);
         });
 	},
+
+    selling_lookup_sum: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "SELECT SUM(SELLING_PRICE) AS SUM " +
+                    "FROM SELLING " +
+                    "WHERE SELLING_DATE BETWEEN (:BEFORE_DATE) AND (:CURRENT_DATE)",
+                    [options.before_date, options.current_date],
+                    {
+                        outFormat: oracledb.OBJECT
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows[0].SUM);
+                    });
+            }], function(err, result) {
+            callback(err, result);
+        });
+    },
+
     /* 이벤트관련 */
     event_count: function(callback) {
         async.waterfall([
@@ -821,7 +881,12 @@ module.exports = {
 										[],
 										{ outFormat: oracledb.OBJECT },
 										function(err, result) {
-												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+                                            var last_code;
+                                            if (result.rows.length == 0) {
+                                                last_code = 'EV0';
+                                            } else {
+                                                last_code = result.rows[result.rows.length - 1].EVENT_CODE;
+                                            }
 												var new_code = 'EV' + (parseInt(last_code.replace('EV', ''), 10) + 1);
 												db.close();
 												next(err, new_code);
@@ -1077,7 +1142,12 @@ module.exports = {
 										[],
 										{ outFormat: oracledb.OBJECT },
 										function(err, result) {
-												var last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+                                            var last_code;
+                                            if (result.rows.length == 0) {
+                                                last_code = 'EC0';
+                                            } else {
+                                                last_code = result.rows[result.rows.length - 1].EXCEPT_ITEM_CODE;
+                                            }
 												var new_code = 'EC' + (parseInt(last_code.replace('EC', ''), 10) + 1);
 												db.close();
 												next(err, new_code);
@@ -1085,6 +1155,255 @@ module.exports = {
             }
         ], function(err, item_code) {
             callback(err, item_code);
+        });
+    },
+
+    exception_lookup_all: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT * ' +
+                    'FROM EXCEPT_ITEM',
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    exception_delete: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'DELETE FROM EXCEPT_ITEM ' +
+                    'WHERE EXCEPT_ITEM_CODE = :except_item_code',
+                    [options.except_item_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+		/* 생활서비스 관련 */
+
+		service_count: function(callback) {
+			async.waterfall([
+					connect_db,
+					function(db, next) {
+							db.execute(
+									"SELECT COUNT(*) FROM SERVICE",
+									[],
+									{ outFormat: oracledb.OBJECT },
+									function(err, result) {
+                                        var last_code;
+                                        if (result.rows.length == 0) {
+                                            last_code = 'SV0';
+                                        } else {
+                                            last_code = result.rows[result.rows.length - 1].SERVICE_CODE;
+                                        }
+                                        var service_code = 'SV' + (parseInt(last_code.replace('SV', ''), 10) + 1);
+											db.close();
+											next(null, service_code);
+									}
+							);
+					}
+			], function(err, service_code) {
+					callback(err, service_code);
+			});
+		},
+
+		service_enroll: function(options, callback) {
+			async.waterfall([
+				connect_db,
+				function(db,next) {
+					db.execute(
+						"INSERT INTO SERVICE(SERVICE_CODE,SERVICE_NAME,SERVICE_INFO,BRANCH_CODE) " +
+						"VALUES (:service_code, :service_name, :service_info, :branch_code)",
+						[options.service_code, options.service_name, options.service_info, options.branch_code],
+						{
+							outFormat: oracledb.OBJECT,
+							autoCommit: true
+						},
+						function(err,result) {
+							if(err) {
+								console.log(err);
+							}
+							db.close();
+							next(null,result);
+						});
+				}
+			], function(err,result) {
+				callback(err,result);
+			});
+		},
+
+		service_lookup: function(options, callback) {
+			var code = options.branch_code;
+			async.waterfall([
+        connect_db,
+        function(db, next) {
+          db.execute(
+            'SELECT * ' +
+            'FROM SERVICE ' +
+            'WHERE BRANCH_CODE=:code ' +
+						'ORDER BY SERVICE_NAME',
+            [code],
+            { outFormat: oracledb.OBJECT },
+          function(err, result) {
+            db.close();
+            next(null, result.rows);
+          });
+        }
+      ], function(err, result) {
+        callback(err, result);
+      });
+		},
+
+		service_modify: function(options, callback) {
+			async.waterfall([
+        connect_db,
+        function(db, next) {
+          db.execute(
+            'UPDATE SERVICE ' +
+						'SET SERVICE_NAME = :service_name, ' +
+						'SERVICE_INFO = :service_info ' +
+						'WHERE SERVICE_CODE = :service_code',
+            [options.service_name, options.service_info, options.service_code],
+            {
+							outFormat: oracledb.OBJECT,
+							autoCommit: true
+						},
+          function(err, result) {
+						if(err){
+							console.log(err);
+						}
+            db.close();
+            next(null, result.rows);
+          });
+        }
+      ], function(err, result) {
+        callback(err, result);
+      });
+		},
+
+		service_delete: function(options, callback) {
+			async.waterfall([
+        connect_db,
+        function(db, next) {
+          db.execute(
+            'DELETE FROM SERVICE ' +
+						'WHERE SERVICE_CODE = :service_code' ,
+            [options.service_code],
+            {
+							outFormat: oracledb.OBJECT,
+							autoCommit: true
+						},
+          function(err, result) {
+            db.close();
+            next(null, result.rows);
+          });
+        }
+      ], function(err, result) {
+        callback(err, result);
+      });
+		},
+    /* 지점 정보 조회 */
+    branch_get_info: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT * FROM BRANCH ' +
+                    'WHERE BRANCH_CODE = :BRANCH_CODE' ,
+                    [options.branch_code],
+                    {
+                        outFormat: oracledb.OBJECT
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
+    /* 지불 */
+
+    payment_count: function(callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT PAYMENT_CODE ' +
+                    'FROM PAYMENT ' +
+                    'ORDER BY PAYMENT_CODE',
+                    [],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        var last_code;
+                        if (result.rows.length == 0) {
+                            last_code = 'PY0';
+                        } else {
+                            last_code = result.rows[result.rows.length - 1].PAYMENT_CODE;
+                        }
+                        var payment_code = 'PY' + (parseInt(last_code.replace('PY', ''), 10) + 1);
+                        db.close();
+                        next(err, payment_code);
+                    });
+            }
+        ], function(err, payment_code) {
+            callback(err, payment_code);
+        });
+    },
+
+    payment_enroll: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    "INSERT INTO PAYMENT (PAYMENT_CODE, BRANCH_CODE, PAYMENT_PRICE, PAYMENT_DATE) " +
+                    "VALUES (:payment_code, :branch_code, :payment_price, :payment_date)",
+                    [options.payment_code, options.branch_code, options.payment_price, options.payment_date],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
         });
     }
 };

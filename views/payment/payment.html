@@ -40,18 +40,105 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Page Header
-                <small>Optional description</small>
+                지불
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 지불</a></li>
+                <li class="active">지불</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="callout callout-info">
+                <h4>지불금액 관련 주의사항</h4>
+                지불금액은 지난달 27일을 기준으로 계산됩니다.
+            </div>
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-bullhorn"></i>
+                    <h3 class="box-title">지불 정보</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id = "payment_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="payment_branch" class="col-sm-2 control-label">지점</label>
 
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="payment_branch" placeholder="UOS001" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment_term" class="col-sm-2 control-label">기간</label>
+                            <div class="col-sm-10">
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="payment_term" placeholder="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment_selling" class="col-sm-2 control-label">총 판매금액</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">W</span>
+                                    <input type="text" class="form-control" id="payment_selling" placeholder="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment_employee" class="col-sm-2 control-label">총 인건비</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">W</span>
+                                    <input type="text" class="form-control" id="payment_employee" placeholder="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment_maintainance" class="col-sm-2 control-label">월별 유지비</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">W</span>
+                                    <input type="text" class="form-control" id="payment_maintainance" placeholder="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment_percentage" class="col-sm-2 control-label">지점 지불 %</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">%</span>
+                                    <input type="text" class="form-control" id="payment_percentage" placeholder="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment_sum" class="col-sm-2 control-label">지불 금액</label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">W</span>
+                                    <input type="text" class="form-control" id="payment_sum" placeholder="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button id = "payment_enroll_button" class="btn btn-primary center-block">지불</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
             <!-- Your Page Content Here -->
 
         </section>
@@ -76,6 +163,7 @@
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
+<script src="/js/payment.js"></script>
 <script src="/js/auth.js"></script>
 </body>
 </html>

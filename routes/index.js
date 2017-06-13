@@ -550,6 +550,35 @@ router.get('/event/item/lookup', function(req, res) {
     });
 });
 
+/*
+  생활 서비스
+*/
+router.post('/service/enroll', function(req,res) {
+    features.service.enroll(req.body, function(result) {
+      res.json(result);
+    });
+});
+
+router.post('/service/lookup', function (req,res) {
+    features.service.lookup(req.body, function(result) {
+      res.json(result);
+    });
+});
+
+router.post('/service/modify', function (req,res) {
+    features.service.modify(req.body, function(result) {
+      res.json(result);
+    });
+});
+
+router.post('/service/delete', function (req,res) {
+    features.service.delete(req.body, function(result) {
+
+
+      res.json(result);
+    });
+});
+
 router.post('/event/item/modify', function(req, res) {
     features.event_item.modify(req.body, function(result) {
         res.json(result);
@@ -568,6 +597,34 @@ router.post('/event/item/delete', function(req, res) {
 
 router.post('/exception/enroll', function(req, res) {
     features.exception.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/exception/lookup/all', function(req, res) {
+    features.exception.lookup_all(req.query, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/exception/delete', function(req, res) {
+    features.exception.delete(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+/*
+ 지불
+ */
+
+router.post('/payment/lookup', function(req, res) {
+    features.payment.lookup(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/payment/enroll', function(req, res) {
+    features.payment.enroll(req.body, function(result) {
         res.json(result);
     });
 });

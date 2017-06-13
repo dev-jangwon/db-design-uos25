@@ -2,12 +2,17 @@
  * Created by jangwon on 2017. 6. 12..
  */
 
+dialog.init('exception_dialog_modal')
+
 $(function() {
     var date = new Date();
     date = date.toLocaleDateString().replace(/\ /g, '');
     var splited = date.split('.');
     if (splited[1].length == 1) {
         splited[1] = '0' + splited[1];
+    }
+    if (splited[2].length == 1) {
+        splited[2] = '0' + splited[2];
     }
     date = splited.join('');
 
@@ -79,5 +84,37 @@ $(function() {
         $.post('/exception/enroll', post_data, function(data) {
             location.reload();
         });
+    });
+
+    $('#exception_view_table').on('click', 'tr', function() {
+        var row = exception_view_table.row(this).data();
+
+        var obj = {
+            'exception_dialog_modal_except_code': row[0],
+            'exception_dialog_modal_except_date': row[1],
+            'exception_dialog_modal_item_code': row[2],
+            'exception_dialog_modal_excpet_item_code': row[3],
+            'exception_dialog_modal_branch_code': row[4],
+            'exception_dialog_modal_customer_code': row[5],
+            'exception_dialog_modal_count': row[6]
+        }
+
+        dialog.show(obj);
+    });
+
+    $('#except_lookup_delete').on('click', function(e) {
+        var post_data = {
+            "except_item_code": $('#exception_dialog_modal_except_code').val()
+        };
+
+        $.post('/exception/delete', post_data, function (data) {
+            if (data && data.result) {
+                location.reload();
+            } else {
+                alert("실패");
+            }
+        });
+
+        e.stopPropagation();
     });
 });

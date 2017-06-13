@@ -509,6 +509,72 @@ features.event_item.lookup = function(options, callback) {
     });
 };
 
+/* 생활 서비스 */
+features.service = {};
+
+features.service.lookup = function(options, callback) {
+  db.service_lookup(options, function(err, result) {
+    if (err) {
+        callback({
+            result: false
+        });
+    } else {
+        callback({
+            result: true,
+            data: result
+        });
+    }
+  });
+};
+
+features.service.enroll = function(options, callback) {
+  db.service_count(function(err, service_code) {
+    options.service_code = service_code;
+    db.service_enroll(options, function(err, result) {
+      if (err) {
+          callback({
+              result: false
+          });
+      } else {
+          callback({
+              result: true,
+              data: result
+          });
+      }
+    });
+  })
+};
+
+features.service.modify = function(options, callback) {
+  db.service_modify(options, function(err,result) {
+    if (err) {
+        callback({
+            result: false
+        });
+    } else {
+        callback({
+            result: true,
+            data: result
+        });
+    }
+  })
+};
+
+features.service.delete = function(options, callback) {
+  db.service_delete(options, function(err,result) {
+    if (err) {
+        callback({
+            result: false
+        });
+    } else {
+        callback({
+            result: true,
+            data: result
+        });
+    }
+  });
+}
+
 features.event_item.modify = function(options, callback) {
     db.event_item_modify(options, function(err, result) {
         db.event_modify(options, function(err, result) {
@@ -565,5 +631,93 @@ features.exception.enroll = function(options, callback) {
     });
 };
 
+features.exception.lookup_all = function(options, callback) {
+    db.exception_lookup_all(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+features.exception.delete = function(options, callback) {
+    db.exception_delete(options, function(err, result) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            callback({
+                result: true,
+                data: result
+            });
+        }
+    });
+};
+
+/* 지불 */
+
+features.payment = {};
+
+features.payment.lookup = function(options, callback) {
+    db.selling_lookup_sum(options, function(err, selling_sum) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            db.employee_lookup_sum(options, function(err, employee_sum) {
+                if (err) {
+                    callback({
+                        result: false
+                    });
+                } else {
+                    db.branch_get_info(options, function(err, branch_info) {
+                        if (err) {
+                            callback({
+                                result: false
+                            });
+                        } else {
+                            callback({
+                                result: true,
+                                data: {
+                                    'selling_sum': selling_sum,
+                                    'employee_sum': employee_sum,
+                                    'branch_percent': branch_info[0].HEAD_OFFICE_PAYMENT_RATE,
+                                    'branch_maintenance': branch_info[0].MONTH_MAINTENANCE,
+                                    'payment': (selling_sum - employee_sum - branch_info[0].MONTH_MAINTENANCE) * branch_info[0].HEAD_OFFICE_PAYMENT_RATE
+                                }
+                            });
+                        }
+                    })
+                }
+            });
+        }
+    });
+};
+
+features.payment.enroll = function(options, callback) {
+    db.payment_count(function(err, payment_code) {
+        options.payment_code = payment_code;
+        db.payment_enroll(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
 
 module.exports = features;
