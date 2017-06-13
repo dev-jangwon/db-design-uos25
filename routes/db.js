@@ -395,6 +395,32 @@ module.exports = {
         });
     },
 
+    customer_modify_mileage: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'UPDATE CUSTOMER ' +
+                    'SET CUSTOMER_MILEAGE = :mileage ' +
+                    'WHERE CUSTOMER_CODE = :customer_code',
+                    [options.mileage, options.customer_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
     customer_delete: function(options, callback) {
         async.waterfall([
             connect_db,

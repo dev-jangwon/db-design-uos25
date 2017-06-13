@@ -370,15 +370,30 @@ features.selling.enroll = function(options, callback) {
     db.selling_enroll(options, function(err, result) {
 
         db.selling_item_enroll(options, function(err, result) {
-            if (err) {
-                callback({
-                    result: false
+            if (options.customer_code != "" && options.customer_code != null && options.customer_code != undefined) {
+                db.customer_modify_mileage(options, function(err, result) {
+                    if (err) {
+                        callback({
+                            result: false
+                        });
+                    } else {
+                        callback({
+                            result: true,
+                            data: result
+                        });
+                    }
                 });
             } else {
-                callback({
-                    result: true,
-                    data: result
-                });
+                if (err) {
+                    callback({
+                        result: false
+                    });
+                } else {
+                    callback({
+                        result: true,
+                        data: result
+                    });
+                }
             }
         });
     });
