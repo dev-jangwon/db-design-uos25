@@ -270,6 +270,36 @@ module.exports = {
     });
   },
 
+	//물품_판매 조회
+	selling_item_lookup: function(options, callback) {
+		var code = options.SELLING_CODE;
+		console.log(code);
+		console.log('444444444444444444');
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'SELECT S.SELLING_ITEM_COUNT,I.ITEM_NAME, I.ITEM_PRICE ' +
+          'FROM SELLING_ITEM S, ITEM I ' +
+					'WHERE S.ITEM_CODE = I.ITEM_CODE ' +
+					'AND S.SELLING_CODE = :code',
+          [code],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+					if(err){
+						console.log(err);
+					}
+          db.close();
+          next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+
+      callback(err, result);
+    });
+	},
+
+
 	// 고객 조회
 	customer_lookup: function(options, callback) {
 		var code = options.customer_code;

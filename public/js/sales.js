@@ -1,5 +1,6 @@
 alert.init('alert_modal');
 
+
 $(document).ready(function() {
     /*
      판매 등록 페이지
