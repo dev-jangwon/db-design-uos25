@@ -330,7 +330,7 @@ router.post('/employee/get_info', check_session, function(req, res) {
     features.employee.get_info(req.body, function(result) {
       res.json(result);
     });
-  // }
+  }
 });
 
 router.post('/employee/add_applicant', function(req, res) {
