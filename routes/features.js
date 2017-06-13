@@ -899,4 +899,54 @@ features.payment.enroll = function(options, callback) {
     });
 };
 
+features.stock = {};
+
+features.stock.get = function(callback) {
+  db.stock_get(function(err, data) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        data: data
+      });
+    }
+  });
+};
+
+features.stock.get_all = function(callback) {
+  db.stock_get_all(function(err, data) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true,
+        data: data
+      });
+    }
+  });
+};
+
+features.stock.change = function(options, callback) {
+  var items = options.data;
+
+  async.map(items, function(item, next) {
+    db.stock_change(item, next);
+  }, function(err) {
+    if (err) {
+      callback({
+        result: false
+      });
+    } else {
+      callback({
+        result: true
+      });
+    }
+  });
+};
+
 module.exports = features;

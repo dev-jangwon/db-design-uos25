@@ -1645,5 +1645,74 @@ module.exports = {
         ], function(err, result) {
             callback(err, result);
         });
-    }
+    },
+
+		stock_get: function(callback) {
+			async.waterfall([
+					connect_db,
+					function(db, next) {
+							db.execute(
+								'SELECT I.ITEM_CODE, I.ITEM_NAME, I.ITEM_CLASSIFICATION, C.WAREHOUSE, C.DISPLAY ' +
+								'FROM ITEM I, (SELECT ITEM_CODE, SUM(WAREHOUSE_COUNT) WAREHOUSE, SUM(DISPLAY_COUNT) DISPLAY FROM ITEM_COUNT GROUP BY ITEM_CODE) C ' +
+								'WHERE I.ITEM_CODE=C.ITEM_CODE ' +
+								'ORDER BY I.ITEM_CODE',
+									[],
+									{ outFormat: oracledb.OBJECT },
+									function(err, result) {
+											db.close();
+											next(err, result.rows);
+									});
+					}
+			], function(err, result) {
+					callback(err, result);
+			});
+		},
+
+		stock_get_all: function(callback) {
+			async.waterfall([
+					connect_db,
+					function(db, next) {
+							db.execute(
+								'SELECT * ' +
+								'FROM ITEM I, ITEM_COUNT C ' +
+								'WHERE I.ITEM_CODE=C.ITEM_CODE ' +
+								'ORDER BY I.ITEM_CODE',
+									[],
+									{ outFormat: oracledb.OBJECT },
+									function(err, result) {
+											db.close();
+											next(err, result.rows);
+									});
+					}
+			], function(err, result) {
+					callback(err, result);
+			});
+		},
+
+		stock_change: function(options, callback) {
+			async.waterfall([
+					connect_db,
+					function(db, next) {
+							db.execute(
+									'UPDATE ITEM_COUNT ' +
+									'SET WAREHOUSE_COUNT = :w_count, ' +
+									'DISPLAY_COUNT = :d_count ' +
+									'WHERE ITEM_CODE = :it_code AND ITEM_EXPIRATION_DATE = :it_expiration_date',
+									[options.warehouse_count, options.display_count, options.item_code, options.item_expiration_date],
+									{
+											outFormat: oracledb.OBJECT,
+											autoCommit: true
+									},
+									function(err) {
+											if (err) {
+													console.log(err);
+											}
+											db.close();
+											next(err);
+									});
+					}
+			], function(err) {
+					callback(err);
+			});
+		}
 };
