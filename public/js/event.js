@@ -2,7 +2,8 @@
  * Created by jangwon on 2017. 6. 12..
  */
 
-dialog.init('event_dialog_modal')
+dialog.init('event_dialog_modal');
+alert.init('alert_modal');
 
 $(function() {
     $("#event_enroll_button").click(function() {
@@ -13,7 +14,7 @@ $(function() {
         var event_items = $("#event_items").val();
 
         if (event_name == "" || event_info == "" || event_desc == "" || event_term == "" || !event_items) {
-            alert("이벤트정보를 입력해주세요");
+            alert.show("이벤트정보를 입력해주세요");
             return;
         }
 
@@ -73,7 +74,7 @@ $(function() {
             if (data && data.result) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("이벤트 수정 실패");
             }
         });
 
@@ -89,7 +90,7 @@ $(function() {
             if (data && data.result) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("이벤트 삭제 실패");
             }
         });
 

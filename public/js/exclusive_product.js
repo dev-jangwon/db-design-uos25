@@ -2,6 +2,8 @@
  * Created by jangwon on 2017. 6. 12..
  */
 
+alert.init('alert_modal');
+
 $(function() {
 
     $('#exclusive_item_delete_button').hide();
@@ -11,12 +13,12 @@ $(function() {
         var discout_rate = $('#exclusive_item_discount').val();
 
         if (item_code == "" || discout_rate == "" || !item_code) {
-            alert("정보를 입력해주세요");
+            alert.show("정보를 입력해주세요");
             return;
         }
 
         if (discout_rate == 0) {
-            alert("0은 할인율로 입력할 수 없습니다");
+            alert.show("0은 할인율로 입력할 수 없습니다");
             return;
         }
 

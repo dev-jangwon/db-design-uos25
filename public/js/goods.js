@@ -2,7 +2,8 @@
  * Created by jangwon on 2017. 6. 10..
  */
 
-dialog.init('item_dialog_modal')
+dialog.init('item_dialog_modal');
+alert.init('alert_modal');
 
 $(function() {
     // $('#item_ex_date').datepicker();
@@ -39,7 +40,7 @@ $(function() {
         }
 
         if (item_name == "" || item_price == "" || item_class == "") {
-            alert("물품정보를 입력해주세요");
+            alert.show("물품정보를 입력해주세요");
             return;
         }
 
@@ -105,7 +106,7 @@ $(function() {
             if (data && data.result) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("물품 수정 실패");
             }
         });
 
@@ -121,7 +122,7 @@ $(function() {
             if (data && data.result) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("물품 삭제 실패");
             }
         });
 

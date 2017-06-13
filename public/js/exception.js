@@ -2,7 +2,8 @@
  * Created by jangwon on 2017. 6. 12..
  */
 
-dialog.init('exception_dialog_modal')
+dialog.init('exception_dialog_modal');
+alert.init('alert_modal');
 
 $(function() {
     var date = new Date();
@@ -32,7 +33,7 @@ $(function() {
     $('#exception_customer_search_button').on('click', function(e) {
         var customer_code = $('#exception_customer_search').val();
         if (!customer_code || customer_code == undefined || customer_code == "") {
-            alert("고객 코드를 입력해주세요");
+            alert.show("고객 코드를 입력해주세요");
             return;
         }
 
@@ -44,7 +45,7 @@ $(function() {
             var customer_data = data.data[0];
 
             if (!customer_data || customer_data == null) {
-                alert('고객 코드가 존재하지 않습니다.');
+                alert.show('고객 코드가 존재하지 않습니다.');
                 return;
             }
 
@@ -63,12 +64,12 @@ $(function() {
         var customer_id = $('#exception_customer').attr('customer_id');
 
         if (item_code == "" || exception_date == "" || exception_class == "" || exception_count == "") {
-            alert("예외물품 정보를 입력해주세요.");
+            alert.show("예외물품 정보를 입력해주세요.");
             return;
         }
 
         if (exception_class == "EX1" && (customer_id == "" || !customer_id)) {
-            alert("고객정보를 입력해주세요.");
+            alert.show("고객정보를 입력해주세요.");
             return;
         }
 
@@ -111,7 +112,7 @@ $(function() {
             if (data && data.result) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("예외물품 삭제 실패");
             }
         });
 

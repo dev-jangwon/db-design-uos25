@@ -1,3 +1,5 @@
+alert.init('alert_modal');
+
 $(document).ready(function() {
     /*
      판매 등록 페이지
@@ -20,7 +22,7 @@ $(document).ready(function() {
             var customer_data = data.data[0];
 
             if (!customer_data || customer_data == null) {
-                alert('고객 코드가 존재하지 않습니다.');
+                alert.show('고객 코드가 존재하지 않습니다.');
                 return;
             }
 
@@ -51,7 +53,7 @@ $(document).ready(function() {
             }
 
             if (!item_data || item_data == null) {
-                alert('상품정보가 없습니다.');
+                alert.show('상품정보가 없습니다.');
                 return;
             }
 
@@ -93,7 +95,7 @@ $(document).ready(function() {
 
     $('#use_mileage').click(function() {
         if ($('#customer_name').val() == "") {
-            alert("고객 조회해주세요");
+            alert.show("고객 조회해주세요");
         }
     })
 
@@ -138,7 +140,7 @@ $(document).ready(function() {
         var mileage_price = $('#cut_mileage').val();
 
         if (selling_price == undefined || selling_price == "" || !selling_price) {
-            alert("판매등록을 해주세요")
+            alert.show("판매등록을 해주세요")
             return;
         }
 
@@ -164,7 +166,7 @@ $(document).ready(function() {
             if (data) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("판매 등록 실패");
             }
         });
     });
