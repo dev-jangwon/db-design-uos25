@@ -1271,6 +1271,28 @@ module.exports = {
         });
     },
 
+    event_item_lookup_item_code: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'SELECT EVENT_INFO FROM ITEM_EVENT ' +
+                    'WHERE ITEM_CODE = (:item_code)',
+                    [options.item_code],
+                    { outFormat: oracledb.OBJECT },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
     event_item_modify: function(options, callback) {
         async.waterfall([
             connect_db,
