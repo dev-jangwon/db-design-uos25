@@ -227,7 +227,7 @@ $(document).ready(function() {
         // 고객이 사용할 마일리지 금액
         var use_mileage = $('#use_mileage').val();
 
-        if (use_mileage == '') {
+        if (use_mileage == '' || use_mileage < 0) {
             use_mileage = 0;
         }
 

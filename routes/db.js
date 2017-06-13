@@ -549,8 +549,6 @@ module.exports = {
 	//물품_판매 조회
 	selling_item_lookup: function(options, callback) {
 		var code = options.SELLING_CODE;
-		console.log(code);
-		console.log('444444444444444444');
 		async.waterfall([
       connect_db,
       function(db, next) {
