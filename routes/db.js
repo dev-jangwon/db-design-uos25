@@ -119,7 +119,15 @@ module.exports = {
 			},
 			function(data, next) {
 				var last_code = data.rows[data.rows.length - 1].APPLICANT_CODE;
-				var new_code = 'AP' + (parseInt(last_code.replace('AP', ''), 10) + 1);
+				if (data.rows.length == 0) {
+					last_code = 'AP0000';
+				}
+				var new_code = (parseInt(last_code.replace('AP', ''), 10) + 1).toString();
+				var length = new_code.length;
+				for (var i = 0; i < (4 - length); i++) {
+					new_code = '0' + new_code;
+				}
+				new_code = 'AP' + new_code;
 
 				data.db.execute(
 						"INSERT INTO APPLICANT (APPLICANT_CODE, APPLICANT_DATE, APPLICANT_ID_CARD, APPLICANT_NAME, APPLICANT_RESUME, BRANCH_CODE) " +
@@ -172,7 +180,15 @@ module.exports = {
 			},
 			function(data, next) {
 				var last_code = data.rows[data.rows.length - 1].EMPLOYEE_CODE;
-				var new_code = 'EP' + (parseInt(last_code.replace('EP', ''), 10) + 1);
+				if (data.rows.length == 0) {
+					last_code = 'EP0000';
+				}
+				var new_code = (parseInt(last_code.replace('EP', ''), 10) + 1).toString();
+				var length = new_code.length;
+				for (var i = 0; i < (4 - length); i++) {
+					new_code = '0' + new_code;
+				}
+				new_code = 'EP' + new_code;
 
 				data.db.execute(
 						"INSERT INTO EMPLOYEE (EMPLOYEE_CODE, EMPLOYEE_NAME, EMPLOYEE_SALARY, EMPLOYEE_RANK, WORK_START_DATE, BRANCH_CODE, EMPLOYEE_PASSWORD) " +
@@ -316,7 +332,12 @@ module.exports = {
 											} else {
 													last_code = result.rows[result.rows.length - 1].REQUEST_CODE;
 											}
-											var new_code = 'RQ' + (parseInt(last_code.replace('RQ', ''), 10) + 1);
+											var new_code = (parseInt(last_code.replace('RQ', ''), 10) + 1).toString();
+											var length = new_code.length;
+											for (var i = 0; i < (4 - length); i++) {
+												new_code = '0' + new_code;
+											}
+											new_code = 'RQ' + new_code;
 											db.close();
 											next(err, new_code);
 									});
@@ -614,7 +635,12 @@ module.exports = {
                         } else {
                             last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
                         }
-                        var new_code = 'CT' + (parseInt(last_code.replace('CT', ''), 10) + 1);
+												var new_code = (parseInt(last_code.replace('CT', ''), 10) + 1).toString();
+												var length = new_code.length;
+												for (var i = 0; i < (4 - length); i++) {
+													new_code = '0' + new_code;
+												}
+												new_code = 'CT' + new_code;
                         db.close();
                         next(err, new_code);
                     });
@@ -877,13 +903,18 @@ module.exports = {
 										[],
 										{ outFormat: oracledb.OBJECT },
 										function(err, result) {
-                                            var last_code;
-                                            if (result.rows.length == 0) {
-                                                last_code = 'IT0';
-                                            } else {
-                                                last_code = result.rows[result.rows.length - 1].ITEM_CODE;
-                                            }
-												var new_code = 'IT' + (parseInt(last_code.replace('IT', ''), 10) + 1);
+                        var last_code;
+                        if (result.rows.length == 0) {
+                            last_code = 'IT0';
+                        } else {
+                            last_code = result.rows[result.rows.length - 1].ITEM_CODE;
+                        }
+												var new_code = (parseInt(last_code.replace('IT', ''), 10) + 1).toString();
+												var length = new_code.length;
+												for (var i = 0; i < (4 - length); i++) {
+													new_code = '0' + new_code;
+												}
+												new_code = 'IT' + new_code;
 												db.close();
 												next(err, new_code);
 										});
@@ -1006,13 +1037,18 @@ module.exports = {
 						[],
 						{ outFormat: oracledb.OBJECT },
 						function(err, result) {
-                            var last_code;
-                            if (result.rows.length == 0) {
-                                last_code = 'SL0';
-                            } else {
-                                last_code = result.rows[result.rows.length - 1].SELLING_CODE;
-                            }
-								var new_code = 'SL' + (parseInt(last_code.replace('SL', ''), 10) + 1);
+                var last_code;
+                if (result.rows.length == 0) {
+                    last_code = 'SL0';
+                } else {
+                    last_code = result.rows[result.rows.length - 1].SELLING_CODE;
+                }
+								var new_code = (parseInt(last_code.replace('SL', ''), 10) + 1).toString();
+								var length = new_code.length;
+								for (var i = 0; i < (4 - length); i++) {
+									new_code = '0' + new_code;
+								}
+								new_code = 'SL' + new_code;
 								db.close();
 								next(err, new_code);
 						});
@@ -1155,13 +1191,18 @@ module.exports = {
 										[],
 										{ outFormat: oracledb.OBJECT },
 										function(err, result) {
-                                            var last_code;
-                                            if (result.rows.length == 0) {
-                                                last_code = 'EV0';
-                                            } else {
-                                                last_code = result.rows[result.rows.length - 1].EVENT_CODE;
-                                            }
-												var new_code = 'EV' + (parseInt(last_code.replace('EV', ''), 10) + 1);
+                        var last_code;
+                        if (result.rows.length == 0) {
+                            last_code = 'EV0';
+                        } else {
+                            last_code = result.rows[result.rows.length - 1].EVENT_CODE;
+                        }
+												var new_code = (parseInt(last_code.replace('EV', ''), 10) + 1).toString();
+												var length = new_code.length;
+												for (var i = 0; i < (4 - length); i++) {
+													new_code = '0' + new_code;
+												}
+												new_code = 'EV' + new_code;
 												db.close();
 												next(err, new_code);
 										});
@@ -1438,13 +1479,18 @@ module.exports = {
 										[],
 										{ outFormat: oracledb.OBJECT },
 										function(err, result) {
-                                            var last_code;
-                                            if (result.rows.length == 0) {
-                                                last_code = 'EC0';
-                                            } else {
-                                                last_code = result.rows[result.rows.length - 1].EXCEPT_ITEM_CODE;
-                                            }
-												var new_code = 'EC' + (parseInt(last_code.replace('EC', ''), 10) + 1);
+                        var last_code;
+                        if (result.rows.length == 0) {
+                            last_code = 'EC0';
+                        } else {
+                            last_code = result.rows[result.rows.length - 1].EXCEPT_ITEM_CODE;
+                        }
+												var new_code = (parseInt(last_code.replace('EC', ''), 10) + 1).toString();
+												var length = new_code.length;
+												for (var i = 0; i < (4 - length); i++) {
+													new_code = '0' + new_code;
+												}
+												new_code = 'EC' + new_code;
 												db.close();
 												next(err, new_code);
 										});
@@ -1512,13 +1558,18 @@ module.exports = {
 									[],
 									{ outFormat: oracledb.OBJECT },
 									function(err, result) {
-                                        var last_code;
-                                        if (result.rows.length == 0) {
-                                            last_code = 'SV0';
-                                        } else {
-                                            last_code = result.rows[result.rows.length - 1].SERVICE_CODE;
-                                        }
-                                        var service_code = 'SV' + (parseInt(last_code.replace('SV', ''), 10) + 1);
+                      var last_code;
+                      if (result.rows.length == 0) {
+                          last_code = 'SV0';
+                      } else {
+                          last_code = result.rows[result.rows.length - 1].SERVICE_CODE;
+                      }
+											var new_code = (parseInt(last_code.replace('SV', ''), 10) + 1).toString();
+											var length = new_code.length;
+											for (var i = 0; i < (4 - length); i++) {
+												new_code = '0' + new_code;
+											}
+											new_code = 'SV' + new_code;
 											db.close();
 											next(null, service_code);
 									}
@@ -1668,7 +1719,12 @@ module.exports = {
                         } else {
                             last_code = result.rows[result.rows.length - 1].PAYMENT_CODE;
                         }
-                        var payment_code = 'PY' + (parseInt(last_code.replace('PY', ''), 10) + 1);
+												var new_code = (parseInt(last_code.replace('PY', ''), 10) + 1).toString();
+												var length = new_code.length;
+												for (var i = 0; i < (4 - length); i++) {
+													new_code = '0' + new_code;
+												}
+												new_code = 'PY' + new_code;
                         db.close();
                         next(err, payment_code);
                     });
