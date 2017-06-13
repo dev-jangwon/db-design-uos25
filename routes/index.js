@@ -213,18 +213,6 @@ router.get('/goods/lookup', check_session, function(req, res, next) {
 });
 //
 // //living_services
-// router.get('/living-services/delete', check_session, function(req, res, next) {
-//   var session = req.session;
-//   var user_data = null;
-//
-//   if (session.user_data) {
-//     user_data = session.user_data;
-//   }
-//   res.render('living_services/delete.html', {
-//     session: user_data ? true : false,
-//     user_data: JSON.stringify(user_data || {})
-//   });
-// });
 
 router.get('/living-services/enroll', check_session, function(req, res, next) {
   var session = req.session;
