@@ -32,6 +32,8 @@ if (session == 'true') {
   var img_src = user_data.img;
   $('.user-image').attr('src', img_src);
 } else {
+  $('#employee_treeview').parent().hide();
+  $('#payment_treeview').parent().hide();
   $('#sign_in_btn').show();
   $('.user-menu').hide();
   $('.user-panel').hide();
