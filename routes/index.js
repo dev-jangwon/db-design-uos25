@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var features = require('./features.js');
+var fs = require('fs');
 
 var check_session = function(req, res, next) {
   var session = req.session;
@@ -304,7 +305,19 @@ router.get('/stock/management', check_session, function(req, res, next) {
 
 router.post('/signin', function(req, res) {
   features.signin(req, function(result) {
-    res.json(result);
+    if (req.session.user_data) {
+      var id = req.session.user_data.EMPLOYEE_CODE;
+      fs.exists(__dirname.replace('/routes', '') + '/public/img/' + id + '.png', function(exists) {
+        if (exists) {
+          req.session.user_data.img = '/img/' + id + '.png';
+        } else {
+          req.session.user_data.img = '/img/default-avatar.png';
+        }
+        res.json(result);
+      });
+    } else {
+      res.json(result);
+    }
   });
 });
 
