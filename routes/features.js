@@ -445,7 +445,6 @@ features.event_item.lookup = function(options, callback) {
     });
 };
 
-<<<<<<< HEAD
 /* 생활 서비스 */
 features.service = {};
 
@@ -511,7 +510,7 @@ features.service.delete = function(options, callback) {
     }
   });
 }
-=======
+
 features.event_item.modify = function(options, callback) {
     db.event_item_modify(options, function(err, result) {
         db.event_modify(options, function(err, result) {
@@ -597,6 +596,5 @@ features.exception.delete = function(options, callback) {
         }
     });
 };
->>>>>>> a0151d9bf3cab88b0567310e721a3ac6a8163817
 
 module.exports = features;
