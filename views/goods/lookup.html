@@ -186,7 +186,10 @@
         item_data = data.data;
 
         item_view_table = $('#item_view_table').DataTable({
-            dom: 't'
+            dom: 't',
+            scrollY: "400px",
+            scrollCollapse: true,
+            paging: false
         });
 
         for (var i = 0; i < item_data.length; i++) {

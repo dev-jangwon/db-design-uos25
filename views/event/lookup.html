@@ -204,7 +204,10 @@
         event_data = data.data;
 
         event_view_table = $('#event_view_table').DataTable({
-            dom: 't'
+            dom: 't',
+            scrollY: "400px",
+            scrollCollapse: true,
+            paging: false
         });
 
         for (var i = 0; i < event_data.length; i++) {

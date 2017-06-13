@@ -206,7 +206,10 @@
         exception_data = data.data;
 
         exception_view_table = $('#exception_view_table').DataTable({
-            dom: 't'
+            dom: 't',
+            scrollY: "400px",
+            scrollCollapse: true,
+            paging: false
         });
 
         for (var i = 0; i < exception_data.length; i++) {

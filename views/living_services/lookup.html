@@ -159,7 +159,10 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<script>
+    var user_data = <%- user_data %>;
+    var session = '<%= session %>';
+</script>
 <!-- jQuery 2.2.3 -->
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -169,10 +172,9 @@
 
 <!-- REQUIRED JS SCRIPTS -->
 <script type="text/javascript">
-    var user_data = <%- user_data %>;
-    var session = '<%= session %>';
     var service_data;
     var service_view_table;
+
     var branch_name = "시립대점";
     var post_data = {
       branch_code: 'UOS001'
@@ -181,13 +183,10 @@
     $.post('/service/lookup', post_data, function(data) {
         service_data = data.data;
         service_view_table = $('#service_view_table').DataTable({
-          dom: 't',
-          "columnDefs": [
-            { "visible": false, "targets": 0 },
-            { "width": "20%", "targets": 1},
-            { "width": "65%", "targets": 2},
-            { "width": "15%", "targets": 3}
-          ]
+          "dom": 't',
+            scrollY: "400px",
+            scrollCollapse: true,
+            paging: false
         });
 
         for (var i = 0; i < service_data.length; i++){
