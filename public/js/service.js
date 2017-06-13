@@ -22,7 +22,6 @@ $(function() {
     };
 
     $.post('/service/enroll', post_data, function(data) {
-
     });
   });
 

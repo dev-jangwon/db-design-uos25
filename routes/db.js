@@ -1559,7 +1559,8 @@ module.exports = {
 					connect_db,
 					function(db, next) {
 							db.execute(
-									"SELECT COUNT(*) FROM SERVICE",
+									"SELECT SERVICE_CODE FROM SERVICE " +
+									"ORDER BY SERVICE_CODE",
 									[],
 									{ outFormat: oracledb.OBJECT },
 									function(err, result) {
@@ -1569,6 +1570,8 @@ module.exports = {
                       } else {
                           last_code = result.rows[result.rows.length - 1].SERVICE_CODE;
                       }
+											console.log('111111111111');
+											console.log(last_code);
 											var new_code = (parseInt(last_code.replace('SV', ''), 10) + 1).toString();
 											var length = new_code.length;
 											for (var i = 0; i < (4 - length); i++) {
@@ -1576,7 +1579,7 @@ module.exports = {
 											}
 											new_code = 'SV' + new_code;
 											db.close();
-											next(null, service_code);
+											next(null, new_code);
 									}
 							);
 					}
