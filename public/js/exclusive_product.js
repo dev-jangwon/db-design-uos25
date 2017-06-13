@@ -6,6 +6,8 @@ alert.init('alert_modal');
 
 $(function() {
 
+    $('#exclusive_treeview').click();
+
     $('#exclusive_item_delete_button').hide();
 
     $("#exclusive_item_enroll_button").click(function() {

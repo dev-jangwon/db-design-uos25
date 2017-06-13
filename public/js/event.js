@@ -6,6 +6,8 @@ dialog.init('event_dialog_modal');
 alert.init('alert_modal');
 
 $(function() {
+    $('#event_treeview').click();
+
     $("#event_enroll_button").click(function() {
         var event_name = $("#event_name").val();
         var event_info = $("#event_info").val();

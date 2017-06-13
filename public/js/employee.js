@@ -16,6 +16,8 @@ var init = function() {
       make_employee_table();
       make_time_table();
 
+        $('#employee_treeview').click();
+
       $('.loading_bg').hide();
     } else {
       $('.loading_bg').hide();

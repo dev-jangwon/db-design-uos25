@@ -6,7 +6,7 @@ var init = function() {
   $.post('/stock/get', {}, function(data) {
     if (data.result) {
       item_list = data.data;
-
+        $('#stock_treeview').click();
       make_stock_table(data.data, function() {
         $('.loading_bg').hide();
       });

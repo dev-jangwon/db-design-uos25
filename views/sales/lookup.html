@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/css/datatable.css">
 
     <link rel="stylesheet" href="/css/skins/skin-blue.min.css">
     <style>
@@ -181,7 +182,6 @@
 <script>
   var user_data = <%- user_data %>;
   var session = '<%= session %>';
-  // var sale_data = <%- user_data %>;
 </script>
 <!-- jQuery 2.2.3 -->
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
@@ -197,9 +197,12 @@
     $.post('/sales/lookup', function (data) {
         sale_data = data.data;
         view_table = $('#selling_view_table').DataTable({
-            dom: 't'
+            dom: 't',
+            scrollY: "400px",
+            scrollCollapse: true,
+            paging: false
         });
-
+        $('#selling_treeview').click();
         for (var i = 0; i < sale_data.length; i++) {
           var date = sale_data[i].SELLING_DATE;
           var s1 = date.substring(0,4);

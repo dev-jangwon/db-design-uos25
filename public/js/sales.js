@@ -5,11 +5,13 @@ $(document).ready(function() {
     $('#mileage_form_group').hide();
     $('#customer_code').attr('customer_code', '');
 
+    $('#selling_treeview').click();
     /*
      판매 등록 페이지
      */
 
     var selling_item_object = {};
+    var selling_item_ex_date = {};
 
     var table = $('#selling_table').DataTable({
         dom: 't'
@@ -51,9 +53,11 @@ $(document).ready(function() {
         var etc_message = "";
 
         $.post('/item/lookup', { item_code: item_code }, function (data) {
-            var item_data = data.data[0];
+            var item_data = data.data;
             var mileage_data = data.mileage_data[0];
             var event_data = data.event_info.data;
+
+            var item_ex_date = item_data.ITEM_EXPIRATION_DATE;
 
             if (mileage_data && mileage_data !== null) {
                 item_mileage_rate = mileage_data.MILEAGE_RATE;
@@ -67,7 +71,7 @@ $(document).ready(function() {
                 return;
             }
 
-            var sale_price = item_count * item_data.ITEM_PRICE;
+            var sale_price = item_data.ITEM_PRICE;
 
             var event_rate = 0;
             var event_one_plus_one = 1;
@@ -110,11 +114,13 @@ $(document).ready(function() {
                 }
             }
 
+            selling_item_ex_date[item_data.ITEM_CODE] = item_ex_date;
+
             for (var i = 0; i < event_one_plus_one; i++) {
                 table.row.add([
                     item_data.ITEM_CODE,
                     item_data.ITEM_NAME,
-                    item_data.ITEM_PRICE * item_count,
+                    sale_price,
                     item_count,
                     (sale_price - item_data.ITEM_PRICE * event_rate) * item_count,
                     item_data.ITEM_PRICE * event_rate * item_count,
@@ -221,7 +227,7 @@ $(document).ready(function() {
         // 고객이 사용할 마일리지 금액
         var use_mileage = $('#use_mileage').val();
 
-        if (use_mileage == '') {
+        if (use_mileage == '' || use_mileage < 0) {
             use_mileage = 0;
         }
 
@@ -244,20 +250,21 @@ $(document).ready(function() {
         }
 
         var post_data = {
-            selling_price: selling_price,
-            selling_date: selling_date,
-            customer_code: customer_code,
-            selling_item_object: selling_item_object,
-            mileage: final_mileage
+            'selling_price': selling_price,
+            'selling_date': selling_date,
+            'customer_code': customer_code,
+            'selling_item_object': selling_item_object,
+            'selling_item_ex_date': selling_item_ex_date,
+            'mileage': final_mileage
         };
-
-        console.log(post_data);
 
         $('#customer_code').attr('customer_code', '');
 
+        selling_item_object = {};
+        selling_item_ex_date = {};
+
         // 판매랑 물품 판매 모두 넣기. 판매 먼저 넣은 후 물품_판매 넣기.
         $.post('/selling/enroll', post_data, function (data) {
-            console.log(data);
             if (data) {
                 location.reload();
             } else {

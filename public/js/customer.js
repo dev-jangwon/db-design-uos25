@@ -5,6 +5,8 @@
 dialog.init('customer_dialog_modal')
 
 $(function() {
+    $('#customer_treeview').click();
+
     $("#customer_enroll_button").click(function() {
         var customer_name = $("#customer_name").val();
         var customer_phone = $("#customer_phone").val();

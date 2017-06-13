@@ -331,11 +331,8 @@ features.sales.enroll = function() {
 features.selling_item = {};
 
 features.selling_item.lookup = function(options, callback) {
-  console.log('33333333333333333333');
-
   db.selling_item_lookup(options, function(err, result) {
     // item name을 구해야한다.
-    console.log(result);
     if (err) {
       callback({
         result: false

@@ -550,8 +550,6 @@ module.exports = {
 	//물품_판매 조회
 	selling_item_lookup: function(options, callback) {
 		var code = options.SELLING_CODE;
-		console.log(code);
-		console.log('444444444444444444');
 		async.waterfall([
       connect_db,
       function(db, next) {
@@ -764,15 +762,32 @@ module.exports = {
           function(db, next) {
             db.execute(
               'SELECT * ' +
-              'FROM ITEM ' +
-                        'WHERE ITEM_CODE=:code',
+              'FROM ITEM, ITEM_COUNT ' +
+			  'WHERE ITEM.ITEM_CODE = ITEM_COUNT.ITEM_CODE ' +
+              'AND ITEM.ITEM_CODE = (:item_code)',
               [code],
               { outFormat: oracledb.OBJECT },
             function(err, result) {
+              	if (err) {
+              		console.log(err);
+				}
               db.close();
               next(err, result.rows);
             });
-          }
+          },
+		  function(result, next) {
+              	var temp_date = result[0].ITEM_EXPIRATION_DATE;
+              	var obj = result[0];
+				async.map(result, function(item, next) {
+					if (item.ITEM_EXPIRATION_DATE < temp_date) {
+						temp_date = item.ITEM_EXPIRATION_DATE;
+						obj = item;
+					}
+					next();
+				}, function() {
+					next(null, obj);
+				});
+		  }
         ], function(err, result) {
           callback(err, result);
         });
@@ -1070,23 +1085,63 @@ module.exports = {
 	//selling_code를 받아서 selling_item 등록
 	selling_item_enroll: function(options, callback) {
         var selling_item_object = options.selling_item_object;
+        var selling_item_ex_date = options.selling_item_ex_date;
 		async.waterfall([
 			connect_db,
             function(db, next) {
-		        async.forEachOf(selling_item_object, function(value, key, callback) {
-                    db.execute(
-                        "INSERT INTO SELLING_ITEM(SELLING_CODE, ITEM_CODE, SELLING_ITEM_COUNT) " +
-                        "VALUES(:selling_code, :item_code, :selling_item_count)",
-                        [options.selling_code, key, value],
-                        {
-                            outFormat: oracledb.OBJECT,
-                            autoCommit: true
-                        }, function(err, result) {
-                            if (err) {
-                               console.log(err);
-                            }
-                        callback();
-                    });
+		        async.forEachOf(selling_item_object, function(value, key, _callback) {
+		        	var ex_date = selling_item_ex_date[key];
+		        	async.waterfall([
+		        		function(_next) {
+                            db.execute(
+                                "INSERT INTO SELLING_ITEM(SELLING_CODE, ITEM_CODE, SELLING_ITEM_COUNT, ITEM_EXPIRATION_DATE) " +
+                                "VALUES(:selling_code, :item_code, :selling_item_count, :item_ex_date)",
+                                [options.selling_code, key, value, ex_date],
+                                {
+                                    outFormat: oracledb.OBJECT,
+                                    autoCommit: true
+                                }, function(err, result) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    _next(err);
+                                });
+						},
+						function(_next) {
+                            db.execute(
+                                "SELECT DISPLAY_COUNT " +
+								"FROM ITEM_COUNT " +
+                                "WHERE ITEM_CODE=:it_code AND ITEM_EXPIRATION_DATE=:ex_date",
+                                [key, ex_date],
+                                {
+                                    outFormat: oracledb.OBJECT
+                                }, function(err, result) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    _next(err, result.rows[0]);
+                                });
+						},
+						function(now_count, _next) {
+		        			var new_count = parseInt(now_count.DISPLAY_COUNT) - parseInt(value);
+
+                            db.execute(
+                                "UPDATE ITEM_COUNT " +
+                                "SET DISPLAY_COUNT=:d_count " +
+                                "WHERE ITEM_CODE=:it_code AND ITEM_EXPIRATION_DATE=:ex_date",
+                                [new_count, key, ex_date],
+                                {
+                                    outFormat: oracledb.OBJECT
+                                }, function(err) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    _next(err);
+                                });
+						}
+					], function(err) {
+                        _callback(err);
+					});
                 }, function(err) {
 		            if (err) {
 		                console.log(err);
