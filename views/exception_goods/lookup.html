@@ -67,7 +67,7 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">예외물품 코드</th>
                                     <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">처리날짜</th>
                                     <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">물품코드</th>
-                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">예외코드</th>
+                                    <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">예외분류</th>
                                     <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">지점코드</th>
                                     <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">고객코드</th>
                                     <th class="sorting" tabindex="0" aria-controls="exception_view_table" rowspan="1" colspan="1" aria-label="">처리개수</th>
@@ -217,9 +217,9 @@
                 exception_data[i].EXCEPT_ITEM_CODE,
                 exception_data[i].EXCEPT_DO_DATE,
                 exception_data[i].ITEM_CODE,
-                exception_data[i].EXCEPT_TYPE_CODE,
+                exception_data[i].EXCEPT_TYPE_NAME,
                 exception_data[i].BRANCH_CODE,
-                exception_data[i].CUSTOMER_CODE,
+                exception_data[i].CUSTOMER_CODE ? exception_data[i].CUSTOMER_CODE : "-",
                 exception_data[i].EXCEPT_ITEM_COUNT
             ]).draw('false');
         }

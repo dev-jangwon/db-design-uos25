@@ -679,7 +679,8 @@ features.event_item.event_item_lookup_item_code = function(options, callback) {
     db.event_item_lookup_item_code(options, function(err, result) {
         if (err) {
             callback({
-                result: false
+                result: false,
+                data: "no_stock"
             });
         } else {
             callback({
