@@ -294,27 +294,14 @@ router.get('/sales/lookup', check_session, function(req, res, next) {
 });
 
 // stock
-router.get('/stock/lookup', check_session, function(req, res, next) {
+router.get('/stock/management', check_session, function(req, res, next) {
   var session = req.session;
   var user_data = null;
 
   if (session.user_data) {
     user_data = session.user_data;
   }
-  res.render('sales/lookup.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
-
-router.get('/stock/modify', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('sales/modify.html', {
+  res.render('stock/management.html', {
     session: user_data ? true : false,
     user_data: JSON.stringify(user_data || {})
   });
@@ -655,6 +642,29 @@ router.post('/payment/enroll', function(req, res) {
     features.payment.enroll(req.body, function(result) {
         res.json(result);
     });
+});
+
+
+/*
+  재고
+*/
+
+router.post('/stock/get', function(req, res) {
+  features.stock.get(function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/stock/get/all', function(req, res) {
+  features.stock.get_all(function(result) {
+    res.json(result);
+  });
+});
+
+router.post('/stock/change', function(req, res) {
+  features.stock.change(req.body, function(result) {
+    res.json(result);
+  });
 });
 
 module.exports = router;
