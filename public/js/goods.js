@@ -2,7 +2,8 @@
  * Created by jangwon on 2017. 6. 10..
  */
 
-dialog.init('item_dialog_modal')
+dialog.init('item_dialog_modal');
+alert.init('alert_modal');
 
 $(function() {
     // $('#item_ex_date').datepicker();
@@ -29,17 +30,10 @@ $(function() {
         var item_name = $("#item_name").val();
         var item_class = $("#item_class").val();
         var item_price = $("#item_price").val();
-        var item_ex_date = $("#item_ex_date").val();
         var item_image = $("#item_image_input")[0];
 
-        var item_expiration_date = item_ex_date;
-
-        if (item_ex_date == "") {
-            item_expiration_date = "99999999";
-        }
-
         if (item_name == "" || item_price == "" || item_class == "") {
-            alert("물품정보를 입력해주세요");
+            alert.show("물품정보를 입력해주세요");
             return;
         }
 
@@ -58,8 +52,7 @@ $(function() {
         var post_data = {
             "item_name": item_name,
             "item_classification": item_class,
-            "item_price": item_price,
-            "item_expiration_date": item_expiration_date
+            "item_price": item_price
         };
         //
         // $.ajax({
@@ -85,8 +78,7 @@ $(function() {
             'item_dialog_modal_barcode': row[1],
             'item_dialog_modal_name': row[2],
             'item_dialog_modal_price': row[3],
-            'item_dialog_modal_date': row[4],
-            'item_dialog_modal_class': row[5]
+            'item_dialog_modal_class': row[4]
         }
         dialog.show(obj);
     });
@@ -97,15 +89,14 @@ $(function() {
             "item_barcode": $('#item_dialog_modal_barcode').val(),
             "item_name": $('#item_dialog_modal_name').val(),
             "item_classification": $('#item_dialog_modal_class').val(),
-            "item_price": $('#item_dialog_modal_price').val(),
-            "item_expiration_date": $('#item_dialog_modal_date').val()
+            "item_price": $('#item_dialog_modal_price').val()
         };
 
         $.post('/item/modify', post_data, function (data) {
             if (data && data.result) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("물품 수정 실패");
             }
         });
 
@@ -121,7 +112,7 @@ $(function() {
             if (data && data.result) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("물품 삭제 실패");
             }
         });
 

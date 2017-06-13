@@ -1,5 +1,6 @@
 
-dialog.init('service_dialog_modal')
+dialog.init('service_dialog_modal');
+alert.init('alert_modal');
 
 $(function() {
   $("#service_enroll_button").click(function() {
@@ -8,7 +9,7 @@ $(function() {
     var branch_code = $("#branch_code").val();
 
     if (service_name == "" || service_info == "") {
-      alert('서비스 정보를 입력해주세요.');
+      alert.show('서비스 정보를 입력해주세요.');
       return;
     };
 
@@ -46,7 +47,7 @@ $(function() {
       if (result && result.result) {
         location.reload();
       } else {
-        alert('실패');
+        alert.show('수정 실패');
       }
     });
     e.stopPropagation();
@@ -62,7 +63,7 @@ $(function() {
       if (result && result.result) {
         location.reload();
       } else {
-        alert('실패');
+        alert.show('삭제 실패');
       }
     });
     e.stopPropagation();

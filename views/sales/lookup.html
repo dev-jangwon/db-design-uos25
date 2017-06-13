@@ -16,6 +16,11 @@
     <link rel="stylesheet" href="/css/AdminLTE.min.css">
 
     <link rel="stylesheet" href="/css/skins/skin-blue.min.css">
+    <style>
+      .input_addon {
+        background-color: rgba(221, 221, 221, 0.3) !important;
+      }
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -77,11 +82,106 @@
   </div>
   <!-- ./wrapper -->
 
+  <!-- sales 클릭시 판매정보 가져오기 다이어로그. -->
+  <div id="sale_dialog_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width:600px;margin-top: 250px">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close close_dialog" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>판매정보 조회</h4>
+        </div>
+        <div class="modal-body">
+          <table id="sale_item_view_table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="sale_item_view_table">
+            <thead>
+              <tr role="row">
+                <th class="sorting_asc" tabindex="0" aria-controls="sale_item_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">물품 이름</th>
+                <th class="sorting_asc" tabindex="0" aria-controls="sale_item_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">판매 개수</th>
+                <th class="sorting_asc" tabindex="0" aria-controls="sale_item_view_table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="">판매 가격</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="row">
+            <div class="col-sm-6">
+              <form class="form-inline margin">
+                <div class="form-group">
+                  <label class="sr-only" for="selling_price">Amount (in dollars)</label>
+                  <div class="input-group">
+                    <div class="input-group-addon input_addon">정상판매금액</div>
+                    <input type="text" class="form-control text-right" id="selling_price" placeholder="판매가격">
+                    <div class="input-group-addon"><i class="fa fa-krw"></i></div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-6">
+              <form class="form-inline margin">
+                <div class="form-group">
+                  <label class="sr-only" for="discount_value">할인금액</label>
+                  <div class="input-group">
+                    <div class="input-group-addon input_addon">할인금액</div>
+
+                    <input type="text" class="form-control text-right" id="discount_value" placeholder="할인금액">
+                    <div class="input-group-addon"><i class="fa fa-krw"></i></div>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+              <form class="form-inline margin">
+                <div class="form-group ">
+                  <label class="sr-only" for="sale_item_price">최종판매금액</label>
+                  <div class="input-group">
+                    <div class="input-group-addon input_addon">최종판매금액</div>
+                    <input type="text" class="form-control text-right" id="sale_item_price" placeholder="최종판매금액">
+                    <div class="input-group-addon"><i class="fa fa-krw"></i></div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-sm-10">
+
+            </div>
+            <div class="col-sm-2">
+              <button type="button" class="btn btn-block btn-primary close_dialog" name="button"  data-dismiss="modal" aria-label="Close">확인</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- alert modal -->
+  <div id="alert_modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>알림</h4>
+              </div>
+              <div class="modal-body">
+                  <p style="text-align: center;"></p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
   <!-- REQUIRED JS SCRIPTS -->
 <script>
   var user_data = <%- user_data %>;
   var session = '<%= session %>';
-  var sale_data = <%- user_data %>;
+  // var sale_data = <%- user_data %>;
 </script>
 <!-- jQuery 2.2.3 -->
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
@@ -92,25 +192,35 @@
 <script src="/libs/datatables/dataTables.bootstrap.min.js"></script>
 <script>
     var sale_data;
+    var view_table;
+
     $.post('/sales/lookup', function (data) {
         sale_data = data.data;
-        var view_table = $('#selling_view_table').DataTable({
+        view_table = $('#selling_view_table').DataTable({
             dom: 't'
         });
 
         for (var i = 0; i < sale_data.length; i++) {
+          var date = sale_data[i].SELLING_DATE;
+          var s1 = date.substring(0,4);
+          var s2 = date.substring(4,6);
+          var s3 = date.substring(6,8);
+          date = s1+'.'+s2+'.'+s3;
             view_table.row.add([
                 sale_data[i].SELLING_CODE,
-                sale_data[i].SELLING_CODE,
-                sale_data[i].SELLING_DATE,
-                sale_data[i].CUSTOMER_CODE ? sale_data[i].CUSTOMER_CODE : "GUEST"
+                sale_data[i].SELLING_PRICE,
+                date,
+                sale_data[i].CUSTOMER_CODE ? sale_data[i].CUSTOMER_CODE : "GUEST",
+                sale_data[i].SELLING_ITEM
             ]).draw('false');
         }
     });
 </script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
-<script src="/js/sales.js"></script>
+<script src="/js/dialog.js"></script>
+<script src="/js/alert.js"></script>
+<script src="/js/sales_lookup.js"></script>
 <script src="/js/auth.js"></script>
 </body>
 </html>

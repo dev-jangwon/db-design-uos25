@@ -525,6 +525,36 @@ module.exports = {
     });
   },
 
+	//물품_판매 조회
+	selling_item_lookup: function(options, callback) {
+		var code = options.SELLING_CODE;
+		console.log(code);
+		console.log('444444444444444444');
+		async.waterfall([
+      connect_db,
+      function(db, next) {
+        db.execute(
+          'SELECT S.SELLING_ITEM_COUNT,I.ITEM_NAME, I.ITEM_PRICE ' +
+          'FROM SELLING_ITEM S, ITEM I ' +
+					'WHERE S.ITEM_CODE = I.ITEM_CODE ' +
+					'AND S.SELLING_CODE = :code',
+          [code],
+          { outFormat: oracledb.OBJECT },
+        function(err, result) {
+					if(err){
+						console.log(err);
+					}
+          db.close();
+          next(null, result.rows);
+        });
+      }
+    ], function(err, result) {
+
+      callback(err, result);
+    });
+	},
+
+
 	// 고객 조회
 	customer_lookup: function(options, callback) {
 		var code = options.customer_code;
@@ -650,6 +680,32 @@ module.exports = {
         });
     },
 
+    customer_modify_mileage: function(options, callback) {
+        async.waterfall([
+            connect_db,
+            function(db, next) {
+                db.execute(
+                    'UPDATE CUSTOMER ' +
+                    'SET CUSTOMER_MILEAGE = :mileage ' +
+                    'WHERE CUSTOMER_CODE = :customer_code',
+                    [options.mileage, options.customer_code],
+                    {
+                        outFormat: oracledb.OBJECT,
+                        autoCommit: true
+                    },
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        db.close();
+                        next(err, result.rows);
+                    });
+            }
+        ], function(err, result) {
+            callback(err, result);
+        });
+    },
+
     customer_delete: function(options, callback) {
         async.waterfall([
             connect_db,
@@ -724,10 +780,9 @@ module.exports = {
                     'SET ITEM_BARCODE = :item_barcode, ' +
                     'ITEM_NAME = :item_name, ' +
                     'ITEM_PRICE = :item_price, ' +
-                    'ITEM_EXPIRATION_DATE = :item_expiration_date, ' +
                     'ITEM_CLASSIFICATION = :item_classification ' +
                     'WHERE ITEM_CODE = :item_code',
-                    [options.item_barcode, options.item_name, options.item_price, options.item_expiration_date, options.item_classification, options.item_code],
+                    [options.item_barcode, options.item_name, options.item_price, options.item_classification, options.item_code],
                     {
                         outFormat: oracledb.OBJECT,
                         autoCommit: true
@@ -769,13 +824,14 @@ module.exports = {
 
     // 물품 등록
     item_enroll: function(options, callback) {
+	    console.log(options);
         async.waterfall([
             connect_db,
             function(db, next) {
                 db.execute(
-                    "INSERT INTO ITEM (ITEM_CODE, ITEM_BARCODE, ITEM_NAME, ITEM_PRICE, ITEM_EXPIRATION_DATE, ITEM_CLASSIFICATION) " +
-                    "VALUES (:item_code, :item_barcode, :item_name, :item_price, :item_expiration_date, :item_classification)",
-                    [options.item_code, options.item_barcode, options.item_name, options.item_price, options.item_expiration_date, options.item_classification],
+                    "INSERT INTO ITEM (ITEM_CODE, ITEM_BARCODE, ITEM_NAME, ITEM_PRICE, ITEM_CLASSIFICATION) " +
+                    "VALUES (:item_code, :item_barcode, :item_name, :item_price, :item_classification)",
+                    [options.item_code, options.item_barcode, options.item_name, options.item_price, options.item_classification],
                     {
                         outFormat: oracledb.OBJECT,
                         autoCommit: true
@@ -808,7 +864,7 @@ module.exports = {
                                             if (result.rows.length == 0) {
                                                 last_code = 'IT0';
                                             } else {
-                                                last_code = result.rows[result.rows.length - 1].CUSTOMER_CODE;
+                                                last_code = result.rows[result.rows.length - 1].ITEM_CODE;
                                             }
 												var new_code = 'IT' + (parseInt(last_code.replace('IT', ''), 10) + 1);
 												db.close();

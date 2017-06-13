@@ -211,20 +211,20 @@ router.get('/goods/lookup', check_session, function(req, res, next) {
     user_data: JSON.stringify(user_data || {})
   });
 });
-
-//living_services
-router.get('/living-services/delete', check_session, function(req, res, next) {
-  var session = req.session;
-  var user_data = null;
-
-  if (session.user_data) {
-    user_data = session.user_data;
-  }
-  res.render('living_services/delete.html', {
-    session: user_data ? true : false,
-    user_data: JSON.stringify(user_data || {})
-  });
-});
+//
+// //living_services
+// router.get('/living-services/delete', check_session, function(req, res, next) {
+//   var session = req.session;
+//   var user_data = null;
+//
+//   if (session.user_data) {
+//     user_data = session.user_data;
+//   }
+//   res.render('living_services/delete.html', {
+//     session: user_data ? true : false,
+//     user_data: JSON.stringify(user_data || {})
+//   });
+// });
 
 router.get('/living-services/enroll', check_session, function(req, res, next) {
   var session = req.session;
@@ -445,6 +445,13 @@ router.post('/selling/enroll', function(req,res) {
   });
 });
 
+// sale_item관련
+router.post('/selling_item/lookup', function(req,res) {
+  features.selling_item.lookup(req.body, function(result) {
+    res.json(result);
+  });
+});
+
 /*
   customer 고객 관련
 */
@@ -502,13 +509,13 @@ router.post('/item/enroll',function(req,res) {
   });
 });
 
-router.post('item/modify', function(req, res) {
+router.post('/item/modify', function(req, res) {
   features.item.modify(req.body, function(result) {
     res.json(result);
   })
 });
 
-router.post('item/delete', function(req, res) {
+router.post('/item/delete', function(req, res) {
     features.item.delete(req.body, function(result) {
         res.json(result);
     })
@@ -595,6 +602,10 @@ router.post('/service/delete', function (req,res) {
       res.json(result);
     });
 });
+
+/*
+  행사관련
+*/
 
 router.post('/event/item/modify', function(req, res) {
     features.event_item.modify(req.body, function(result) {

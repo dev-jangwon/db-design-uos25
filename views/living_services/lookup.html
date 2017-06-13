@@ -92,7 +92,7 @@
 </div>
 <!-- ./wrapper -->
 <div id="service_dialog_modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+  <div class="modal-dialog" role="document" style="width: 600px;margin-top: 250px;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -133,7 +133,7 @@
         </div>
         <div class="row" style="margin:5px;">
             <div style="text-align: center">
-                <button type="button" class="btn btn-info" data-dismiss="modal" id="service_lookup_modify">수정</button>
+                <button type="button" class="btn btn-info margin" data-dismiss="modal" id="service_lookup_modify">수정</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="service_lookup_delete">삭제</button>
             </div>
         </div>
@@ -141,7 +141,23 @@
     </div>
   </div>
 </div>
-
+<!-- alert modal -->
+<div id="alert_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;margin-top: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-bullhorn" style="margin-right: 10px;"></i>알림</h4>
+            </div>
+            <div class="modal-body">
+                <p style="text-align: center;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- jQuery 2.2.3 -->
 <script src="/libs/jQuery/jquery-2.2.3.min.js"></script>
@@ -188,6 +204,7 @@
 
 <script src="/js/app.min.js"></script>
 <script src="/js/dialog.js"></script>
+<script src="/js/alert.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/service.js"></script>
 </body>

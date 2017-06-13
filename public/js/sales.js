@@ -1,4 +1,10 @@
+alert.init('alert_modal');
+
+
 $(document).ready(function() {
+    $('#mileage_form_group').hide();
+    $('#customer_code').attr('customer_code', '');
+
     /*
      판매 등록 페이지
      */
@@ -20,10 +26,13 @@ $(document).ready(function() {
             var customer_data = data.data[0];
 
             if (!customer_data || customer_data == null) {
-                alert('고객 코드가 존재하지 않습니다.');
+                alert.show('고객 코드가 존재하지 않습니다.');
                 return;
             }
 
+            $('#customer_code').attr('customer_code', customer_code);
+
+            $('#mileage_form_group').show();
             $('#customer_milage').val(customer_data.CUSTOMER_MILEAGE);
             $('#customer_name').val(customer_data.CUSTOMER_NAME);
         });
@@ -48,14 +57,16 @@ $(document).ready(function() {
             if (mileage_data && mileage_data !== null) {
                 item_mileage_rate = mileage_data.MILEAGE_RATE;
                 etc_message = "편의점 전용상품"
+                var mileage_val = $('#save_mileage').val();
+                $('#save_mileage').val(mileage_val + item_data.ITEM_PRICE * item_mileage_rate);
             }
 
             if (!item_data || item_data == null) {
-                alert('상품정보가 없습니다.');
+                alert.show('상품정보가 없습니다.');
                 return;
             }
 
-            var sale_price = item_count * item_data.ITEM_PRICE - (item_data.ITEM_PRICE * item_mileage_rate);
+            var sale_price = item_count * item_data.ITEM_PRICE - (0);
 
             table.row.add([
                 item_data.ITEM_CODE,
@@ -63,7 +74,7 @@ $(document).ready(function() {
                 item_data.ITEM_PRICE,
                 item_count,
                 sale_price,
-                item_data.ITEM_PRICE * item_mileage_rate,
+                item_data.ITEM_PRICE * 0,
                 etc_message
             ]).draw('false');
 
@@ -93,7 +104,7 @@ $(document).ready(function() {
 
     $('#use_mileage').click(function() {
         if ($('#customer_name').val() == "") {
-            alert("고객 조회해주세요");
+            alert.show("고객 조회해주세요");
         }
     })
 
@@ -101,7 +112,7 @@ $(document).ready(function() {
         if ($('#customer_name').val() !== "") {
             $('#cut_mileage').val($(this).val());
             var selling_price = $('#selling_price').val();
-            $('#selling_price').val(selling_price - $(this).val());ƒf
+            $('#selling_price').val(selling_price - $(this).val());
         }
     });
 
@@ -124,6 +135,8 @@ $(document).ready(function() {
      판매 버튼 누를시
      */
     $('#selling_complete').on("click", function () {
+        $('#customer_code').attr('customer_code', '');
+
         // var date = getTimeStamp();
         var date = new Date();
         var year = date.getFullYear().toString();
@@ -135,10 +148,14 @@ $(document).ready(function() {
         var selling_date = year + month + day;
 
         var selling_price = $('#selling_price').val();
-        var mileage_price = $('#cut_mileage').val();
+        var mileage_price = $('#cut_mileage').val(); // 마일리지 할인
+
+        if (mileage_price == '') {
+            mileage_price = 0;
+        }
 
         if (selling_price == undefined || selling_price == "" || !selling_price) {
-            alert("판매등록을 해주세요")
+            alert.show("판매등록을 해주세요")
             return;
         }
 
@@ -148,14 +165,39 @@ $(document).ready(function() {
         }
 
         if (mileage_price !== "") {
-            selling_price -= mileage_price;
+            selling_price -= mileage_price; // 판매 금액 - 마일리지 할인
+        }
+
+        // 고객 마일리지 적립 금액
+        var customer_mileage = $('#customer_milage').val();
+        if (customer_mileage == '') {
+            customer_mileage = 0;
+        }
+
+        // 고객이 사용할 마일리지 금액
+        var use_mileage = $('#use_mileage').val();
+
+        if (use_mileage == '') {
+            use_mileage = 0;
+        }
+
+        // 판매의 마일리지 적립
+        var save_mileage = $('#save_mileage').val();
+        if (save_mileage == '') {
+            save_mileage = 0;
+        }
+
+        if ($('#rest_price').val() < 0) {
+            alert.show("금액이 모자랍니다.");
+            return;
         }
 
         var post_data = {
             selling_price: selling_price,
             selling_date: selling_date,
             customer_code: customer_code,
-            selling_item_object: selling_item_object
+            selling_item_object: selling_item_object,
+            mileage: customer_mileage - use_mileage + save_mileage
         };
 
         // 판매랑 물품 판매 모두 넣기. 판매 먼저 넣은 후 물품_판매 넣기.
@@ -164,7 +206,7 @@ $(document).ready(function() {
             if (data) {
                 location.reload();
             } else {
-                alert("실패");
+                alert.show("판매 등록 실패");
             }
         });
     });
