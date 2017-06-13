@@ -1510,7 +1510,8 @@ module.exports = {
             function(db, next) {
                 db.execute(
                     'SELECT * ' +
-                    'FROM EXCEPT_ITEM',
+                    'FROM EXCEPT_ITEM, EXCEPT_TYPE ' +
+					'WHERE EXCEPT_ITEM.EXCEPT_TYPE_CODE = EXCEPT_TYPE.EXCEPT_TYPE_CODE',
                     [],
                     { outFormat: oracledb.OBJECT },
                     function(err, result) {
