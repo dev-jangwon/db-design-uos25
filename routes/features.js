@@ -597,4 +597,63 @@ features.exception.delete = function(options, callback) {
     });
 };
 
+/* 지불 */
+
+features.payment = {};
+
+features.payment.lookup = function(options, callback) {
+    db.selling_lookup_sum(options, function(err, selling_sum) {
+        if (err) {
+            callback({
+                result: false
+            });
+        } else {
+            db.employee_lookup_sum(options, function(err, employee_sum) {
+                if (err) {
+                    callback({
+                        result: false
+                    });
+                } else {
+                    db.branch_get_info(options, function(err, branch_info) {
+                        if (err) {
+                            callback({
+                                result: false
+                            });
+                        } else {
+                            callback({
+                                result: true,
+                                data: {
+                                    'selling_sum': selling_sum,
+                                    'employee_sum': employee_sum,
+                                    'branch_percent': branch_info[0].HEAD_OFFICE_PAYMENT_RATE,
+                                    'branch_maintenance': branch_info[0].MONTH_MAINTENANCE,
+                                    'payment': (selling_sum - employee_sum - branch_info[0].MONTH_MAINTENANCE) * branch_info[0].HEAD_OFFICE_PAYMENT_RATE
+                                }
+                            });
+                        }
+                    })
+                }
+            });
+        }
+    });
+};
+
+features.payment.enroll = function(options, callback) {
+    db.payment_count(function(err, payment_code) {
+        options.payment_code = payment_code;
+        db.payment_enroll(options, function(err, result) {
+            if (err) {
+                callback({
+                    result: false
+                });
+            } else {
+                callback({
+                    result: true,
+                    data: result
+                });
+            }
+        });
+    });
+};
+
 module.exports = features;

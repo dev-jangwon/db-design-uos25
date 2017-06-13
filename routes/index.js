@@ -581,4 +581,20 @@ router.post('/exception/delete', function(req, res) {
     });
 });
 
+/*
+ 지불
+ */
+
+router.post('/payment/lookup', function(req, res) {
+    features.payment.lookup(req.body, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/payment/enroll', function(req, res) {
+    features.payment.enroll(req.body, function(result) {
+        res.json(result);
+    });
+});
+
 module.exports = router;
